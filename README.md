@@ -6,7 +6,7 @@ Commons
          alt="License: Apache 2">
 </a>
 <a href="https://travis-ci.org/ArpNetworking/commons/">
-    <img src="https://travis-ci.org/ArpNetworking/metrics-client-java.png"
+    <img src="https://travis-ci.org/ArpNetworking/commons.png"
          alt="Travis Build">
 </a>
 <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.arpnetworking.commons%22%20a%3A%22commons%22">
