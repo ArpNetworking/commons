@@ -114,7 +114,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
                         throw new RuntimeException(e);
                     }
                 } else {
-                    LOGGER.debug()
+                    LOGGER.warn()
                             .setEvent("OvalBuilder")
                             .setMessage("No getter for setter")
                             .addData("setter", targetMethod)
