@@ -33,19 +33,21 @@ Compile Dependencies
 
 Project                        | License                    | Project link
 -------------------------------|----------------------------|-------------
+Akka                           | Apache License 2           | http://akka.io
 cglib                          | Apache License 2           | http://cglib.sourceforge.net/
 Guava                          | Apache License 2           | https://code.google.com/p/guava-libraries/
+Guice                          | Apache License 2           | https://code.google.com/p/google-guice/
 Jackson                        | Apache License 2           | http://jackson.codehaus.org/
 LogbackSteno                   | Apache License 2           | https://github.com/ArpNetworking/logback-steno
 OVal                           | Eclipse Public License 1.0 | http://oval.sourceforge.net/
+Scala Lang                     | BSD3                       | http://www.scala-lang.org/
 
 
 Notice
 ------
 
 This project has dependencies on projects released with the Eclipse Public License.  This binary
-dependency does not constitute creating a derivative work.  However, if you
-choose to modify these libraries, you may be obligated to release your revisions under a reciprocal
-license.
+dependency does not constitute creating a derivative work.  However, if you choose to modify these
+libraries, you may be obligated to release your revisions under a reciprocal license.
 
 &copy; Groupon Inc., 2015

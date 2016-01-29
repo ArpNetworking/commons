@@ -29,7 +29,7 @@
   <name>Common Library</name>
   <description>Common utilities.</description>
   <url>https://github.com/ArpNetworking/commons</url>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
 
   <licenses>
     <license>
@@ -68,14 +68,18 @@
 
   <properties>
     <!--Dependency versions-->
+    <akka.version>2.4.1</akka.version>
     <cglib.version>3.1</cglib.version>
     <guava.version>19.0</guava.version>
+    <guice.version>4.0</guice.version>
     <hamcrest.version>2.0.0.0</hamcrest.version>
     <jackson.version>2.6.3</jackson.version>
     <junit.version>4.12</junit.version>
     <logback.steno.version>1.11.1</logback.steno.version>
     <mockito.version>1.10.19</mockito.version>
     <oval.version>1.82</oval.version>
+    <scala.version>2.11</scala.version>
+    <scala.library.version>2.11.7</scala.library.version>
 
     <!-- Findbugs -->
     <findbugs.exclude>${project.basedir}/findbugs.exclude.xml</findbugs.exclude>
@@ -122,6 +126,11 @@
       <version>${logback.steno.version}</version>
     </dependency>
     <!-- Provided -->
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-actor_${scala.version}</artifactId>
+      <version>${akka.version}</version>
+    </dependency>
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
@@ -171,6 +180,17 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.library.version}</version>
+    </dependency>
+    <dependency>
       <groupId>net.sf.oval</groupId>
       <artifactId>oval</artifactId>
       <version>${oval.version}</version>
@@ -193,6 +213,12 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-testkit_${scala.version}</artifactId>
+      <version>${akka.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

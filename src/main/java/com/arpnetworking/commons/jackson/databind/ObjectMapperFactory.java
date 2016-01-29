@@ -40,8 +40,6 @@ import java.util.Optional;
  *     <li>cglib:cglib (transitively through ImmutableObjectMapper)</li>
  * </ul>
  *
- * TODO(vkoskela): Only load the jackson datatype modules if they are available.
- *
  * @author Ville Koskela (vkoskela at groupon dot com)
  */
 public final class ObjectMapperFactory {

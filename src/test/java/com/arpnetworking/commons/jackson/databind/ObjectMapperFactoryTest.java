@@ -16,6 +16,7 @@
 package com.arpnetworking.commons.jackson.databind;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -142,6 +143,24 @@ public class ObjectMapperFactoryTest {
         Assert.assertTrue(Modifier.isPrivate(constructor.getModifiers()));
         constructor.setAccessible(true);
         constructor.newInstance();
+    }
+
+    @Test
+    public void testJavaOptionalSerialization() throws JsonProcessingException {
+        final ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
+        final String actualPresentValue = objectMapper.writeValueAsString(java.util.Optional.of(Boolean.TRUE));
+        Assert.assertEquals("true", actualPresentValue);
+        final String actualAbsentValue = objectMapper.writeValueAsString(java.util.Optional.empty());
+        Assert.assertEquals("null", actualAbsentValue);
+    }
+
+    @Test
+    public void testGauvaOptionalSerialization() throws JsonProcessingException {
+        final ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
+        final String actualPresentValue = objectMapper.writeValueAsString(com.google.common.base.Optional.of(Boolean.TRUE));
+        Assert.assertEquals("true", actualPresentValue);
+        final String actualAbsentValue = objectMapper.writeValueAsString(com.google.common.base.Optional.absent());
+        Assert.assertEquals("null", actualAbsentValue);
     }
 
     /**
