@@ -15,13 +15,16 @@
  */
 package com.arpnetworking.commons.jackson.databind;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.nio.charset.Charset;
 
 /**
  * Tests for <code>ImmutableObjectMapper</code>.
@@ -62,5 +65,11 @@ public class ImmutableObjectMapperTest {
         Assert.assertTrue(Modifier.isPrivate(constructor.getModifiers()));
         constructor.setAccessible(true);
         constructor.newInstance();
+    }
+
+    @Test(expected = JsonMappingException.class)
+    public void testActualExceptionsAreThrown() throws IOException {
+        final ObjectMapper objectMapper = ImmutableObjectMapper.of(new ObjectMapper());
+        objectMapper.readValue("".getBytes(Charset.defaultCharset()), String.class);
     }
 }

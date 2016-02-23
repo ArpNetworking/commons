@@ -22,6 +22,7 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.security.AccessController;
@@ -167,7 +168,13 @@ public final class ImmutableObjectMapper {
                 method.setAccessible(true);
                 return null;
             });
-            return method.invoke(_wrapper, args);
+            try {
+                return method.invoke(_wrapper, args);
+            } catch (final InvocationTargetException e) {
+                // Method.invoke() throws InvocationTargetException when the underlying method throws
+                // so we rather rethrow the original exception instead of having it wrapped in InvocationTargetException
+                throw e.getCause();
+            }
         }
 
         private final ObjectMapper _wrapper;
