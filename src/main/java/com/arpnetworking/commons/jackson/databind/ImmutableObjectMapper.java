@@ -36,7 +36,7 @@ import java.util.Set;
  * Dependencies:
  * <ul>
  *     <li>com.fasterxml.jackson.core:jackson-databind</li>
- *     <li>cglib:cglib</li>
+ *     <li>cglib:cglib  (3.1+)</li>
  * </ul>
  *
  * @author Ville Koskela (vkoskela at groupon dot com)

@@ -29,7 +29,7 @@
   <name>Common Library</name>
   <description>Common utilities.</description>
   <url>https://github.com/ArpNetworking/commons</url>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.2.0-SNAPSHOT</version>
 
   <licenses>
     <license>
@@ -68,14 +68,14 @@
 
   <properties>
     <!--Dependency versions-->
-    <akka.version>2.4.1</akka.version>
+    <akka.version>2.4.2</akka.version>
     <cglib.version>3.1</cglib.version>
     <guava.version>19.0</guava.version>
     <guice.version>4.0</guice.version>
     <hamcrest.version>2.0.0.0</hamcrest.version>
     <jackson.version>2.6.3</jackson.version>
     <junit.version>4.12</junit.version>
-    <logback.steno.version>1.11.1</logback.steno.version>
+    <logback.steno.version>1.12.0</logback.steno.version>
     <mockito.version>1.10.19</mockito.version>
     <oval.version>1.82</oval.version>
     <scala.version>2.11</scala.version>
@@ -219,6 +219,12 @@
       <groupId>com.typesafe.akka</groupId>
       <artifactId>akka-testkit_${scala.version}</artifactId>
       <version>${akka.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
