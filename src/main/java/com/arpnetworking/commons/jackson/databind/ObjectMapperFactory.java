@@ -35,7 +35,6 @@ import java.util.Optional;
  *     <li>com.fasterxml.jackson.core:jackson-core</li>
  *     <li>com.fasterxml.jackson.core:jackson-databind</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-guava (Optional)</li>
- *     <li>com.fasterxml.jackson.datatype:jackson-datatype-jdk7 (Optional)</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-jdk8 (Optional)</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-joda (Optional)</li>
  *     <li>cglib:cglib (3.1+; transitively through ImmutableObjectMapper)</li>
@@ -83,7 +82,6 @@ public final class ObjectMapperFactory {
     /* package private */ static ObjectMapper createModifiableObjectMapper(final ObjectMapper objectMapper) {
         objectMapper.registerModule(new BuilderModule());
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.guava.GuavaModule");
-        registerModule(objectMapper, "com.fasterxml.jackson.datatype.jdk7.Jdk7Module");
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.jdk8.Jdk8Module");
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.joda.JodaModule");
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
