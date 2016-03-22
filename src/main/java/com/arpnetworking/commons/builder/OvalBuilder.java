@@ -31,6 +31,7 @@ import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * This abstract class for builders that define data constraints using Oval
@@ -166,8 +167,11 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      * @return Instance of target class created from this builder.
      */
     protected T construct() {
+        if (_targetConstructor.isPresent()) {
+            return _targetConstructor.get().apply(this);
+        }
         try {
-            final Constructor<? extends T> constructor = _targetClass.getDeclaredConstructor(this.getClass());
+            final Constructor<? extends T> constructor = _targetClass.get().getDeclaredConstructor(this.getClass());
             AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
                 constructor.setAccessible(true);
                 return null;
@@ -199,10 +203,26 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     /**
      * Protected constructor for subclasses.
      *
-     * @param targetClass The concrete type to be created by this builder.
+     * @param <B> The <code>Builder</code> type.
+     * @param targetConstructor The constructor for the concrete type to be created by this builder.
      */
+    @SuppressWarnings("unchecked")
+    protected <B extends Builder<T>> OvalBuilder(final Function<B, T> targetConstructor) {
+        _targetClass = Optional.empty();
+        _targetConstructor = Optional.of((Function<Builder<T>, T>) targetConstructor);
+        // NOTE: The above cast compiles with JDK 1.8.0_64 but shows up as an error in Intellij.
+    }
+
+    /**
+     * Protected constructor for subclasses.
+     *
+     * @param targetClass The concrete type to be created by this builder.
+     * @deprecated For performance reasons pass a constructor function reference instead.
+     */
+    @Deprecated
     protected OvalBuilder(final Class<? extends T> targetClass) {
-        _targetClass = targetClass;
+        _targetClass = Optional.of(targetClass);
+        _targetConstructor = Optional.empty();
     }
 
     /* package private */ static Optional<Method> getGetterForSetter(final Method setter, final Class<?> clazz) {
@@ -251,7 +271,8 @@ public abstract class OvalBuilder<T> implements Builder<T> {
                 method.getParameterTypes().length == 1;
     }
 
-    private final Class<? extends T> _targetClass;
+    private final Optional<Class<? extends T>> _targetClass;
+    private final Optional<Function<Builder<T>, T>> _targetConstructor;
 
     private static final Validator VALIDATOR = new Validator();
     private static final Logger LOGGER = LoggerFactory.getLogger(OvalBuilder.class);
