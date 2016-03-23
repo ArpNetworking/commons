@@ -54,6 +54,20 @@ public class OvalBuilderTest {
     }
 
     @Test
+    public void testSuccessWithConstructorReference() {
+        final int intValue = 1;
+        final Integer rangeIntValue = 50;
+        final TestBeanFunctionReference testBeanWithFunctionReference = new TestBeanFunctionReference.Builder()
+                .setInt(intValue)
+                .setRangeInt(rangeIntValue)
+                .build();
+        Assert.assertNotNull(testBeanWithFunctionReference);
+        Assert.assertEquals(intValue, testBeanWithFunctionReference.getInt());
+        Assert.assertTrue(testBeanWithFunctionReference.getRangeInt().isPresent());
+        Assert.assertEquals(rangeIntValue, testBeanWithFunctionReference.getRangeInt().get());
+    }
+
+    @Test
     public void testSuccessRangeIntOptional() {
         final int intValue = 1;
         final TestBean testBean = new TestBean.Builder()
@@ -357,6 +371,7 @@ public class OvalBuilderTest {
     /**
      * Test bean pojo.
      */
+    @SuppressWarnings("deprecation")
     public static final class TestBean {
 
         public int getInt() {
@@ -417,6 +432,70 @@ public class OvalBuilderTest {
         }
     }
 
+    /**
+     * Test bean with function reference pojo.
+     */
+    public static final class TestBeanFunctionReference {
+
+        public int getInt() {
+            return _int;
+        }
+
+        public Optional<Integer> getRangeInt() {
+            return _rangeInt;
+        }
+
+        public com.google.common.base.Optional<String> getString() {
+            return _string;
+        }
+
+        private TestBeanFunctionReference(final Builder builder) {
+            _int = builder._int;
+            _rangeInt = Optional.ofNullable(builder._rangeInt);
+            _string = com.google.common.base.Optional.fromNullable(builder._string);
+        }
+
+        private final int _int;
+        private final Optional<Integer> _rangeInt;
+        private final com.google.common.base.Optional<String> _string;
+
+        /**
+         * OvalBuilder implementation for TestBean.
+         */
+        public static final class Builder extends OvalBuilder<TestBeanFunctionReference> {
+
+            public Builder setInt(final Integer value) {
+                _int = value;
+                return this;
+            }
+
+            public Builder setRangeInt(final Integer value) {
+                _rangeInt = value;
+                return this;
+            }
+
+            public Builder setString(final String value) {
+                _string = value;
+                return this;
+            }
+
+            public Builder() {
+                super(TestBeanFunctionReference::new);
+            }
+
+            @NotNull
+            private Integer _int;
+
+            @Max(value = 100)
+            @Min(value = 0)
+            private Integer _rangeInt;
+
+            @NotEmpty
+            private String _string;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
     private static final class BadThrowingBean {
 
         private BadThrowingBean(final Builder builder) throws NamingException {
@@ -431,6 +510,7 @@ public class OvalBuilderTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static final class BadRuntimeThrowingBean {
 
         private BadRuntimeThrowingBean(final Builder builder) {
@@ -445,6 +525,7 @@ public class OvalBuilderTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static final class NoBuilderConstructorBean {
 
         private NoBuilderConstructorBean() {}
@@ -457,6 +538,7 @@ public class OvalBuilderTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static final class NoGetterForSetterBean {
 
         public String getBar() {
@@ -484,6 +566,7 @@ public class OvalBuilderTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static final class SetterThrowsBean {
 
         public String getBar() {
@@ -510,6 +593,7 @@ public class OvalBuilderTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static final class BuilderConstructorThrowsBean {
 
         BuilderConstructorThrowsBean() {}
@@ -525,6 +609,7 @@ public class OvalBuilderTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static final class MethodBean {
 
         public Object getValid() {
