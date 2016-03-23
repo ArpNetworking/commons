@@ -15,8 +15,10 @@
  */
 package com.arpnetworking.commons.jackson.databind.introspect;
 
+import com.arpnetworking.commons.jackson.databind.ObjectMapperFactory;
 import com.arpnetworking.commons.jackson.databind.annotation.JsonIgnoreBuilder;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import org.junit.Assert;
@@ -37,14 +39,16 @@ public class BuilderAnnotationIntrospectorTest {
 
     @Test
     public void testReturnsNullWhenNoBuilder() {
-        final AnnotatedClass annotatedClass = AnnotatedClass.construct(PojoWithoutBuilder.class, null, null);
+        final AnnotatedClass annotatedClass = AnnotatedClass.construct(
+                OBJECT_MAPPER.constructType(PojoWithoutBuilder.class), OBJECT_MAPPER.getDeserializationConfig());
         final Class<?> pojoBuilder = _introspector.findPOJOBuilder(annotatedClass);
         Assert.assertNull(pojoBuilder);
     }
 
     @Test
     public void testReturnsBuilder() {
-        final AnnotatedClass annotatedClass = AnnotatedClass.construct(PojoWithBuilder.class, null, null);
+        final AnnotatedClass annotatedClass = AnnotatedClass.construct(
+                OBJECT_MAPPER.constructType(PojoWithBuilder.class), OBJECT_MAPPER.getDeserializationConfig());
         final Class<?> pojoBuilder = _introspector.findPOJOBuilder(annotatedClass);
         Assert.assertNotNull(pojoBuilder);
         Assert.assertEquals(PojoWithBuilder.Builder.class, pojoBuilder);
@@ -52,21 +56,24 @@ public class BuilderAnnotationIntrospectorTest {
 
     @Test
     public void testAbstractBuilder() {
-        final AnnotatedClass annotatedClass = AnnotatedClass.construct(PojoWithAbstractBuilder.class, null, null);
+        final AnnotatedClass annotatedClass = AnnotatedClass.construct(
+                OBJECT_MAPPER.constructType(PojoWithAbstractBuilder.class), OBJECT_MAPPER.getDeserializationConfig());
         final Class<?> pojoBuilder = _introspector.findPOJOBuilder(annotatedClass);
         Assert.assertNull(pojoBuilder);
     }
 
     @Test
     public void testIgnoresBuilder() {
-        final AnnotatedClass annotatedClass = AnnotatedClass.construct(PojoWithIgnoredBuilder.class, null, null);
+        final AnnotatedClass annotatedClass = AnnotatedClass.construct(
+                OBJECT_MAPPER.constructType(PojoWithIgnoredBuilder.class), OBJECT_MAPPER.getDeserializationConfig());
         final Class<?> pojoBuilder = _introspector.findPOJOBuilder(annotatedClass);
         Assert.assertNull(pojoBuilder);
     }
 
     @Test
     public void testReturnsOverloadedBuilderConfig() {
-        final AnnotatedClass annotatedClass = AnnotatedClass.construct(PojoWithoutBuilder.class, null, null);
+        final AnnotatedClass annotatedClass = AnnotatedClass.construct(
+                OBJECT_MAPPER.constructType(PojoWithoutBuilder.class), OBJECT_MAPPER.getDeserializationConfig());
         final JsonPOJOBuilder.Value pojoBuilderConfig = _introspector.findPOJOBuilderConfig(annotatedClass);
         Assert.assertNotNull(pojoBuilderConfig);
         Assert.assertEquals("build", pojoBuilderConfig.buildMethodName);
@@ -117,6 +124,8 @@ public class BuilderAnnotationIntrospectorTest {
     }
 
     private BuilderAnnotationIntrospector _introspector;
+
+    private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.getInstance();
 
     /**
      * Test class.
