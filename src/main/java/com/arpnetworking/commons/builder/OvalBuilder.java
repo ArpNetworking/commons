@@ -19,6 +19,7 @@ import com.arpnetworking.logback.annotations.LogValue;
 import com.arpnetworking.steno.LogValueMapFactory;
 import com.arpnetworking.steno.Logger;
 import com.arpnetworking.steno.LoggerFactory;
+import com.google.common.collect.Maps;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.Validator;
 import net.sf.oval.exception.ConstraintsViolatedException;
@@ -30,6 +31,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -65,16 +67,21 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     public static <T, B extends Builder<? super T>> B clone(final T source) {
         B builder = null;
         try {
-            final Class<B> builderClass = (Class<B>) Class.forName(
-                    source.getClass().getName() + "$Builder",
-                    true, // initialize
-                    source.getClass().getClassLoader());
-            final Constructor<B> builderConstructor = builderClass.getDeclaredConstructor();
-            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                builderConstructor.setAccessible(true);
-                return null;
-            });
-            builder = builderConstructor.newInstance();
+            Constructor<B> cachedBuilderConstructor = (Constructor<B>) BUILDER_CONSTRUCTOR_CACHE.get(source.getClass());
+            if (cachedBuilderConstructor == null) {
+                final Class<B> builderClass = (Class<B>) Class.forName(
+                        source.getClass().getName() + "$Builder",
+                        true, // initialize
+                        source.getClass().getClassLoader());
+                final Constructor<B> builderConstructor = builderClass.getDeclaredConstructor();
+                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                    builderConstructor.setAccessible(true);
+                    return null;
+                });
+                BUILDER_CONSTRUCTOR_CACHE.put(source.getClass(), builderConstructor);
+                cachedBuilderConstructor = builderConstructor;
+            }
+            builder = cachedBuilderConstructor.newInstance();
         } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException
                 | IllegalAccessException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -93,36 +100,36 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      * @return Target populated from source.
      */
     public static <T, B extends Builder<? super T>> B clone(final T source, final B target) {
-        for (final Method targetMethod : target.getClass().getMethods()) {
-            if (isSetterMethod(targetMethod)) {
-                final Optional<Method> getterMethod = getGetterForSetter(targetMethod, source.getClass());
-                if (getterMethod.isPresent()) {
-                    try {
+        List<GetterSetter> cachedBuilderMethods = BUILDER_METHOD_CACHE.get(source.getClass());
+        if (cachedBuilderMethods == null) {
+            cachedBuilderMethods = new java.util.ArrayList<>();
+            for (final Method targetMethod : target.getClass().getMethods()) {
+                if (isSetterMethod(targetMethod)) {
+                    final Optional<Method> getterMethod = getGetterForSetter(targetMethod, source.getClass());
+                    if (getterMethod.isPresent()) {
                         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
                             getterMethod.get().setAccessible(true);
                             return null;
                         });
-                        Object value = getterMethod.get().invoke(source);
-                        if (value instanceof Optional) {
-                            final Optional<?> optional = (Optional<?>) value;
-                            value = optional.orElse(null);
-                        } else if (value instanceof com.google.common.base.Optional) {
-                            final com.google.common.base.Optional<?> optional = (com.google.common.base.Optional<?>) value;
-                            value = optional.orNull();
-                        }
-                        targetMethod.invoke(target, value);
-                    } catch (final IllegalAccessException | InvocationTargetException e) {
-                        throw new RuntimeException(e);
+                        cachedBuilderMethods.add(new GetterSetter(getterMethod.get(), targetMethod));
+                    } else {
+                        LOGGER.warn()
+                                .setEvent("OvalBuilder")
+                                .setMessage("No getter for setter")
+                                .addData("setter", targetMethod)
+                                .addData("source", source)
+                                .addData("target", target)
+                                .log();
                     }
-                } else {
-                    LOGGER.warn()
-                            .setEvent("OvalBuilder")
-                            .setMessage("No getter for setter")
-                            .addData("setter", targetMethod)
-                            .addData("source", source)
-                            .addData("target", target)
-                            .log();
                 }
+            }
+            BUILDER_METHOD_CACHE.put(source.getClass(), cachedBuilderMethods);
+        }
+        for (final GetterSetter getterSetter : cachedBuilderMethods) {
+            try {
+                getterSetter.transfer(source, target);
+            } catch (final IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
             }
         }
         return target;
@@ -275,10 +282,35 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private final Optional<Function<Builder<T>, T>> _targetConstructor;
 
     private static final Validator VALIDATOR = new Validator();
+    private static final Map<Class<?>, Constructor<? extends Builder<?>>> BUILDER_CONSTRUCTOR_CACHE = Maps.newConcurrentMap();
+    private static final Map<Class<?>, List<GetterSetter>> BUILDER_METHOD_CACHE = Maps.newConcurrentMap();
     private static final Logger LOGGER = LoggerFactory.getLogger(OvalBuilder.class);
 
     private static final String GETTER_IS_METHOD_PREFIX = "is";
     private static final String GETTER_GET_METHOD_PREFIX = "get";
     private static final String SETTER_METHOD_PREFIX = "set";
     private static final String UNABLE_TO_CONSTRUCT_TARGET_CLASS = "Unable to construct target class; target_class=%s";
+
+    private static final class GetterSetter {
+
+        GetterSetter(final Method getter, final Method setter) {
+            _getter = getter;
+            _setter = setter;
+        }
+
+        public void transfer(final Object from, final Object to) throws InvocationTargetException, IllegalAccessException {
+            Object value = _getter.invoke(from);
+            if (value instanceof Optional) {
+                final Optional<?> optional = (Optional<?>) value;
+                value = optional.orElse(null);
+            } else if (value instanceof com.google.common.base.Optional) {
+                final com.google.common.base.Optional<?> optional = (com.google.common.base.Optional<?>) value;
+                value = optional.orNull();
+            }
+            _setter.invoke(to, value);
+        }
+
+        private final Method _getter;
+        private final Method _setter;
+    }
 }
