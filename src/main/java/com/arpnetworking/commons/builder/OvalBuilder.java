@@ -217,7 +217,6 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     protected <B extends Builder<T>> OvalBuilder(final Function<B, T> targetConstructor) {
         _targetClass = Optional.empty();
         _targetConstructor = Optional.of((Function<Builder<T>, T>) targetConstructor);
-        // NOTE: The above cast compiles with JDK 1.8.0_64 but shows up as an error in Intellij.
     }
 
     /**
