@@ -39,7 +39,7 @@ import java.util.Set;
  *     <li>cglib:cglib  (3.1+)</li>
  * </ul>
  *
- * @author Ville Koskela (vkoskela at groupon dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public final class ImmutableObjectMapper {
 

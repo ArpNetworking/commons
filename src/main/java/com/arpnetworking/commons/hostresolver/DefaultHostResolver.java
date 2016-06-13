@@ -26,7 +26,7 @@ import java.net.UnknownHostException;
  *     <li><i>None</i></li>
  * </ul>
  *
- * @author Brandon Arp (barp at groupon dot com)
+ * @author Brandon Arp (brandonarp at gmail dot com)
  */
 public class DefaultHostResolver implements HostResolver {
 

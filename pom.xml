@@ -18,7 +18,7 @@
   <parent>
     <groupId>com.arpnetworking.build</groupId>
     <artifactId>arpnetworking-parent-pom</artifactId>
-    <version>1.0.21</version>
+    <version>1.0.24</version>
     <relativePath />
   </parent>
 
@@ -29,7 +29,7 @@
   <name>Common Library</name>
   <description>Common utilities.</description>
   <url>https://github.com/ArpNetworking/commons</url>
-  <version>1.4.1-SNAPSHOT</version>
+  <version>1.5.0-SNAPSHOT</version>
 
   <licenses>
     <license>
@@ -50,9 +50,9 @@
     </developer>
     <developer>
       <id>villekoskela</id>
-      <email>vkoskela@groupon.com</email>
-      <organization>Groupon</organization>
-      <organizationUrl>http://www.groupon.com</organizationUrl>
+      <email>ville.koskela@inscopemetrics.com</email>
+      <organization>Inscope Metrics</organization>
+      <organizationUrl>http://www.inscopemetrics.com</organizationUrl>
       <roles>
         <role>developer</role>
       </roles>
@@ -73,9 +73,9 @@
     <guava.version>19.0</guava.version>
     <guice.version>4.0</guice.version>
     <hamcrest.version>2.0.0.0</hamcrest.version>
-    <jackson.version>2.7.3</jackson.version>
+    <jackson.version>2.7.4</jackson.version>
     <junit.version>4.12</junit.version>
-    <logback.steno.version>1.13.0</logback.steno.version>
+    <logback.steno.version>1.15.0</logback.steno.version>
     <mockito.version>1.10.19</mockito.version>
     <oval.version>1.82</oval.version>
     <scala.version>2.11</scala.version>

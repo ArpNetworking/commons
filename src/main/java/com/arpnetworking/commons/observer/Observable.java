@@ -28,7 +28,7 @@ package com.arpnetworking.commons.observer;
  *     <li><i>None</i></li>
  * </ul>
  *
- * @author Ville Koskela (vkoskela at groupon dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public interface Observable {
 
