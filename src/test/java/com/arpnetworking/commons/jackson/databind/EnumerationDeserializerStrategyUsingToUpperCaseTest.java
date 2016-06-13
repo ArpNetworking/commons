@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * Tests for the ConfigurationException class.
  *
- * @author Ville Koskela (vkoskela at groupon dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public class EnumerationDeserializerStrategyUsingToUpperCaseTest {
 

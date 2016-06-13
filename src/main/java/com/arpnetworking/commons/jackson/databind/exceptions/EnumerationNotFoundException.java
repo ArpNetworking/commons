@@ -27,7 +27,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  * </ul>
  *
  * @author Carlos Indo (carlos at groupon dot com)
- * @author Ville Koskela (vkoskela at groupon dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public final class EnumerationNotFoundException extends JsonProcessingException {
 

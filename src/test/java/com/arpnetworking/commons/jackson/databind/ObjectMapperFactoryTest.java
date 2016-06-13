@@ -35,7 +35,7 @@ import java.util.Optional;
 /**
  * Tests for <code>ObjectMapperFactory</code>.
  *
- * @author Ville Koskela (vkoskela at groupon dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public class ObjectMapperFactoryTest {
 

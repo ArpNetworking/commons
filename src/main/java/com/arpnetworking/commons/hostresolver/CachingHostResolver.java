@@ -28,7 +28,7 @@ import java.util.Optional;
  *     <li><i>None</i></li>
  * </ul>
  *
- * @author Ville Koskela (vkoskela at groupon dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public class CachingHostResolver implements HostResolver {
 
