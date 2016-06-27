@@ -18,7 +18,7 @@
   <parent>
     <groupId>com.arpnetworking.build</groupId>
     <artifactId>arpnetworking-parent-pom</artifactId>
-    <version>1.0.24</version>
+    <version>1.0.25</version>
     <relativePath />
   </parent>
 
@@ -29,7 +29,7 @@
   <name>Common Library</name>
   <description>Common utilities.</description>
   <url>https://github.com/ArpNetworking/commons</url>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>1.6.0-SNAPSHOT</version>
 
   <licenses>
     <license>

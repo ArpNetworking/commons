@@ -25,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -66,7 +67,8 @@ public class EnumerationDeserializerTest {
         try {
             final TestContainer c = objectMapper.readValue("{\"enum\":\"bar\"}", TestContainer.class);
             Assert.fail("Expected exception not thrown");
-        } catch (final EnumerationNotFoundException e) {
+        } catch (final IOException e) {
+            Assert.assertTrue(e.getCause() instanceof EnumerationNotFoundException);
             Mockito.verify(_strategy).toEnum(TestEnum.class, "bar");
             Mockito.verifyNoMoreInteractions(_strategy);
         }
