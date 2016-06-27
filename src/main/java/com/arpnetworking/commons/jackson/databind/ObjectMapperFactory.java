@@ -85,7 +85,6 @@ public final class ObjectMapperFactory {
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.jdk8.Jdk8Module");
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.joda.JodaModule");
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(DeserializationFeature.WRAP_EXCEPTIONS, false);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.setDateFormat(new ISO8601DateFormat());
