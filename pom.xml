@@ -70,16 +70,23 @@
     <!--Dependency versions-->
     <akka.version>2.4.2</akka.version>
     <cglib.version>3.2.1</cglib.version>
+    <findbugs.annotations.version>3.0.1</findbugs.annotations.version>
     <guava.version>19.0</guava.version>
     <guice.version>4.0</guice.version>
     <hamcrest.version>2.0.0.0</hamcrest.version>
     <jackson.version>2.7.4</jackson.version>
+    <javassist.version>3.20.0-GA</javassist.version>
+    <javassist.maven.core.version>0.1.2</javassist.maven.core.version>
+    <jsr305.version>3.0.0</jsr305.version>
     <junit.version>4.12</junit.version>
     <logback.steno.version>1.15.0</logback.steno.version>
     <mockito.version>1.10.19</mockito.version>
-    <oval.version>1.82</oval.version>
+    <oval.version>1.86-SNAPSHOT</oval.version>
     <scala.version>2.11</scala.version>
     <scala.library.version>2.11.7</scala.library.version>
+
+    <!-- Plugin versions -->
+    <javassist.maven.plugin.version>0.1.2</javassist.maven.plugin.version>
 
     <!-- Code Coverage -->
     <jacoco.check.line.coverage>1.0</jacoco.check.line.coverage>
@@ -113,6 +120,36 @@
         <artifactId>wrapper-maven-plugin</artifactId>
         <inherited>false</inherited>
       </plugin>
+      <!-- Project Specific Plugins -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <showDeprecation>true</showDeprecation>
+          <showWarnings>true</showWarnings>
+          <compilerArgs combine.self="override">
+            <!--<arg>-Xlint:all</arg>
+            <arg>-Werror</arg>-->
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.arpnetworking.commons</groupId>
+        <artifactId>javassist-maven-plugin</artifactId>
+        <version>${javassist.maven.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>javassist-test-process</id>
+            <goals>
+              <goal>test-process</goal>
+            </goals>
+            <configuration>
+              <processor>com.arpnetworking.commons.builder.ValidationProcessor</processor>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -121,6 +158,16 @@
       <groupId>com.arpnetworking.logback</groupId>
       <artifactId>logback-steno</artifactId>
       <version>${logback.steno.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>${jsr305.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>findbugs-annotations</artifactId>
+      <version>${findbugs.annotations.version}</version>
     </dependency>
     <!-- Provided -->
     <dependency>
@@ -189,6 +236,18 @@
       <version>${oval.version}</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>${javassist.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.arpnetworking.commons</groupId>
+      <artifactId>javassist-maven-core</artifactId>
+      <version>${javassist.maven.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <!-- Test - General -->
     <dependency>
       <groupId>org.hamcrest</groupId>
@@ -221,4 +280,11 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>local-maven-repo</id>
+      <url>file:///${project.basedir}/local-maven-repo</url>
+    </repository>
+  </repositories>
 </project>

@@ -19,6 +19,7 @@ import com.arpnetworking.logback.annotations.LogValue;
 import com.arpnetworking.steno.LogValueMapFactory;
 import com.arpnetworking.steno.Logger;
 import com.arpnetworking.steno.LoggerFactory;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.Validator;
@@ -160,11 +161,22 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      */
     @Override
     public T build() {
-        final List<ConstraintViolation> violations = VALIDATOR.validate(this);
+        final List<ConstraintViolation> violations = Lists.newArrayList();
+        validate(violations);
         if (!violations.isEmpty()) {
             throw new ConstraintsViolatedException(violations);
         }
         return construct();
+    }
+
+    /**
+     * Validate this <code>Builder</code> instance.
+     *
+     * @param violations <code>List</code> of <code>ConstraintViolation</code>
+     * instances to populate.
+     */
+    protected void validate(final List<ConstraintViolation> violations) {
+        violations.addAll(VALIDATOR.validate(this));
     }
 
     /**
