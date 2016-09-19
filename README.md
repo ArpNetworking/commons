@@ -77,6 +77,43 @@ dependencies and the version defined in the pom for testing should be considered
 As the library grows we may consider splitting it into a multi-module project with each submodule explicitly declaring
 its dependencies.
 
+### Builder Validation Class Processor
+
+Add the [Maven Javassist Plugin](https://github.com/ArpNetworking/maven-javassist) to your project and configure it to execute the _ValidationProcessor_. Optionally, enable
+processing of test classes with the _test-process_ goal.
+
+```xml
+<plugin>
+  <groupId>com.arpnetworking.commons</groupId>
+  <artifactId>javassist-maven-plugin<artifactId>
+  <version>0.1.0</version>
+  <executions>
+    <execution>
+      <id>javassist-process</id>
+      <goals>
+        <goal>process</goal>
+      </goals>
+      <configuration>
+        <processor>com.arpnetworking.commons.builder.ValidationProcessor</processor>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
+
+Next, add a dependency on maven-javassist-core:
+
+```xml
+<dependency>
+   <groupId>com.arpnetworking.commons</groupId>
+   <artifactId>javassist-maven-core<artifactId>
+   <version>0.1.0</version>
+</dependency>
+```
+
+Processing the validation rules into your classes instead of using OVal's built-in reflective processing can greatly
+improve the performance of your application.
+
 Building
 --------
 
