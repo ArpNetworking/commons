@@ -30,7 +30,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 /**
- * Tests for the DefaultHostResolver class.
+ * Tests for the CachingHostResolver class.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */

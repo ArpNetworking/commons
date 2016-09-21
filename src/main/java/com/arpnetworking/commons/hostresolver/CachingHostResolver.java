@@ -67,7 +67,10 @@ public class CachingHostResolver implements HostResolver {
         this(wrappedHostResolver, Clock.systemUTC(), ttl);
     }
 
-    /* package private */ CachingHostResolver(final HostResolver wrappedHostResolver, final Clock clock, final Duration ttl) {
+    /* package private */ CachingHostResolver(
+            final HostResolver wrappedHostResolver,
+            final Clock clock,
+            final Duration ttl) {
         _wrappedHostResolver = wrappedHostResolver;
         _clock = clock;
         _ttlInMillis = ttl.toMillis();
