@@ -122,19 +122,6 @@
       </plugin>
       <!-- Project Specific Plugins -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.plugin.version}</version>
-        <configuration>
-          <showDeprecation>true</showDeprecation>
-          <showWarnings>true</showWarnings>
-          <compilerArgs combine.self="override">
-            <!--<arg>-Xlint:all</arg>
-            <arg>-Werror</arg>-->
-          </compilerArgs>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>com.arpnetworking.commons</groupId>
         <artifactId>javassist-maven-plugin</artifactId>
         <version>${javassist.maven.plugin.version}</version>
