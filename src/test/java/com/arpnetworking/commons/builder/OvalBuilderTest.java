@@ -15,6 +15,7 @@
  */
 package com.arpnetworking.commons.builder;
 
+import com.arpnetworking.commons.builder.annotations.SkipValidationProcessor;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.constraint.Max;
 import net.sf.oval.constraint.Min;
@@ -399,6 +400,7 @@ public class OvalBuilderTest {
         /**
          * OvalBuilder implementation for TestBean.
          */
+        @SkipValidationProcessor
         public static final class Builder extends OvalBuilder<TestBean> {
 
             public Builder setInt(final Integer value) {
@@ -462,6 +464,7 @@ public class OvalBuilderTest {
         /**
          * OvalBuilder implementation for TestBean.
          */
+        @SkipValidationProcessor
         public static final class Builder extends OvalBuilder<TestBeanFunctionReference> {
 
             public Builder setInt(final Integer value) {
@@ -502,6 +505,7 @@ public class OvalBuilderTest {
             throw new NamingException();
         }
 
+        @SkipValidationProcessor
         private static final class Builder extends OvalBuilder<BadThrowingBean> {
 
             private Builder() {
@@ -517,6 +521,7 @@ public class OvalBuilderTest {
             throw new NullPointerException();
         }
 
+        @SkipValidationProcessor
         private static final class Builder extends OvalBuilder<BadRuntimeThrowingBean> {
 
             private Builder() {
@@ -530,6 +535,7 @@ public class OvalBuilderTest {
 
         private NoBuilderConstructorBean() {}
 
+        @SkipValidationProcessor
         private static final class Builder extends OvalBuilder<NoBuilderConstructorBean> {
 
             private Builder() {
@@ -551,6 +557,7 @@ public class OvalBuilderTest {
 
         private final String _bar;
 
+        @SkipValidationProcessor
         private static final class Builder extends OvalBuilder<NoGetterForSetterBean> {
 
             public Builder setFoo(final String value) {
@@ -579,6 +586,7 @@ public class OvalBuilderTest {
 
         private final String _bar;
 
+        @SkipValidationProcessor
         private static final class Builder extends OvalBuilder<SetterThrowsBean> {
 
             public Builder setBar(final String value) {
@@ -600,6 +608,7 @@ public class OvalBuilderTest {
 
         private BuilderConstructorThrowsBean(final Builder builder) {}
 
+        @SkipValidationProcessor
         private static final class Builder extends OvalBuilder<BuilderConstructorThrowsBean> {
 
             private Builder() {
@@ -638,6 +647,7 @@ public class OvalBuilderTest {
             return null;
         }
 
+        @SkipValidationProcessor
         public static final class Builder extends OvalBuilder<MethodBean> {
 
             Builder() {
