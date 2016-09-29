@@ -85,6 +85,9 @@
     <scala.version>2.11</scala.version>
     <scala.library.version>2.11.7</scala.library.version>
 
+    <!-- TODO: Remove me with OVal release. -->
+    <enforcer.skip>true</enforcer.skip>
+
     <!-- Plugin versions -->
     <javassist.maven.plugin.version>0.1.2</javassist.maven.plugin.version>
 
@@ -95,6 +98,7 @@
   <build>
     <plugins>
       <plugin>
+        <!-- TODO: Remove me with OVal release. -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
