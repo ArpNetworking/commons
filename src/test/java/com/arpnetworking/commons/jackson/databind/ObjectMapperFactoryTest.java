@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.joda.time.Duration;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -161,6 +162,13 @@ public class ObjectMapperFactoryTest {
         Assert.assertEquals("true", actualPresentValue);
         final String actualAbsentValue = objectMapper.writeValueAsString(com.google.common.base.Optional.absent());
         Assert.assertEquals("null", actualAbsentValue);
+    }
+
+    @Test
+    public void testDurationSerialization() throws JsonProcessingException {
+        final ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
+        final String actualPresentValue = objectMapper.writeValueAsString(Duration.standardSeconds(10));
+        Assert.assertEquals("\"PT10S\"", actualPresentValue);
     }
 
     /**
