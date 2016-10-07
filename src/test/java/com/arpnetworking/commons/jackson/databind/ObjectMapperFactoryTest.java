@@ -23,14 +23,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.joda.time.Duration;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -125,6 +129,40 @@ public class ObjectMapperFactoryTest {
         ObjectMapperFactory.registerModule(
                 objectMapper,
                 "com.arpnetworking.commons.jackson.databind.ObjectMapperFactoryTest$BadModule");
+        Mockito.verifyZeroInteractions(objectMapper);
+    }
+
+    @Test
+    public void testRegisterAdditionalModulesOneModule() {
+        final ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
+        ObjectMapperFactory.registerAdditionalModules(
+                objectMapper,
+                s -> "com.fasterxml.jackson.datatype.guava.GuavaModule");
+        Mockito.verify(objectMapper).registerModule(Mockito.any(GuavaModule.class));
+    }
+
+    @Test
+    public void testRegisterAdditionalModulesMultipleModules() {
+        final ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
+        ObjectMapperFactory.registerAdditionalModules(
+                objectMapper,
+                s -> "com.fasterxml.jackson.datatype.guava.GuavaModule,com.fasterxml.jackson.datatype.joda.JodaModule");
+
+        final ArgumentCaptor<Module> captor = ArgumentCaptor.forClass(Module.class);
+        Mockito.verify(objectMapper, Mockito.times(2)).registerModule(captor.capture());
+        Mockito.verifyNoMoreInteractions(objectMapper);
+        final List<Module> registered = captor.getAllValues();
+        Assert.assertEquals(2, registered.size());
+        Assert.assertTrue(registered.get(0) instanceof GuavaModule);
+        Assert.assertTrue(registered.get(1) instanceof JodaModule);
+    }
+
+    @Test
+    public void testRegisterAdditionalModulesNotConfigured() {
+        final ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
+        ObjectMapperFactory.registerAdditionalModules(
+                objectMapper,
+                s -> null);
         Mockito.verifyZeroInteractions(objectMapper);
     }
 

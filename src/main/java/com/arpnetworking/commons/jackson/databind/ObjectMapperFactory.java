@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Create a "standard" <code>ObjectMapper</code> instance.
@@ -84,12 +85,24 @@ public final class ObjectMapperFactory {
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.guava.GuavaModule");
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.jdk8.Jdk8Module");
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.joda.JodaModule");
+        registerAdditionalModules(objectMapper, System::getProperty);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
         objectMapper.setDateFormat(new ISO8601DateFormat());
         return objectMapper;
+    }
+
+    /* package private */ static void registerAdditionalModules(
+            final ObjectMapper objectMapper,
+            final Function<String, String> propertyAccessor) {
+        final String moduleClassNames = propertyAccessor.apply("commons.object-mapper-additional-module-class-names");
+        if (moduleClassNames != null) {
+            for (final String moduleClassName : moduleClassNames.split(",")) {
+                registerModule(objectMapper, moduleClassName);
+            }
+        }
     }
 
     /* package private */ static void registerModule(final ObjectMapper objectMapper, final String className) {

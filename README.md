@@ -77,6 +77,26 @@ dependencies and the version defined in the pom for testing should be considered
 As the library grows we may consider splitting it into a multi-module project with each submodule explicitly declaring
 its dependencies.
 
+### Object Mapper Factory
+
+The factory exposes a global singleton Jackson's ```ObjectMapper``` via the ```getInstance``` method to reduce memory
+footprint and to ensure a consistent global configuration for ```ObjectMapper```. The global instance is read-only and
+is protected by a dynamic proxy which prevents modification. The factory can also create new modifiable instances with
+the same base configuration via the ```createInstance``` method. 
+
+If these modules are available they are registered with ```ObjectMapper```:
+
+* com.fasterxml.jackson.datatype.guava.GuavaModule (from: com.fasterxml.jackson.datatype:jackson-datatype-guava)
+* com.fasterxml.jackson.datatype.jdk8.Jdk8Module (from: com.fasterxml.jackson.datatype:jackson-datatype-jdk8)
+* com.fasterxml.jackson.datatype.joda.JodaModule (from: com.fasterxml.jackson.datatype:jackson-datatype-joda)
+
+Additionally, you may specify a comma separated list of additional module class names to register using the system
+property _commons.object-mapper-additional-module-class-names_. For example:
+
+```
+-Dcommons.object-mapper-additional-module-class-names=com.example.MyModule,com.fasterxml.jackson.module.afterburner.AfterburnerModule
+```
+
 ### Builder Validation Class Processor
 
 Add the [Maven Javassist Plugin](https://github.com/ArpNetworking/maven-javassist) to your project and configure it to execute the _ValidationProcessor_. Optionally, enable
