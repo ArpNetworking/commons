@@ -291,16 +291,15 @@ public final class ValidationProcessorTest {
 
         final StringBuilder validationChecksCode = new StringBuilder();
         final StringBuilder staticInitializerCode = new StringBuilder();
-        final List<String> checkFields = Lists.newArrayList();
+        final List<String> staticFields = Lists.newArrayList();
         processor.generateValidationChecks(
                 ctClass,
                 validationChecksCode,
                 staticInitializerCode,
-                checkFields);
+                staticFields);
 
         Assert.assertEquals(
                 ValidationProcessor.generateValidation(
-                        ctClass.getName(),
                         Mockito.mock(Annotation.class),
                         checkType,
                         checkName,
@@ -315,12 +314,18 @@ public final class ValidationProcessorTest {
                         NotNull.class.getName()),
                 staticInitializerCode.toString());
 
-        Assert.assertEquals(1, checkFields.size());
+        Assert.assertEquals(2, staticFields.size());
         Assert.assertEquals(
                 ValidationProcessor.generateCheckFieldDeclaration(
                         checkType,
                         checkName),
-                checkFields.get(0));
+                staticFields.get(0));
+        Assert.assertEquals(
+                ValidationProcessor.generateFieldContextDeclaration(
+                        ExampleBuilder.class.getName(),
+                        checkName,
+                        fieldName),
+                staticFields.get(1));
     }
 
     @Test
@@ -333,6 +338,22 @@ public final class ValidationProcessorTest {
                         + checkName
                         + " = new net.sf.oval.constraint.NotNullCheck();",
                 ValidationProcessor.generateCheckFieldDeclaration(checkType, checkName));
+    }
+
+    @Test
+    public void testGenerateFieldContextDeclaration() {
+        final String className = "com.arpnetworking.commons.builder.ValidationProcessorTest$ExampleBuilder";
+        final String fieldName = "_foo";
+        final String checkType = "net.sf.oval.constraint.NotNullCheck";
+        final String checkName = ValidationProcessor.getCheckName(fieldName, checkType);
+        Assert.assertEquals(
+                "private static final net.sf.oval.context.OValContext "
+                        + checkName + "_CONTEXT = new net.sf.oval.context.FieldContext("
+                        + className + ".class, \"_foo\");",
+                ValidationProcessor.generateFieldContextDeclaration(
+                        className,
+                        checkName,
+                        fieldName));
     }
 
     @Test
@@ -359,13 +380,10 @@ public final class ValidationProcessorTest {
         final String checkName = ValidationProcessor.getCheckName(fieldName, checkType);
         Assert.assertEquals(
                 "if (!" + checkName + ".isSatisfied(this, _foo, null, null)) {\n"
-                        + "final net.sf.oval.context.OValContext context = "
-                        + "new net.sf.oval.context.FieldContext(MyBuilder.class, \"_foo\");\n"
                         + "violations.add(new net.sf.oval.ConstraintViolation("
-                        + checkName + ", " + checkName + ".getMessage(), this, _foo, context));\n"
+                        + checkName + ", " + checkName + ".getMessage(), this, _foo, " + checkName + "_CONTEXT));\n"
                         + "}\n",
                 ValidationProcessor.generateValidation(
-                        "MyBuilder",
                         Mockito.mock(Annotation.class),
                         checkType,
                         checkName,
@@ -385,13 +403,10 @@ public final class ValidationProcessorTest {
                         + "return true;\n"
                         + "}\n"
                         + "if (!checkMe(_foo)) {\n"
-                        + "final net.sf.oval.context.OValContext context = "
-                        + "new net.sf.oval.context.FieldContext(MyBuilder.class, \"_foo\");\n"
                         + "violations.add(new net.sf.oval.ConstraintViolation("
-                        + checkName + ", " + checkName + ".getMessage(), this, _foo, context));\n"
+                        + checkName + ", " + checkName + ".getMessage(), this, _foo, " + checkName + "_CONTEXT));\n"
                         + "}\n",
                 ValidationProcessor.generateValidation(
-                        "MyBuilder",
                         annotation,
                         checkType,
                         checkName,
