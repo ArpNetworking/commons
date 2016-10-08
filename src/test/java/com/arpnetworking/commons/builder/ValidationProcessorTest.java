@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Tests for the <code>ValidationProcessor</code>.
@@ -532,7 +533,10 @@ public final class ValidationProcessorTest {
             super(ExamplePojo::new);
         }
 
-        public ComparisonBuilder setValue(final Object value) {
+        // NOTE: Marked as nullable to faciliate null testing; normally
+        // setters for fields marked @NonNull should not be marked
+        // @Nullable.
+        public ComparisonBuilder setValue(@Nullable final Object value) {
             _value = value;
             return this;
         }
@@ -552,7 +556,10 @@ public final class ValidationProcessorTest {
             super(ExamplePojo::new);
         }
 
-        public NoChangeBuilder setValue(final Object value) {
+        // NOTE: Marked as nullable to faciliate null testing; normally
+        // setters for fields marked @NonNull should not be marked
+        // @Nullable.
+        public NoChangeBuilder setValue(@Nullable final Object value) {
             _value = value;
             return this;
         }
@@ -573,7 +580,11 @@ public final class ValidationProcessorTest {
             super(ExamplePojo::new);
         }
 
-        public NoConstraintsBuilder setValue(final Object value) {
+        // NOTE: Marked as nullable to faciliate null testing; normally
+        // setters for fields marked @NonNull should not be marked
+        // @Nullable.
+        @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
+        public NoConstraintsBuilder setValue(@Nullable final Object value) {
             _value = value;
             return this;
         }
@@ -582,7 +593,7 @@ public final class ValidationProcessorTest {
             return _value;
         }
 
-        @Nonnull // This annotation is ignored
+        @Nonnull // This annotation is ignored; it's not an OVal annotation
         private Object _value;
     }
 
@@ -594,7 +605,10 @@ public final class ValidationProcessorTest {
             super(ExamplePojo::new);
         }
 
-        public B setValue(final Object value) {
+        // NOTE: Marked as nullable to faciliate null testing; normally
+        // setters for fields marked @NonNull should not be marked
+        // @Nullable.
+        public B setValue(@Nullable final Object value) {
             _value = value;
             return self();
         }
@@ -617,7 +631,10 @@ public final class ValidationProcessorTest {
             super();
         }
 
-        public UnprocessedParentBuilder setOtherValue(final Object value) {
+        // NOTE: Marked as nullable to faciliate null testing; normally
+        // setters for fields marked @NonNull should not be marked
+        // @Nullable.
+        public UnprocessedParentBuilder setOtherValue(@Nullable final Object value) {
             _otherValue = value;
             return self();
         }

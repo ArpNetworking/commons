@@ -18,6 +18,8 @@ package com.arpnetworking.commons.jackson.databind.exceptions;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import javax.annotation.Nullable;
+
 /**
  * Exception when you cannot find an Enumeration value of a particular type.
  *
@@ -46,7 +48,7 @@ public final class EnumerationNotFoundException extends JsonProcessingException 
             final String value,
             final Class<E> enumClass,
             final JsonLocation location,
-            final Throwable cause) {
+            @Nullable final Throwable cause) {
         super(
                 String.format(
                         "Enumeration not found; enumClass=%s, value=%s",
