@@ -29,6 +29,7 @@ import org.junit.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Optional;
+import javax.annotation.Nullable;
 import javax.naming.NamingException;
 
 /**
@@ -403,7 +404,10 @@ public class OvalBuilderTest {
         @SkipValidationProcessor
         public static final class Builder extends OvalBuilder<TestBean> {
 
-            public Builder setInt(final Integer value) {
+            // NOTE: Marked as nullable to faciliate null testing; normally
+            // setters for fields marked @NonNull should not be marked
+            // @Nullable.
+            public Builder setInt(@Nullable final Integer value) {
                 _int = value;
                 return this;
             }

@@ -56,6 +56,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.annotation.Nullable;
 
 /**
  * Test bean pojo for validation processor.
@@ -327,7 +328,7 @@ public final class ValidationProcessorBean {
          * @param value the value
          * @return this <code>Builder</code>
          */
-        public Builder setNullObject(final Object value) {
+        public Builder setNullObject(@Nullable final Object value) {
             _nullObject = value;
             return this;
         }
@@ -610,10 +611,14 @@ public final class ValidationProcessorBean {
         /**
          * Set the not null object field.
          *
+         * NOTE: Marked as nullable to faciliate null testing; normally
+         * setters for fields marked @NonNull should not be marked
+         * @Nullable.
+         *
          * @param value the value
          * @return this <code>Builder</code>
          */
-        public Builder setNotNullObject(final Object value) {
+        public Builder setNotNullObject(@Nullable final Object value) {
             _notNullObject = value;
             return this;
         }

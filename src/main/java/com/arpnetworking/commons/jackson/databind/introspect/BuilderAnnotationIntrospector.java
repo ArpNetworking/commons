@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.introspect.NopAnnotationIntrospector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
+import javax.annotation.Nullable;
 
 /**
  * Jackson {@link com.fasterxml.jackson.databind.AnnotationIntrospector} that injects a
@@ -43,7 +44,7 @@ public final class BuilderAnnotationIntrospector extends NopAnnotationIntrospect
      * {@inheritDoc}
      */
     @Override
-    public Class<?> findPOJOBuilder(final AnnotatedClass ac) {
+    public @Nullable Class<?> findPOJOBuilder(final AnnotatedClass ac) {
         final Class<?> pojoClass = ac.getRawType();
         final Class<?>[] declaredClasses = pojoClass.getDeclaredClasses();
         for (final Class<?> declaredClass : declaredClasses) {
