@@ -136,12 +136,12 @@ public final class ValidationProcessor implements ClassProcessor {
             // Build code to inject
             final StringBuilder validationChecksCode = new StringBuilder();
             final StringBuilder staticInitializerCode = new StringBuilder();
-            final List<String> checkFields = Lists.newArrayList();
-            generateValidationChecks(ctClass, validationChecksCode, staticInitializerCode, checkFields);
+            final List<String> staticFields = Lists.newArrayList();
+            generateValidationChecks(ctClass, validationChecksCode, staticInitializerCode, staticFields);
 
-            // Add the check field
-            for (final String checkField : checkFields) {
-                ctClass.addField(CtField.make(checkField, ctClass));
+            // Add the static fields
+            for (final String staticField : staticFields) {
+                ctClass.addField(CtField.make(staticField, ctClass));
             }
 
             // Add validation method
@@ -178,7 +178,7 @@ public final class ValidationProcessor implements ClassProcessor {
             final CtClass ctClass,
             final StringBuilder validationChecksCode,
             final StringBuilder staticInitializerCode,
-            final List<String> checkFields) {
+            final List<String> staticFields) {
 
         for (final CtField ctField : ctClass.getDeclaredFields()) {
             for (final Object annotationObject : ctField.getAvailableAnnotations()) {
@@ -191,7 +191,10 @@ public final class ValidationProcessor implements ClassProcessor {
                     final String fieldName = ctField.getName();
 
                     // Define the member for the check
-                    checkFields.add(generateCheckFieldDeclaration(checkType, checkName));
+                    staticFields.add(generateCheckFieldDeclaration(checkType, checkName));
+
+                    // Define the member for the field context
+                    staticFields.add(generateFieldContextDeclaration(ctClass.getName(), checkName, fieldName));
 
                     // Write the check initializer code
                     staticInitializerCode.append(
@@ -203,7 +206,6 @@ public final class ValidationProcessor implements ClassProcessor {
 
                     // Write the validation code
                     validationChecksCode.append(generateValidation(
-                            ctClass.getName(),
                             annotation,
                             checkType,
                             checkName,
@@ -219,6 +221,14 @@ public final class ValidationProcessor implements ClassProcessor {
         return "private static final " + checkType + " " + checkName + " = new " + checkType + "();";
     }
 
+    /* package private */ static String generateFieldContextDeclaration(
+            final String className,
+            final String checkName,
+            final String fieldName) {
+        return "private static final net.sf.oval.context.OValContext " + checkName + "_CONTEXT"
+                + " = new net.sf.oval.context.FieldContext(" + className + ".class, \"" + fieldName + "\");";
+    }
+
     /* package private */ static String generateCheckInitializer(
             final String className,
             final String checkName,
@@ -230,14 +240,10 @@ public final class ValidationProcessor implements ClassProcessor {
     }
 
     /* package private */ static String generateValidation(
-            final String className,
             final Annotation annotation,
             final String checkType,
             final String checkName,
             final String fieldName) {
-
-        // TODO(villek): Improve or drop the creation of the context.
-        // The construction of FieldContext reflects on the field name without caching.
 
         if (VALIDATE_WITH_METHOD_CHECK.equals(checkType)) {
             // Special Case: Unwrap the check method and code generate its invocation
@@ -246,17 +252,13 @@ public final class ValidationProcessor implements ClassProcessor {
                     + "return true;\n"
                     + "}\n"
                     + "if (!" + validateWithMethod.methodName() + "(" + fieldName + ")) {\n"
-                    + "final net.sf.oval.context.OValContext context = new net.sf.oval.context.FieldContext("
-                    + className + ".class, \"" + fieldName + "\");\n"
                     + "violations.add(new net.sf.oval.ConstraintViolation("
-                    + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", context));\n"
+                    + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", "  + checkName + "_CONTEXT));\n"
                     + "}\n";
         } else {
             return "if (!" + checkName + ".isSatisfied(this, " + fieldName + ", null, null)) {\n"
-                    + "final net.sf.oval.context.OValContext context = new net.sf.oval.context.FieldContext("
-                    + className + ".class, \"" + fieldName + "\");\n"
                     + "violations.add(new net.sf.oval.ConstraintViolation("
-                    + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", context));\n"
+                    + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", " + checkName + "_CONTEXT));\n"
                     + "}\n";
         }
     }
