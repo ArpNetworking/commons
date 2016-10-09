@@ -18,7 +18,7 @@
   <parent>
     <groupId>com.arpnetworking.build</groupId>
     <artifactId>arpnetworking-parent-pom</artifactId>
-    <version>1.0.27</version>
+    <version>1.0.28</version>
     <relativePath />
   </parent>
 
@@ -75,8 +75,8 @@
     <guice.version>4.0</guice.version>
     <hamcrest.version>2.0.0.0</hamcrest.version>
     <jackson.version>2.7.4</jackson.version>
-    <javassist.version>3.20.0-GA</javassist.version>
-    <javassist.maven.core.version>0.1.2</javassist.maven.core.version>
+    <javassist.version>3.21.0-GA</javassist.version>
+    <javassist.maven.core.version>0.1.3</javassist.maven.core.version>
     <joda.time.version>2.4</joda.time.version>
     <jsr305.version>3.0.0</jsr305.version>
     <junit.version>4.12</junit.version>
@@ -87,7 +87,7 @@
     <scala.library.version>2.11.7</scala.library.version>
 
     <!-- Plugin versions -->
-    <javassist.maven.plugin.version>0.1.2</javassist.maven.plugin.version>
+    <javassist.maven.plugin.version>0.1.3</javassist.maven.plugin.version>
 
     <!-- Code Coverage -->
     <jacoco.check.line.coverage>1.0</jacoco.check.line.coverage>
@@ -95,19 +95,6 @@
   </properties>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.plugin.version}</version>
-        <configuration>
-          <showDeprecation>true</showDeprecation>
-          <showWarnings>true</showWarnings>
-          <compilerArgs combine.self="override">
-            <!--<arg>-Xlint:all</arg>
-            <arg>-Werror</arg>-->
-          </compilerArgs>
-        </configuration>
-      </plugin>
       <!-- Enable Inherited Plugins -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

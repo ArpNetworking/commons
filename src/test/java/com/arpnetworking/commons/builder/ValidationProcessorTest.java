@@ -542,36 +542,36 @@ public final class ValidationProcessorTest {
     }
 
     @SkipValidationProcessor
-    private static final class SkippedBuilder extends OvalBuilder {
+    private static final class SkippedBuilder<T> extends OvalBuilder<T> {
 
-        protected SkippedBuilder(final Function targetConstructor) {
+        protected SkippedBuilder(final Function<SkippedBuilder<T>, T> targetConstructor) {
             super(targetConstructor);
         }
     }
 
-    private abstract static class ImmediateBuilder extends OvalBuilder {
+    private abstract static class ImmediateBuilder<T> extends OvalBuilder<T> {
 
-        protected ImmediateBuilder(final Function targetConstructor) {
+        protected ImmediateBuilder(final Function<? extends ImmediateBuilder<T>, T> targetConstructor) {
             super(targetConstructor);
         }
     }
 
 
-    private static final class DescendentBuilder extends ImmediateBuilder {
+    private static final class DescendentBuilder<T> extends ImmediateBuilder<T> {
 
-        protected DescendentBuilder(final Function targetConstructor) {
+        protected DescendentBuilder(final Function<DescendentBuilder<T>, T> targetConstructor) {
             super(targetConstructor);
         }
     }
 
     @SkipValidationProcessor
-    private static class ExampleBuilder extends OvalBuilder {
+    private static class ExampleBuilder<T> extends OvalBuilder<T> {
 
-        ExampleBuilder(final Function targetConstructor) {
+        ExampleBuilder(final Function<ExampleBuilder<T>, T> targetConstructor) {
             super(targetConstructor);
         }
 
-        public ExampleBuilder setValue(final Object value) {
+        public ExampleBuilder<T> setValue(final Object value) {
             _value = value;
             return this;
         }
@@ -581,9 +581,9 @@ public final class ValidationProcessorTest {
     }
 
     @SkipValidationProcessor
-    private abstract static class FrozenBuilder extends OvalBuilder {
+    private abstract static class FrozenBuilder<T> extends OvalBuilder<T> {
 
-        protected FrozenBuilder(final Function targetConstructor) {
+        protected FrozenBuilder(final Function<FrozenBuilder<T>, T> targetConstructor) {
             super(targetConstructor);
         }
     }
@@ -607,7 +607,7 @@ public final class ValidationProcessorTest {
      */
     private static class ExamplePojo {
 
-        ExamplePojo(final Builder builder) {
+        ExamplePojo(final Builder<ExamplePojo> builder) {
             try {
                 _value = builder.getClass().getMethod("getValue").invoke(builder);
                 // CHECKSTYLE.OFF: IllegalCatch - Constructor is not allowed to throw.
