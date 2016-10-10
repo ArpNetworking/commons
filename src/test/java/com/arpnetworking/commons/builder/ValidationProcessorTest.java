@@ -25,6 +25,8 @@ import javassist.CtClass;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 import net.sf.oval.ConstraintViolation;
+import net.sf.oval.constraint.EqualToField;
+import net.sf.oval.constraint.NotEqualToField;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.constraint.NotNullCheck;
 import net.sf.oval.constraint.ValidateWithMethod;
@@ -400,10 +402,91 @@ public final class ValidationProcessorTest {
         final String checkType = "net.sf.oval.constraint.ValidateWithMethodCheck";
         final String checkName = ValidationProcessor.getCheckName(fieldName, checkType);
         Assert.assertEquals(
-                "if (" + fieldName + " == null && " + checkName + ".isIgnoreIfNull()) {\n"
-                        + "return true;\n"
-                        + "}\n"
-                        + "if (!checkMe(_foo)) {\n"
+                "if (!(" + fieldName + " == null && " + checkName + ".isIgnoreIfNull()) && !checkMe(_foo)) {\n"
+                        + "violations.add(new net.sf.oval.ConstraintViolation("
+                        + checkName + ", " + checkName + ".getMessage(), this, _foo, " + checkName + "_CONTEXT));\n"
+                        + "}\n",
+                ValidationProcessor.generateValidation(
+                        annotation,
+                        checkType,
+                        checkName,
+                        fieldName));
+    }
+
+    @Test
+    public void testGenerateValidationWithEqualToField() {
+        final EqualToField annotation = Mockito.mock(EqualToField.class);
+        Mockito.doReturn("_otherField").when(annotation).value();
+        Mockito.doReturn(false).when(annotation).useGetter();
+
+        final String fieldName = "_foo";
+        final String checkType = "net.sf.oval.constraint.EqualToFieldCheck";
+        final String checkName = ValidationProcessor.getCheckName(fieldName, checkType);
+        Assert.assertEquals(
+                "if (" + fieldName + " != null && (_otherField == null || !" + fieldName + ".equals(_otherField))) {\n"
+                        + "violations.add(new net.sf.oval.ConstraintViolation(_FOO_NET_SF_OVAL_CONSTRAINT_EQUALTOFIELDCHECK, "
+                        + checkName + ".getMessage(), this, " + fieldName + ", " + checkName + "_CONTEXT));\n"
+                        + "}\n",
+                ValidationProcessor.generateValidation(
+                        annotation,
+                        checkType,
+                        checkName,
+                        fieldName));
+    }
+
+    @Test
+    public void testGenerateValidationWithEqualToFieldWithGetter() {
+        final EqualToField annotation = Mockito.mock(EqualToField.class);
+        Mockito.doReturn("_otherField").when(annotation).value();
+        Mockito.doReturn(true).when(annotation).useGetter();
+
+        final String fieldName = "_foo";
+        final String checkType = "net.sf.oval.constraint.EqualToFieldCheck";
+        final String checkName = ValidationProcessor.getCheckName(fieldName, checkType);
+        Assert.assertEquals(
+                "if (!" + checkName + ".isSatisfied(this, _foo, null, null)) {\n"
+                        + "violations.add(new net.sf.oval.ConstraintViolation("
+                        + checkName + ", " + checkName + ".getMessage(), this, _foo, " + checkName + "_CONTEXT));\n"
+                        + "}\n",
+                ValidationProcessor.generateValidation(
+                        annotation,
+                        checkType,
+                        checkName,
+                        fieldName));
+    }
+
+    @Test
+    public void testGenerateValidationWithNotEqualToField() {
+        final NotEqualToField annotation = Mockito.mock(NotEqualToField.class);
+        Mockito.doReturn("_otherField").when(annotation).value();
+        Mockito.doReturn(false).when(annotation).useGetter();
+
+        final String fieldName = "_foo";
+        final String checkType = "net.sf.oval.constraint.NotEqualToFieldCheck";
+        final String checkName = ValidationProcessor.getCheckName(fieldName, checkType);
+        Assert.assertEquals(
+                "if (" + fieldName + " != null && _otherField != null && " + fieldName + ".equals(_otherField)) {\n"
+                        + "violations.add(new net.sf.oval.ConstraintViolation(_FOO_NET_SF_OVAL_CONSTRAINT_NOTEQUALTOFIELDCHECK, "
+                        + checkName + ".getMessage(), this, " + fieldName + ", " + checkName + "_CONTEXT));\n"
+                        + "}\n",
+                ValidationProcessor.generateValidation(
+                        annotation,
+                        checkType,
+                        checkName,
+                        fieldName));
+    }
+
+    @Test
+    public void testGenerateValidationWithNotEqualToFieldWithGetter() {
+        final NotEqualToField annotation = Mockito.mock(NotEqualToField.class);
+        Mockito.doReturn("_otherField").when(annotation).value();
+        Mockito.doReturn(true).when(annotation).useGetter();
+
+        final String fieldName = "_foo";
+        final String checkType = "net.sf.oval.constraint.NotEqualToFieldCheck";
+        final String checkName = ValidationProcessor.getCheckName(fieldName, checkType);
+        Assert.assertEquals(
+                "if (!" + checkName + ".isSatisfied(this, _foo, null, null)) {\n"
                         + "violations.add(new net.sf.oval.ConstraintViolation("
                         + checkName + ", " + checkName + ".getMessage(), this, _foo, " + checkName + "_CONTEXT));\n"
                         + "}\n",
