@@ -187,6 +187,14 @@ public class OvalBuilderTest {
         Assert.assertEquals(0, beanB.getInt());
         Assert.assertEquals(Optional.of(1), beanB.getRangeInt());
         Assert.assertEquals(com.google.common.base.Optional.of("foo"), beanB.getString());
+
+        final TestBean beanC = OvalBuilder.<TestBean, TestBean.Builder>clone(beanA)
+                .build();
+        Assert.assertNotSame(beanA, beanC);
+        Assert.assertNotSame(beanB, beanC);
+        Assert.assertEquals(0, beanC.getInt());
+        Assert.assertEquals(Optional.of(1), beanC.getRangeInt());
+        Assert.assertEquals(com.google.common.base.Optional.of("foo"), beanC.getString());
     }
 
     @Test

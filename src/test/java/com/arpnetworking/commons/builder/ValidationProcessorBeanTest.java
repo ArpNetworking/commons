@@ -25,6 +25,7 @@ import net.sf.oval.constraint.CheckWithCheck;
 import net.sf.oval.constraint.DateRangeCheck;
 import net.sf.oval.constraint.DigitsCheck;
 import net.sf.oval.constraint.EmailCheck;
+import net.sf.oval.constraint.EqualToFieldCheck;
 import net.sf.oval.constraint.FutureCheck;
 import net.sf.oval.constraint.HasSubstringCheck;
 import net.sf.oval.constraint.InstanceOfAnyCheck;
@@ -40,6 +41,8 @@ import net.sf.oval.constraint.MinLengthCheck;
 import net.sf.oval.constraint.MinSizeCheck;
 import net.sf.oval.constraint.NotBlankCheck;
 import net.sf.oval.constraint.NotEmptyCheck;
+import net.sf.oval.constraint.NotEqualCheck;
+import net.sf.oval.constraint.NotEqualToFieldCheck;
 import net.sf.oval.constraint.NotMatchPatternCheck;
 import net.sf.oval.constraint.NotMemberOfCheck;
 import net.sf.oval.constraint.NotNegativeCheck;
@@ -56,6 +59,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * Tests for the <code>ValidationProcessorBean</code> class's
@@ -170,6 +174,45 @@ public final class ValidationProcessorBeanTest {
         } catch (final ConstraintsViolatedException e) {
             assertViolation(e, EmailCheck.class, "foo", "_emailString", builder);
         }
+    }
+
+    @Test
+    public void testEqualToFieldCheck() {
+        final ValidationProcessorBean.Builder builder = ValidationProcessorBean.Builder.createValid()
+                .setEqualToFieldString("Bar");
+        try {
+            builder.build();
+            Assert.fail("Expected exception not thrown");
+        } catch (final ConstraintsViolatedException e) {
+            assertViolation(e, EqualToFieldCheck.class, "Bar", "_equalToFieldString", builder);
+        }
+    }
+
+    @Test
+    public void testEqualToFieldCheckIgnoresValueNull() {
+        ValidationProcessorBean.Builder.createValid()
+                .setEqualToFieldString(null)
+                .build();
+    }
+
+    @Test
+    public void testEqualToFieldCheckIgnoresOtherValueNull() {
+        final ValidationProcessorBean.Builder builder = ValidationProcessorBean.Builder.createValid()
+                .setEqualToFieldCounterpartString(null);
+        try {
+            builder.build();
+            Assert.fail("Expected exception not thrown");
+        } catch (final ConstraintsViolatedException e) {
+            assertViolation(e, EqualToFieldCheck.class, "Foo", "_equalToFieldString", builder);
+        }
+    }
+
+    @Test
+    public void testEqualToFieldCheckIgnoresBothNull() {
+        ValidationProcessorBean.Builder.createValid()
+                .setEqualToFieldString(null)
+                .setEqualToFieldCounterpartString(null)
+                .build();
     }
 
     @Test
@@ -356,6 +399,52 @@ public final class ValidationProcessorBeanTest {
     }
 
     @Test
+    public void testNotEqualCheck() {
+        final ValidationProcessorBean.Builder builder = ValidationProcessorBean.Builder.createValid()
+                .setNotEqualString("Foo");
+        try {
+            builder.build();
+            Assert.fail("Expected exception not thrown");
+        } catch (final ConstraintsViolatedException e) {
+            assertViolation(e, NotEqualCheck.class, "Foo", "_notEqualString", builder);
+        }
+    }
+
+    @Test
+    public void testNotEqualToFieldCheck() {
+        final ValidationProcessorBean.Builder builder = ValidationProcessorBean.Builder.createValid()
+                .setNotEqualToFieldString("Foo");
+        try {
+            builder.build();
+            Assert.fail("Expected exception not thrown");
+        } catch (final ConstraintsViolatedException e) {
+            assertViolation(e, NotEqualToFieldCheck.class, "Foo", "_notEqualToFieldString", builder);
+        }
+    }
+
+    @Test
+    public void testNotEqualToFieldCheckIgnoresValueNull() {
+        ValidationProcessorBean.Builder.createValid()
+                .setNotEqualToFieldString(null)
+                .build();
+    }
+
+    @Test
+    public void testNotEqualToFieldCheckIgnoresOtherValueNull() {
+        ValidationProcessorBean.Builder.createValid()
+                .setNotEqualToFieldCounterpartString(null)
+                .build();
+    }
+
+    @Test
+    public void testNotEqualToFieldCheckIgnoresBothNull() {
+        ValidationProcessorBean.Builder.createValid()
+                .setNotEqualToFieldString(null)
+                .setNotEqualToFieldCounterpartString(null)
+                .build();
+    }
+
+    @Test
     public void testNotMatchPatternCheck() {
         final ValidationProcessorBean.Builder builder = ValidationProcessorBean.Builder.createValid()
                 .setNotMatchPatternString("Foooo");
@@ -453,10 +542,17 @@ public final class ValidationProcessorBeanTest {
         }
     }
 
+    @Test
+    public void testValidateWithMethodCheckIgnoresNull() {
+        ValidationProcessorBean.Builder.createValid()
+                .setValidateWithMethodString(null)
+                .build();
+    }
+
     private static void assertViolation(
             final ConstraintsViolatedException e,
             final Class<?> checkClass,
-            final Object invalidValue,
+            @Nullable final Object invalidValue,
             final String fieldName,
             final Object validatedObject) {
         final ConstraintViolation[] violations = e.getConstraintViolations();

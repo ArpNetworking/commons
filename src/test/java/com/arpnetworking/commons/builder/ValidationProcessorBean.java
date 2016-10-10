@@ -26,6 +26,7 @@ import net.sf.oval.constraint.CheckWithCheck;
 import net.sf.oval.constraint.DateRange;
 import net.sf.oval.constraint.Digits;
 import net.sf.oval.constraint.Email;
+import net.sf.oval.constraint.EqualToField;
 import net.sf.oval.constraint.Future;
 import net.sf.oval.constraint.HasSubstring;
 import net.sf.oval.constraint.InstanceOf;
@@ -42,6 +43,7 @@ import net.sf.oval.constraint.MinSize;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotEqual;
+import net.sf.oval.constraint.NotEqualToField;
 import net.sf.oval.constraint.NotMatchPattern;
 import net.sf.oval.constraint.NotMemberOf;
 import net.sf.oval.constraint.NotNegative;
@@ -96,6 +98,14 @@ public final class ValidationProcessorBean {
 
     public String getEmailString() {
         return _emailString;
+    }
+
+    public String getEqualToFieldString() {
+        return _equalToFieldString;
+    }
+
+    public String getEqualToFieldCounterpartString() {
+        return _equalToFieldCounterpartString;
     }
 
     public Date getFutureDate() {
@@ -162,6 +172,14 @@ public final class ValidationProcessorBean {
         return _notEqualString;
     }
 
+    public String getNotEqualToFieldString() {
+        return _notEqualToFieldString;
+    }
+
+    public String getNotEqualToFieldCounterpartString() {
+        return _notEqualToFieldCounterpartString;
+    }
+
     public String getNotMatchPatternString() {
         return _notMatchPatternString;
     }
@@ -204,6 +222,8 @@ public final class ValidationProcessorBean {
         _rangeDate = builder._rangeDate;
         _digitsString = builder._digitsString;
         _emailString = builder._emailString;
+        _equalToFieldString = builder._equalToFieldString;
+        _equalToFieldCounterpartString = builder._equalToFieldCounterpartString;
         _futureDate = builder._futureDate;
         _hasSubstringString = builder._hasSubstringString;
         _instanceOfAnyObject = builder._instanceOfAnyObject;
@@ -220,6 +240,8 @@ public final class ValidationProcessorBean {
         _notBlankString = builder._notBlankString;
         _notEmptyString = builder._notEmptyString;
         _notEqualString = builder._notEqualString;
+        _notEqualToFieldString = builder._notEqualToFieldString;
+        _notEqualToFieldCounterpartString = builder._notEqualToFieldCounterpartString;
         _notMatchPatternString = builder._notMatchPatternString;
         _notMemberOfString = builder._notMemberOfString;
         _notNegativeInteger = builder._notNegativeInteger;
@@ -239,6 +261,8 @@ public final class ValidationProcessorBean {
     private final Date _rangeDate;
     private final String _digitsString;
     private final String _emailString;
+    private final String _equalToFieldString;
+    private final String _equalToFieldCounterpartString;
     private final Date _futureDate;
     private final String _hasSubstringString;
     private final Object _instanceOfAnyObject;
@@ -255,6 +279,8 @@ public final class ValidationProcessorBean {
     private final String _notBlankString;
     private final String _notEmptyString;
     private final String _notEqualString;
+    private final String _notEqualToFieldString;
+    private final String _notEqualToFieldCounterpartString;
     private final String _notMatchPatternString;
     private final String _notMemberOfString;
     private final Integer _notNegativeInteger;
@@ -286,6 +312,7 @@ public final class ValidationProcessorBean {
                     .setRangeDate(new Date(System.currentTimeMillis() - 600000))
                     .setDigitsString("12.0")
                     .setEmailString("me@example.com")
+                    .setEqualToFieldString("Foo")
                     .setHasSubstringString("Fubar")
                     .setInstanceOfAnyObject(Optional.empty())
                     .setInstanceOfObject(UUID.randomUUID())
@@ -301,6 +328,7 @@ public final class ValidationProcessorBean {
                     .setNotBlankString("NotBlank")
                     .setNotEmptyString("Foo")
                     .setNotEqualString("Bar")
+                    .setNotEqualToFieldString("Bar")
                     .setNotMatchPatternString("Far")
                     .setNotMemberOfString("Cat")
                     .setNotNegativeInteger(1)
@@ -396,6 +424,28 @@ public final class ValidationProcessorBean {
          */
         public Builder setEmailString(final String value) {
             _emailString = value;
+            return this;
+        }
+
+        /**
+         * Set the equal to field string field.
+         *
+         * @param value the value
+         * @return this <code>Builder</code>
+         */
+        public Builder setEqualToFieldString(@Nullable final String value) {
+            _equalToFieldString = value;
+            return this;
+        }
+
+        /**
+         * Set the equal to field counterpart string field.
+         *
+         * @param value the value
+         * @return this <code>Builder</code>
+         */
+        public Builder setEqualToFieldCounterpartString(@Nullable final String value) {
+            _equalToFieldCounterpartString = value;
             return this;
         }
 
@@ -576,6 +626,28 @@ public final class ValidationProcessorBean {
         }
 
         /**
+         * Set the not equal to field string field.
+         *
+         * @param value the value
+         * @return this <code>Builder</code>
+         */
+        public Builder setNotEqualToFieldString(@Nullable final String value) {
+            _notEqualToFieldString = value;
+            return this;
+        }
+
+        /**
+         * Set the not equal to field counterpart string field.
+         *
+         * @param value the value
+         * @return this <code>Builder</code>
+         */
+        public Builder setNotEqualToFieldCounterpartString(@Nullable final String value) {
+            _notEqualToFieldCounterpartString = value;
+            return this;
+        }
+
+        /**
          * Set the not match pattern string field.
          *
          * @param value the value
@@ -662,7 +734,7 @@ public final class ValidationProcessorBean {
          * @param value the value
          * @return this <code>Builder</code>
          */
-        public Builder setValidateWithMethodString(final String value) {
+        public Builder setValidateWithMethodString(@Nullable final String value) {
             _validateWithMethodString = value;
             return this;
         }
@@ -706,9 +778,9 @@ public final class ValidationProcessorBean {
         private String _digitsString;
         @Email
         private String _emailString;
-
-        //EqualToFieldCheck
-
+        @EqualToField("_equalToFieldCounterpartString")
+        private String _equalToFieldString;
+        private String _equalToFieldCounterpartString = "Foo";
         @Future
         private Date _futureDate;
         @HasSubstring("uba")
@@ -744,9 +816,9 @@ public final class ValidationProcessorBean {
         private String _notEmptyString;
         @NotEqual(value = "Foo")
         private String _notEqualString;
-
-        //NotEqualToFieldCheck
-
+        @NotEqualToField("_notEqualToFieldCounterpartString")
+        private String _notEqualToFieldString;
+        private String _notEqualToFieldCounterpartString = "Foo";
         @NotMatchPattern(pattern = "Fo*")
         private String _notMatchPatternString;
         @NotMemberOf(value = { "Foo", "Bar" })

@@ -36,6 +36,7 @@ import net.sf.oval.constraint.CheckWith;
 import net.sf.oval.constraint.DateRange;
 import net.sf.oval.constraint.Digits;
 import net.sf.oval.constraint.Email;
+import net.sf.oval.constraint.EqualToField;
 import net.sf.oval.constraint.Future;
 import net.sf.oval.constraint.HasSubstring;
 import net.sf.oval.constraint.InstanceOf;
@@ -52,6 +53,7 @@ import net.sf.oval.constraint.MinSize;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotEqual;
+import net.sf.oval.constraint.NotEqualToField;
 import net.sf.oval.constraint.NotMatchPattern;
 import net.sf.oval.constraint.NotMemberOf;
 import net.sf.oval.constraint.NotNegative;
@@ -248,19 +250,38 @@ public final class ValidationProcessor implements ClassProcessor {
         if (VALIDATE_WITH_METHOD_CHECK.equals(checkType)) {
             // Special Case: Unwrap the check method and code generate its invocation
             final ValidateWithMethod validateWithMethod = (ValidateWithMethod) annotation;
-            return "if (" + fieldName + " == null && " + checkName + ".isIgnoreIfNull()) {\n"
-                    + "return true;\n"
-                    + "}\n"
-                    + "if (!" + validateWithMethod.methodName() + "(" + fieldName + ")) {\n"
-                    + "violations.add(new net.sf.oval.ConstraintViolation("
-                    + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", "  + checkName + "_CONTEXT));\n"
-                    + "}\n";
-        } else {
-            return "if (!" + checkName + ".isSatisfied(this, " + fieldName + ", null, null)) {\n"
+            return "if (!(" + fieldName + " == null && " + checkName + ".isIgnoreIfNull()) && !"
+                    + validateWithMethod.methodName() + "(" + fieldName + ")) {\n"
                     + "violations.add(new net.sf.oval.ConstraintViolation("
                     + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", " + checkName + "_CONTEXT));\n"
                     + "}\n";
+        } else if (FIELDS_EQUAL_CHECK.equals(checkType)) {
+            // Special Case: Unwrap the other field reference and code generate its comparison
+            // NOTE: This does not support getter usage.
+            final EqualToField equalTo = (EqualToField) annotation;
+            if (!equalTo.useGetter()) {
+                return "if (" + fieldName + " != null && (" + equalTo.value() + " == null "
+                        + "|| !" + fieldName + ".equals(" + equalTo.value() + "))) {\n"
+                        + "violations.add(new net.sf.oval.ConstraintViolation("
+                        + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", " + checkName + "_CONTEXT));\n"
+                        + "}\n";
+            }
+        } else if (FIELDS_NOT_EQUAL_CHECK.equals(checkType)) {
+            // Special Case: Unwrap the other field reference and code generate its comparison
+            // NOTE: This does not support getter usage.
+            final NotEqualToField notEqualTo = (NotEqualToField) annotation;
+            if (!notEqualTo.useGetter()) {
+                return "if (" + fieldName + " != null && " + notEqualTo.value() + " != null "
+                        + "&& " + fieldName + ".equals(" + notEqualTo.value() + ")) {\n"
+                        + "violations.add(new net.sf.oval.ConstraintViolation("
+                        + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", " + checkName + "_CONTEXT));\n"
+                        + "}\n";
+            }
         }
+        return "if (!" + checkName + ".isSatisfied(this, " + fieldName + ", null, null)) {\n"
+                + "violations.add(new net.sf.oval.ConstraintViolation("
+                + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", " + checkName + "_CONTEXT));\n"
+                + "}\n";
     }
 
     // NOTE: Package private for testing
@@ -284,6 +305,10 @@ public final class ValidationProcessor implements ClassProcessor {
             "com.arpnetworking.commons.builder.annotations.SkipValidationProcessor";
     private static final String VALIDATE_WITH_METHOD_CHECK =
             "net.sf.oval.constraint.ValidateWithMethodCheck";
+    private static final String FIELDS_EQUAL_CHECK =
+            "net.sf.oval.constraint.EqualToFieldCheck";
+    private static final String FIELDS_NOT_EQUAL_CHECK =
+            "net.sf.oval.constraint.NotEqualToFieldCheck";
 
     // CHECKSTYLE.OFF: ExecutableStatementCount - Initialization
     static {
@@ -295,6 +320,7 @@ public final class ValidationProcessor implements ClassProcessor {
         ANNOTATIONS.add(DateRange.class);
         ANNOTATIONS.add(Digits.class);
         ANNOTATIONS.add(Email.class);
+        ANNOTATIONS.add(EqualToField.class);
         ANNOTATIONS.add(Future.class);
         ANNOTATIONS.add(HasSubstring.class);
         ANNOTATIONS.add(InstanceOfAny.class);
@@ -311,6 +337,7 @@ public final class ValidationProcessor implements ClassProcessor {
         ANNOTATIONS.add(NotBlank.class);
         ANNOTATIONS.add(NotEmpty.class);
         ANNOTATIONS.add(NotEqual.class);
+        ANNOTATIONS.add(NotEqualToField.class);
         ANNOTATIONS.add(NotMatchPattern.class);
         ANNOTATIONS.add(NotMemberOf.class);
         ANNOTATIONS.add(NotNegative.class);
