@@ -15,6 +15,7 @@
  */
 package com.arpnetworking.commons.builder;
 
+import com.arpnetworking.commons.maven.javassist.Processed;
 import com.arpnetworking.logback.annotations.LogValue;
 import com.arpnetworking.steno.LogValueMapFactory;
 import com.arpnetworking.steno.Logger;
@@ -66,27 +67,32 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      */
     @SuppressWarnings("unchecked")
     public static <T, B extends Builder<? super T>> B clone(final T source) {
-        B builder = null;
-        try {
-            Constructor<B> cachedBuilderConstructor = (Constructor<B>) BUILDER_CONSTRUCTOR_CACHE.get(source.getClass());
-            if (cachedBuilderConstructor == null) {
-                final Class<B> builderClass = (Class<B>) Class.forName(
-                        source.getClass().getName() + "$Builder",
-                        true, // initialize
-                        source.getClass().getClassLoader());
-                final Constructor<B> builderConstructor = builderClass.getDeclaredConstructor();
-                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                    builderConstructor.setAccessible(true);
-                    return null;
+        final Constructor<B> cachedBuilderConstructor = (Constructor<B>) BUILDER_CONSTRUCTOR_CACHE.computeIfAbsent(
+                source.getClass(),
+                clazz -> {
+                    try {
+                        final Class<B> builderClass = (Class<B>) Class.forName(
+                                clazz.getName() + "$Builder",
+                                true, // initialize
+                                clazz.getClassLoader());
+                        final Constructor<B> builderConstructor = builderClass.getDeclaredConstructor();
+                        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                            builderConstructor.setAccessible(true);
+                            return null;
+                        });
+                        return builderConstructor;
+                    } catch (final NoSuchMethodException | ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
-                BUILDER_CONSTRUCTOR_CACHE.put(source.getClass(), builderConstructor);
-                cachedBuilderConstructor = builderConstructor;
-            }
+
+        final B builder;
+        try {
             builder = cachedBuilderConstructor.newInstance();
-        } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException
-                | IllegalAccessException | ClassNotFoundException e) {
+        } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+
         return clone(source, builder);
     }
 
@@ -101,31 +107,33 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      * @return Target populated from source.
      */
     public static <T, B extends Builder<? super T>> B clone(final T source, final B target) {
-        List<GetterSetter> cachedBuilderMethods = BUILDER_METHOD_CACHE.get(source.getClass());
-        if (cachedBuilderMethods == null) {
-            cachedBuilderMethods = new java.util.ArrayList<>();
-            for (final Method targetMethod : target.getClass().getMethods()) {
-                if (isSetterMethod(targetMethod)) {
-                    final Optional<Method> getterMethod = getGetterForSetter(targetMethod, source.getClass());
-                    if (getterMethod.isPresent()) {
-                        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                            getterMethod.get().setAccessible(true);
-                            return null;
-                        });
-                        cachedBuilderMethods.add(new GetterSetter(getterMethod.get(), targetMethod));
-                    } else {
-                        LOGGER.warn()
-                                .setEvent("OvalBuilder")
-                                .setMessage("No getter for setter")
-                                .addData("setter", targetMethod)
-                                .addData("source", source)
-                                .addData("target", target)
-                                .log();
+        final List<GetterSetter> cachedBuilderMethods = BUILDER_METHOD_CACHE.computeIfAbsent(
+                source.getClass(),
+                clazz -> {
+                    final List<GetterSetter> builderMethods = new java.util.ArrayList<>();
+                    for (final Method targetMethod : target.getClass().getMethods()) {
+                        if (isSetterMethod(targetMethod)) {
+                            final Optional<Method> getterMethod = getGetterForSetter(targetMethod, clazz);
+                            if (getterMethod.isPresent()) {
+                                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                                    getterMethod.get().setAccessible(true);
+                                    return null;
+                                });
+                                builderMethods.add(new GetterSetter(getterMethod.get(), targetMethod));
+                            } else {
+                                LOGGER.warn()
+                                        .setEvent("OvalBuilder")
+                                        .setMessage("No getter for setter")
+                                        .addData("setter", targetMethod)
+                                        .addData("source", source)
+                                        .addData("target", target)
+                                        .log();
+                            }
+                        }
                     }
-                }
-            }
-            BUILDER_METHOD_CACHE.put(source.getClass(), cachedBuilderMethods);
-        }
+                    return builderMethods;
+                });
+
         for (final GetterSetter getterSetter : cachedBuilderMethods) {
             try {
                 getterSetter.transfer(source, target);
@@ -162,7 +170,16 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     @Override
     public T build() {
         final List<ConstraintViolation> violations = Lists.newArrayList();
-        validate(violations);
+        @SuppressWarnings("unchecked")
+        final Class<? extends OvalBuilder<?>> ovalBuilderClass = (Class<? extends OvalBuilder<?>>) this.getClass();
+        if (isSelfValidating(ovalBuilderClass)) {
+            // Allow the overridden methods to validate the builder
+            validate(violations);
+        } else {
+            // Force reflective validation since at least one class in the
+            // chain is not self-validating
+            validateWithReflection(violations);
+        }
         if (!violations.isEmpty()) {
             throw new ConstraintsViolatedException(violations);
         }
@@ -176,7 +193,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      * instances to populate.
      */
     protected void validate(final List<ConstraintViolation> violations) {
-        violations.addAll(VALIDATOR.validate(this));
+        // This should never be invoked
     }
 
     /**
@@ -243,6 +260,43 @@ public abstract class OvalBuilder<T> implements Builder<T> {
         _targetConstructor = Optional.empty();
     }
 
+    /**
+     * Determine if a {@link Builder} implementing class is self validating.
+     * For a builder to be self validating it and all its superclasses up to
+     * OvalBuilder must implement validate. In other words no class in the
+     * hierarchy is relying on reflective validation by OvalBuilder.
+     *
+     * @param builderClass The class of the builder to evaluate.
+     * @return true if and only if the entire class hierarchy is self validating.
+     */
+    protected boolean isSelfValidating(final Class<? extends OvalBuilder<?>> builderClass) {
+        return SELF_VALIDATING_CACHE.computeIfAbsent(
+                builderClass,
+                targetClazz -> {
+                    Class<?> clazz = targetClazz;
+                    while (!OvalBuilder.class.getName().equals(clazz.getName())) {
+                        final Processed processedAnnotation = clazz.getDeclaredAnnotation(Processed.class);
+                        boolean found = false;
+                        if (processedAnnotation != null) {
+                            for (final String processorClassName : processedAnnotation.value()) {
+                                if (ValidationProcessor.class.getName().equals(processorClassName)) {
+                                    found = true;
+                                }
+                            }
+                        }
+                        if (!found) {
+                            return false;
+                        }
+                        clazz = clazz.getSuperclass();
+                    }
+                    return true;
+                });
+    }
+
+    /* package private */ void validateWithReflection(final List<ConstraintViolation> violations) {
+        violations.addAll(VALIDATOR.validate(this));
+    }
+
     /* package private */ static Optional<Method> getGetterForSetter(final Method setter, final Class<?> clazz) {
         // Attempt to find "getFoo" and then "isFoo"; the parameter type is not
         // definitively indicative of get vs is because an Optional wrapped
@@ -295,6 +349,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private static final Validator VALIDATOR = new Validator();
     private static final Map<Class<?>, Constructor<? extends Builder<?>>> BUILDER_CONSTRUCTOR_CACHE = Maps.newConcurrentMap();
     private static final Map<Class<?>, List<GetterSetter>> BUILDER_METHOD_CACHE = Maps.newConcurrentMap();
+    private static final Map<Class<? extends Builder<?>>, Boolean> SELF_VALIDATING_CACHE = Maps.newConcurrentMap();
     private static final Logger LOGGER = LoggerFactory.getLogger(OvalBuilder.class);
 
     private static final String GETTER_IS_METHOD_PREFIX = "is";

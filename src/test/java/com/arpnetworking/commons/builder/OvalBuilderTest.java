@@ -265,6 +265,18 @@ public class OvalBuilderTest {
     }
 
     @Test
+    public void testCloneBeanWithoutBuilder() {
+        try {
+            OvalBuilder.clone("ABC");
+            Assert.fail("Expected exception not thrown");
+            // CHECKSTYLE.OFF: IllegalCatch - Need to validate details of the exception thrown.
+        } catch (final RuntimeException rte) {
+            // CHECKSTYLE.ON: IllegalCatch
+            Assert.assertTrue(rte.getCause() instanceof ClassNotFoundException);
+        }
+    }
+
+    @Test
     public void testCloneWithBuilderSetterThrows() {
         final SetterThrowsBean bean = new SetterThrowsBean.Builder().build();
         Assert.assertNull(bean.getBar());

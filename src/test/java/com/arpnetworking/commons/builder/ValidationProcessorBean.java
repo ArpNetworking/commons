@@ -294,7 +294,7 @@ public final class ValidationProcessorBean {
      * OvalBuilder implementation for ValidationProcessorBean.
      */
     @SuppressFBWarnings("EI_EXPOSE_REP2")
-    public static final class Builder extends NonValidatingBaseBuilder<ValidationProcessorBean> {
+    public static final class Builder extends OvalBuilder<ValidationProcessorBean> {
 
         /**
          * Create an instance of this builder with all fields set to valid values.
@@ -744,6 +744,11 @@ public final class ValidationProcessorBean {
          */
         public Builder() {
             super(ValidationProcessorBean::new);
+        }
+
+        @Override
+        protected boolean isSelfValidating(final Class<? extends OvalBuilder<?>> builderClass) {
+            return true;
         }
 
         private boolean validateWithMethod(final String value) {
