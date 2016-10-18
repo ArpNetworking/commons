@@ -217,7 +217,7 @@ public final class ValidationProcessorTest {
 
     @Test
     @SuppressFBWarnings("NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS")
-    public void testProcessUnprocessedParentPojo() throws Exception {
+    public void testUnprocessedParentPojo() throws Exception {
         // Assert that validation fails reflectively before processing
         try {
             new UnprocessedParentBuilder()
@@ -251,17 +251,13 @@ public final class ValidationProcessorTest {
         // Output the class file for debugging
         writeClassFile(exampleCtClass, "ValidationProcessorTest.ProcessedUnprocessedParentBuilder.class");
 
-        // Assert that no validation happens after processing
+        // Assert that validation happens after processing
         @SuppressWarnings("unchecked")
         final OvalBuilder<ExamplePojo> builder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass().newInstance();
         try {
             builder.build();
         } catch (final ConstraintsViolatedException e) {
-            // The processed class generates a violation both through the
-            // injected code and when analyzed reflectively because its
-            // immediate parent was not processed. That parent also generates
-            // a single violation via relfection. Total three violations.
-            Assert.assertEquals(3, e.getConstraintViolations().length);
+            Assert.assertEquals(2, e.getConstraintViolations().length);
         }
         builder.getClass().getMethod("setValue", Object.class).invoke(builder, "Foo");
         builder.getClass().getMethod("setOtherValue", Object.class).invoke(builder, "Bar");
@@ -625,7 +621,7 @@ public final class ValidationProcessorTest {
     }
 
     @SkipValidationProcessor
-    private static class ComparisonBuilder extends NonValidatingBaseBuilder<ExamplePojo> {
+    private static class ComparisonBuilder extends OvalBuilder<ExamplePojo> {
 
         ComparisonBuilder() {
             super(ExamplePojo::new);
@@ -641,6 +637,11 @@ public final class ValidationProcessorTest {
 
         public Object getValue() {
             return _value;
+        }
+
+        @Override
+        protected boolean isSelfValidating(final Class<? extends OvalBuilder<?>> builderClass) {
+            return true;
         }
 
         @NotNull
