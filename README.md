@@ -105,7 +105,7 @@ processing of test classes with the _test-process_ goal.
 ```xml
 <plugin>
   <groupId>com.arpnetworking.commons</groupId>
-  <artifactId>javassist-maven-plugin<artifactId>
+  <artifactId>javassist-maven-plugin</artifactId>
   <version>0.1.0</version>
   <executions>
     <execution>
