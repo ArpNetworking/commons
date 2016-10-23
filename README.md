@@ -126,7 +126,7 @@ Next, add a dependency on maven-javassist-core:
 ```xml
 <dependency>
    <groupId>com.arpnetworking.commons</groupId>
-   <artifactId>javassist-maven-core<artifactId>
+   <artifactId>javassist-maven-core</artifactId>
    <version>0.1.0</version>
 </dependency>
 ```
