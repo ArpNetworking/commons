@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Inscope Metrics Inc.
+ * Copyright 2017 Inscope Metrics, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,15 @@ import org.junit.Test;
 import java.util.UUID;
 
 /**
- * Tests for the DefaultUuidFactory class.
+ * Tests for the SplittableRandomUuidFactory class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
  */
-public class DefaultUuidFactoryTest {
+public class SplittableRandomUuidFactoryTest {
 
     @Test
     public void test() {
-        final UuidFactory uuidFactory = new DefaultUuidFactory();
+        final UuidFactory uuidFactory = new SplittableRandomUuidFactory();
         Assert.assertNotEquals(uuidFactory.create(), uuidFactory.create());
         Assert.assertNotEquals(uuidFactory.get(), uuidFactory.get());
 

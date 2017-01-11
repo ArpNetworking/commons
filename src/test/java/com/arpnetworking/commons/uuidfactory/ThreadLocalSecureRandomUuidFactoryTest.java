@@ -22,6 +22,7 @@ import org.junit.contrib.java.lang.system.RestoreSystemProperties;
 import org.junit.rules.TestRule;
 
 import java.nio.ByteBuffer;
+import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -38,6 +39,11 @@ public class ThreadLocalSecureRandomUuidFactoryTest {
     public void test() {
         final UuidFactory uuidFactory = new ThreadLocalSecureRandomUuidFactory();
         Assert.assertNotEquals(uuidFactory.create(), uuidFactory.create());
+        Assert.assertNotEquals(uuidFactory.get(), uuidFactory.get());
+
+        final UUID uuid = uuidFactory.create();
+        Assert.assertEquals(4, uuid.version());
+        Assert.assertEquals(2, uuid.variant());
     }
 
     @Test

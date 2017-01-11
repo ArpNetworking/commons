@@ -16,6 +16,7 @@
 package com.arpnetworking.commons.hostresolver;
 
 import java.net.UnknownHostException;
+import java.util.function.Supplier;
 
 /**
  * Used to get the local hostname.
@@ -27,7 +28,7 @@ import java.net.UnknownHostException;
  *
  * @author Brandon Arp (brandonarp at gmail dot com)
  */
-public interface HostResolver {
+public interface HostResolver extends Supplier<String> {
 
     /**
      * Provides the local host name.
