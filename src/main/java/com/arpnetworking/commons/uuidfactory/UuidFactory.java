@@ -16,6 +16,7 @@
 package com.arpnetworking.commons.uuidfactory;
 
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * Interface for classes that crate universally unique identifiers (UUIDs).
@@ -33,7 +34,7 @@ import java.util.UUID;
  * @author Matthew Hayter (mhayter at groupon dot com)
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
-public interface UuidFactory {
+public interface UuidFactory extends Supplier<UUID> {
 
     /**
      * Create a new {@code UUID}.
@@ -41,4 +42,12 @@ public interface UuidFactory {
      * @return A new {@code UUID}.
      */
     UUID create();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default UUID get() {
+        return create();
+    }
 }

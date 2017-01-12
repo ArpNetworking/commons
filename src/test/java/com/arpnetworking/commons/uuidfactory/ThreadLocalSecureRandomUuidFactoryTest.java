@@ -16,45 +16,70 @@
 package com.arpnetworking.commons.uuidfactory;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.RestoreSystemProperties;
-import org.junit.rules.TestRule;
 
 import java.nio.ByteBuffer;
+import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Tests for the DefaultUuidFactory class.
  *
+ * NOTE: due to code/branch coverage, we need to make sure that we run tests with the EGD property both set and unset.
+ * The mutex allows us to make sure that the property is set for one, but not the other.  Unfortunately,
+ * this means we must also restore the original state of the EGD property to avoid a race.
+ *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public class ThreadLocalSecureRandomUuidFactoryTest {
-
     @Test
-    public void test() {
-        final UuidFactory uuidFactory = new ThreadLocalSecureRandomUuidFactory();
-        Assert.assertNotEquals(uuidFactory.create(), uuidFactory.create());
+    public void test() throws InterruptedException {
+        try {
+            PROPERTY_SET_MUTEX.acquire();
+            final UuidFactory uuidFactory = new ThreadLocalSecureRandomUuidFactory();
+            Assert.assertNotEquals(uuidFactory.create(), uuidFactory.create());
+            Assert.assertNotEquals(uuidFactory.get(), uuidFactory.get());
+
+            final UUID uuid = uuidFactory.create();
+            Assert.assertEquals(4, uuid.version());
+            Assert.assertEquals(2, uuid.variant());
+        } finally {
+            PROPERTY_SET_MUTEX.release();
+        }
     }
 
     @Test
     public void testWithURandom() throws InterruptedException {
         // Run this test in a separate thread to ensure a new SecureRandom
         // thread local is created.
-        System.setProperty("java.security.egd", "file:/dev/./urandom");
-        final UuidFactory uuidFactory = new ThreadLocalSecureRandomUuidFactory();
-        final ExecutorService executor = new ThreadPoolExecutor(
-                1,  // core threads
-                1,  // max threads
-                1,  // keep alive
-                TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(1));
-        executor.submit((Runnable) () -> Assert.assertNotEquals(uuidFactory.create(), uuidFactory.create()));
-        executor.shutdown();
-        executor.awaitTermination(1, TimeUnit.SECONDS);
+        try {
+            PROPERTY_SET_MUTEX.acquire();
+            final String oldValue = System.getProperty(EGD_PROPERTY);
+            System.setProperty(EGD_PROPERTY, "file:/dev/./urandom");
+            final UuidFactory uuidFactory = new ThreadLocalSecureRandomUuidFactory();
+            final ExecutorService executor = new ThreadPoolExecutor(
+                    1,  // core threads
+                    1,  // max threads
+                    1,  // keep alive
+                    TimeUnit.SECONDS,
+                    new ArrayBlockingQueue<>(1));
+            executor.submit((Runnable) () -> Assert.assertNotEquals(uuidFactory.create(), uuidFactory.create()));
+            executor.shutdown();
+            executor.awaitTermination(1, TimeUnit.SECONDS);
+
+            // Restore the security property
+            if (oldValue != null) {
+                System.setProperty(EGD_PROPERTY, oldValue);
+            } else {
+                System.clearProperty(EGD_PROPERTY);
+            }
+        } finally {
+            PROPERTY_SET_MUTEX.release();
+        }
     }
 
     @Test
@@ -89,6 +114,7 @@ public class ThreadLocalSecureRandomUuidFactoryTest {
         Assert.assertEquals(Integer.MAX_VALUE, ThreadLocalSecureRandomUuidFactory.toInt(bytes.array(), 16));
     }
 
-    @Rule
-    public final TestRule _restoreSystemProperties = new RestoreSystemProperties();
+    private static final Semaphore PROPERTY_SET_MUTEX = new Semaphore(1);
+    private static final String EGD_PROPERTY = "java.security.egd";
+
 }

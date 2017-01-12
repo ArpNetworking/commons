@@ -27,8 +27,6 @@ import java.util.UUID;
  *
  * https://github.com/cowtowncoder/java-uuid-generator
  *
- * And the implementation of {@code java.util.UUID}.
- *
  * Dependencies:
  * <ul>
  *     <li><i>None</i></li>
@@ -40,11 +38,17 @@ import java.util.UUID;
  *
  * DefaultUuidFactory: 338,516 tps
  * ThreadLocalSecureRandomUuidFactory: 334,730 tps
+ * SplittableRandomUuidFactory: 22,211,429 tps
  *
  * 2) Using urandom with:  {@code -Djava.security.egd=file:/dev/./urandom}
  *
  * DefaultUuidFactory: 1,312,707 tps
  * ThreadLocalSecureRandomUuidFactory: 4,854,940
+ * SplittableRandomUuidFactory: 22,760,567 tps (no change)
+ *
+ * These are adhoc test results conducted on a 1.7 Ghz Core i7 with 8 GB of
+ * 1600 Mhz DDR3 and a 256 GB SSD running Mac OS 10.12.2 under Oracle JRE
+ * version 1.8.0_92-b14.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
@@ -60,13 +64,15 @@ public final class ThreadLocalSecureRandomUuidFactory implements UuidFactory {
         // through adhoc performance testing.
         final byte[] buffer = new byte[16];
         SECURE_RANDOM_THREAD_LOCAL.get().nextBytes(buffer);
-        // The following is logic from java.util.UUID:
-        buffer[6]  &= 0x0f;  /* clear version        */
-        buffer[6]  |= 0x40;  /* set to version 4     */
-        buffer[8]  &= 0x3f;  /* clear variant        */
-        buffer[8]  |= 0x80;  /* set to IETF variant  */
-        final long msb = toLong(buffer, 0);
-        final long lsb = toLong(buffer, 1);
+
+        long msb = toLong(buffer, 0);
+        msb &= 0xffffffffffff0fffL;
+        msb |= 0x0000000000004000L;
+
+        long lsb = toLong(buffer, 1);
+        lsb &= 0x3fffffffffffffffL;
+        lsb |= 0x8000000000000000L;
+
         return new UUID(msb, lsb);
     }
 
