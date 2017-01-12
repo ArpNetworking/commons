@@ -49,18 +49,6 @@ public class CachingHostResolver implements HostResolver {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String get() {
-        try {
-            return getLocalHostName();
-        } catch (final UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Constructor for a <code>CachingHostResolver</code> wrapping the <code>DefaultHostResolver</code>.
      *
      * @param ttl The time to live on the cache. Does <b>not</b> perform negative caching.

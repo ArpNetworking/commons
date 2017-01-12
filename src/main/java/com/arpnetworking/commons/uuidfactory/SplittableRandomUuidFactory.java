@@ -66,14 +66,6 @@ public class SplittableRandomUuidFactory implements UuidFactory {
         return new UUID(gMost, gLeast);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UUID get() {
-        return create();
-    }
-
     private final SplittableRandom _random = new SplittableRandom();
     private final ThreadLocal<SplittableRandom> _localRandom = ThreadLocal.withInitial(_random::split);
 }

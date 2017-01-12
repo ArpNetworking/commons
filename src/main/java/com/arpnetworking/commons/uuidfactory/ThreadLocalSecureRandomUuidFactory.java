@@ -115,12 +115,4 @@ public final class ThreadLocalSecureRandomUuidFactory implements UuidFactory {
         private static final String KEY = "java.security.egd";
         private static final String URANDOM = "file:/dev/./urandom";
     };
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UUID get() {
-        return create();
-    }
 }

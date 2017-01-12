@@ -56,12 +56,4 @@ public class DefaultUuidFactory implements UuidFactory {
     public UUID create() {
         return UUID.randomUUID();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UUID get() {
-        return create();
-    }
 }

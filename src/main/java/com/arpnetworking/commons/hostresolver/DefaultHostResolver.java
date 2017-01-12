@@ -37,16 +37,4 @@ public class DefaultHostResolver implements HostResolver {
     public String getLocalHostName() throws UnknownHostException {
         return InetAddress.getLocalHost().getCanonicalHostName();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String get() {
-        try {
-            return getLocalHostName();
-        } catch (final UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

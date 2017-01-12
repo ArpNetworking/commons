@@ -50,18 +50,6 @@ public class BackgroundCachingHostResolver implements HostResolver {
         return localHostName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String get() {
-        try {
-            return getLocalHostName();
-        } catch (final UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     /* package private */ void updateHost() {
         try {
             _cachedLocalHostName.set(_wrappedHostResolver.getLocalHostName());

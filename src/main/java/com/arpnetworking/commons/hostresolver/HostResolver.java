@@ -37,4 +37,16 @@ public interface HostResolver extends Supplier<String> {
      * @throws UnknownHostException If the local host name cannot be resolved.
      */
     String getLocalHostName() throws UnknownHostException;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default String get() {
+        try {
+            return getLocalHostName();
+        } catch (final UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
