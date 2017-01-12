@@ -16,15 +16,13 @@
 package com.arpnetworking.commons.builder;
 
 import com.arpnetworking.commons.maven.javassist.Processed;
-import com.arpnetworking.logback.annotations.LogValue;
-import com.arpnetworking.steno.LogValueMapFactory;
-import com.arpnetworking.steno.Logger;
-import com.arpnetworking.steno.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.Validator;
 import net.sf.oval.exception.ConstraintsViolatedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -121,13 +119,12 @@ public abstract class OvalBuilder<T> implements Builder<T> {
                                 });
                                 builderMethods.add(new GetterSetter(getterMethod.get(), targetMethod));
                             } else {
-                                LOGGER.warn()
-                                        .setEvent("OvalBuilder")
-                                        .setMessage("No getter for setter")
-                                        .addData("setter", targetMethod)
-                                        .addData("source", source)
-                                        .addData("target", target)
-                                        .log();
+                                LOGGER.warn(
+                                        String.format(
+                                                "No getter for setter; setter=%s, source=%s, target=%s",
+                                                targetMethod,
+                                                source,
+                                                target));
                             }
                         }
                     }
@@ -145,25 +142,15 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     }
 
     /**
-     * Generate a Steno log compatible representation.
-     *
-     * @return Steno log compatible representation.
-     */
-    @LogValue
-    public Object toLogValue() {
-        return LogValueMapFactory.builder(this)
-                .put("targetClass", _targetClass)
-                .build();
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return toLogValue().toString();
+        return new StringBuilder()
+                .append("targetClass=").append(_targetClass)
+                .append(", targetConstructor=").append(_targetConstructor)
+                .toString();
     }
-
     /**
      * {@inheritDoc}
      */

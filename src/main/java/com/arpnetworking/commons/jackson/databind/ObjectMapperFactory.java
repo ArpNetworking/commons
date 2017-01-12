@@ -16,14 +16,14 @@
 package com.arpnetworking.commons.jackson.databind;
 
 import com.arpnetworking.commons.jackson.databind.module.BuilderModule;
-import com.arpnetworking.steno.Logger;
-import com.arpnetworking.steno.LoggerFactory;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -114,12 +114,11 @@ public final class ObjectMapperFactory {
                 // CHECKSTYLE.OFF: IllegalCatch - Catch any exceptions thrown by reflection or the module constructor.
             } catch (final Exception e) {
                 // CHECKSTYLE.ON: IllegalCatch
-                LOGGER.warn()
-                        .setEvent("ObjectMapperFactory")
-                        .setMessage("Unable to instantiate module")
-                        .addData("module", moduleClass.get())
-                        .setThrowable(e)
-                        .log();
+                LOGGER.warn(
+                        String.format(
+                                "Unable to instantiate module; module=%s",
+                                moduleClass.get()),
+                        e);
             }
         }
     }

@@ -80,11 +80,11 @@
     <joda.time.version>2.4</joda.time.version>
     <jsr305.version>3.0.0</jsr305.version>
     <junit.version>4.12</junit.version>
-    <logback.steno.version>1.15.0</logback.steno.version>
     <mockito.version>1.10.19</mockito.version>
     <oval.version>1.86</oval.version>
     <scala.version>2.11</scala.version>
     <scala.library.version>2.11.7</scala.library.version>
+    <slf4j.version>1.7.22</slf4j.version>
     <system.rules.version>1.16.0</system.rules.version>
 
     <!-- Plugin versions -->
@@ -142,12 +142,13 @@
     </plugins>
   </build>
   <dependencies>
-    <!-- Essential -->
+    <!-- Logging -->
     <dependency>
-      <groupId>com.arpnetworking.logback</groupId>
-      <artifactId>logback-steno</artifactId>
-      <version>${logback.steno.version}</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
     </dependency>
+    <!-- Essential -->
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
