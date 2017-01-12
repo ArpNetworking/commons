@@ -378,12 +378,6 @@ public class OvalBuilderTest {
     }
 
     @Test
-    public void testToLogValue() {
-        final Object builderAsLogValue = new TestBean.Builder().toLogValue();
-        Assert.assertNotNull(builderAsLogValue);
-    }
-
-    @Test
     public void testToString() {
         final String builderAsString = new MethodBean.Builder().toString();
         Assert.assertNotNull(builderAsString);

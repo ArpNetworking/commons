@@ -15,8 +15,8 @@
  */
 package com.arpnetworking.commons.hostresolver;
 
-import com.arpnetworking.steno.Logger;
-import com.arpnetworking.steno.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.UnknownHostException;
 import java.time.Duration;
@@ -54,10 +54,7 @@ public class BackgroundCachingHostResolver implements HostResolver {
         try {
             _cachedLocalHostName.set(_wrappedHostResolver.getLocalHostName());
         } catch (final UnknownHostException e) {
-            LOGGER.warn()
-                    .setMessage("Unable to resolve host")
-                    .setThrowable(e)
-                    .log();
+            LOGGER.warn("Unable to resolve host", e);
         }
     }
 

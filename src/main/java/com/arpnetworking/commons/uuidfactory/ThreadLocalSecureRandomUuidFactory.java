@@ -15,8 +15,8 @@
  */
 package com.arpnetworking.commons.uuidfactory;
 
-import com.arpnetworking.steno.Logger;
-import com.arpnetworking.steno.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.SecureRandom;
 import java.util.UUID;
@@ -96,13 +96,12 @@ public final class ThreadLocalSecureRandomUuidFactory implements UuidFactory {
         @Override
         protected SecureRandom initialValue() {
             if (!URANDOM.equals(System.getProperty(KEY))) {
-                LOGGER.warn()
-                        .setMessage(
-                                String.format(
-                                        "Using ThreadLocalSecureRandomUuidFactory without -D%s=%s",
-                                        KEY,
-                                        URANDOM))
-                        .log();
+                LOGGER.warn(
+                        String.format(
+                                "Using ThreadLocalSecureRandomUuidFactory without -D%s=%s",
+                                KEY,
+                                URANDOM
+                        ));
             }
             final SecureRandom secureRandom = new SecureRandom();
 

@@ -15,8 +15,6 @@
  */
 package com.arpnetworking.commons.observer;
 
-import com.arpnetworking.logback.annotations.LogValue;
-import com.arpnetworking.steno.LogValueMapFactory;
 import com.google.common.collect.Sets;
 
 import java.util.Set;
@@ -95,23 +93,13 @@ public final class ObservableDelegate implements Observable {
     }
 
     /**
-     * Generate a Steno log compatible representation.
-     *
-     * @return Steno log compatible representation.
-     */
-    @LogValue
-    public Object toLogValue() {
-        return LogValueMapFactory.builder(this)
-                .put("observers", _observers)
-                .build();
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return toLogValue().toString();
+        return new StringBuilder()
+                .append("observers=").append(_observers)
+                .toString();
     }
 
     private ObservableDelegate() {}
