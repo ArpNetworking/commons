@@ -15,13 +15,14 @@
  */
 package com.arpnetworking.commons.slf4j;
 
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.hamcrest.MockitoHamcrest;
 import org.slf4j.Logger;
 
 import java.time.Clock;
@@ -68,8 +69,8 @@ public final class RateLimitedLoggerTest {
 
         rateLimitedLogger.getLogger().debug("Test3");
         Mockito.verify(_logger).debug("Test3");
-        Mockito.verify(_logger).info(Matchers.matches(
-                "Skipped 1 messages for 'testRateLimitedLoggerSkippingLogger' since last getLogger at .*"));
+        Mockito.verify(_logger).info(MockitoHamcrest.argThat(Matchers.matchesPattern(
+                "Skipped 1 messages for 'testRateLimitedLoggerSkippingLogger' since last getLogger at .*")));
         Mockito.verifyNoMoreInteractions(_logger);
     }
 
