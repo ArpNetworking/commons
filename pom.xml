@@ -81,7 +81,7 @@
     <jsr305.version>3.0.1</jsr305.version>
     <junit.version>4.12</junit.version>
     <mockito.version>2.7.0</mockito.version>
-    <oval.version>1.86</oval.version>
+    <oval.version>1.87</oval.version>
     <scala.version>2.12</scala.version>
     <scala.library.version>2.12.1</scala.library.version>
     <slf4j.version>1.7.22</slf4j.version>
