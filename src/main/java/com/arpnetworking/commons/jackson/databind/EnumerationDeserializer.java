@@ -55,9 +55,6 @@ public final class EnumerationDeserializer<T extends Enum<T>> extends JsonDeseri
         return new EnumerationDeserializer<T>(enumClass, strategy);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public T deserialize(final JsonParser jp, final DeserializationContext ctxt)
             throws IOException {

@@ -30,7 +30,7 @@ import com.google.inject.Injector;
  *     <li>org.scala-lang:scala-library</li>
  * </ul>
  *
- * @author Brandon Arp (brandonarp at gmail dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
  */
 public class GuiceActorCreator implements IndirectActorProducer {
 
@@ -56,25 +56,16 @@ public class GuiceActorCreator implements IndirectActorProducer {
         return Props.create(GuiceActorCreator.class, injector, clazz);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Actor produce() {
         return _injector.getInstance(_clazz);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class<? extends Actor> actorClass() {
         return _clazz;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new StringBuilder()

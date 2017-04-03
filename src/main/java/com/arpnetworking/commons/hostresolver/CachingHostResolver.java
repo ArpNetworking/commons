@@ -32,9 +32,6 @@ import java.util.Optional;
  */
 public class CachingHostResolver implements HostResolver {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLocalHostName() throws UnknownHostException {
         if (_lastResolvedAt.isPresent()) {

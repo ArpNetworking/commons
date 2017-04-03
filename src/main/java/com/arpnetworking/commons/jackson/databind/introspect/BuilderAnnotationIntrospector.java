@@ -40,9 +40,6 @@ import javax.annotation.Nullable;
  */
 public final class BuilderAnnotationIntrospector extends NopAnnotationIntrospector {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public @Nullable Class<?> findPOJOBuilder(final AnnotatedClass ac) {
         final Class<?> pojoClass = ac.getRawType();
@@ -57,9 +54,6 @@ public final class BuilderAnnotationIntrospector extends NopAnnotationIntrospect
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonPOJOBuilder.Value findPOJOBuilderConfig(final AnnotatedClass ac) {
         return new JsonPOJOBuilder.Value(new MyPojoBuilder());
@@ -72,41 +66,26 @@ public final class BuilderAnnotationIntrospector extends NopAnnotationIntrospect
      */
     public static class MyPojoBuilder implements JsonPOJOBuilder {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String buildMethodName() {
             return _methodName;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String withPrefix() {
             return _prefix;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String toString() {
             return buildMethodName() + " " + withPrefix();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Class<? extends Annotation> annotationType() {
             return JsonPOJOBuilder.class;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean equals(final Object other) {
             if (this == other) {
@@ -120,9 +99,6 @@ public final class BuilderAnnotationIntrospector extends NopAnnotationIntrospect
                     && Objects.equals(withPrefix(), otherPojoBuilder.withPrefix());
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int hashCode() {
             return Objects.hash(buildMethodName(), withPrefix());

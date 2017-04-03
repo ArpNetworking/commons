@@ -141,9 +141,6 @@ public abstract class OvalBuilder<T> implements Builder<T> {
         return target;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new StringBuilder()
@@ -151,9 +148,6 @@ public abstract class OvalBuilder<T> implements Builder<T> {
                 .append(", targetConstructor=").append(_targetConstructor)
                 .toString();
     }
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public T build() {
         final List<ConstraintViolation> violations = Lists.newArrayList();

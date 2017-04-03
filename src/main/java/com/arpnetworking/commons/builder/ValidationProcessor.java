@@ -85,9 +85,6 @@ import java.util.Set;
  */
 public final class ValidationProcessor implements ClassProcessor {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept(final CtClass ctClass) {
         // Reject processing of OvalBuilder itself
@@ -121,9 +118,6 @@ public final class ValidationProcessor implements ClassProcessor {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @SuppressFBWarnings("REC_CATCH_EXCEPTION")
     @Override
     public void process(final CtClass ctClass) {

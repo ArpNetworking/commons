@@ -50,9 +50,6 @@ import java.util.UUID;
  */
 public class SplittableRandomUuidFactory implements UuidFactory {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UUID create() {
         final SplittableRandom random = _localRandom.get();

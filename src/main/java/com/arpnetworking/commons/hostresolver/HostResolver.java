@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  *     <li><i>None</i></li>
  * </ul>
  *
- * @author Brandon Arp (brandonarp at gmail dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
  */
 public interface HostResolver extends Supplier<String> {
 
@@ -38,9 +38,6 @@ public interface HostResolver extends Supplier<String> {
      */
     String getLocalHostName() throws UnknownHostException;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     default String get() {
         try {
