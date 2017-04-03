@@ -33,25 +33,16 @@ import java.time.ZoneId;
  */
 public class ManualClock extends Clock {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ZoneId getZone() {
         return _zone;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ManualClock withZone(final ZoneId zone) {
         return new ManualClock(_instant, _tickDuration, zone);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Instant instant() {
         return _instant;

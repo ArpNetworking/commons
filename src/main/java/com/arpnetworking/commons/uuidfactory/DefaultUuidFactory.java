@@ -49,9 +49,6 @@ import java.util.UUID;
  */
 public class DefaultUuidFactory implements UuidFactory {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UUID create() {
         return UUID.randomUUID();

@@ -45,9 +45,6 @@ public final class EnumerationDeserializerStrategyUsingToUpperCase<T extends Enu
         return new EnumerationDeserializerStrategyUsingToUpperCase<T>();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<T> toEnum(final Class<T> enumClass, final String key) {
         try {

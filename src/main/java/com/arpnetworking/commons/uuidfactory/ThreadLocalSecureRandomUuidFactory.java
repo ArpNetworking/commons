@@ -54,9 +54,6 @@ import java.util.UUID;
  */
 public final class ThreadLocalSecureRandomUuidFactory implements UuidFactory {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UUID create() {
         // As stated in JUG documentation the nextBytes call on SecureRandom is

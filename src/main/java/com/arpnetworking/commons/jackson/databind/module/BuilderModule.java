@@ -33,9 +33,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  */
 public class BuilderModule extends SimpleModule {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setupModule(final SetupContext context) {
         super.setupModule(context);

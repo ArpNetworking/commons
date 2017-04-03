@@ -26,13 +26,10 @@ import java.net.UnknownHostException;
  *     <li><i>None</i></li>
  * </ul>
  *
- * @author Brandon Arp (brandonarp at gmail dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
  */
 public class DefaultHostResolver implements HostResolver {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLocalHostName() throws UnknownHostException {
         return InetAddress.getLocalHost().getCanonicalHostName();

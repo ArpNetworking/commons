@@ -43,9 +43,6 @@ public interface UuidFactory extends Supplier<UUID> {
      */
     UUID create();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     default UUID get() {
         return create();

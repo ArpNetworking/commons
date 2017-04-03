@@ -45,9 +45,6 @@ public final class ObservableDelegate implements Observable {
         return new ObservableDelegate();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void attach(final Observer observer) {
         try {
@@ -60,9 +57,6 @@ public final class ObservableDelegate implements Observable {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void detach(final Observer observer) {
         try {
@@ -92,9 +86,6 @@ public final class ObservableDelegate implements Observable {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new StringBuilder()

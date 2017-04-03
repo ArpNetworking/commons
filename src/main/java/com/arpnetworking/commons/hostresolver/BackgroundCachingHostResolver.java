@@ -38,9 +38,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class BackgroundCachingHostResolver implements HostResolver {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLocalHostName() throws UnknownHostException {
         final String localHostName = _cachedLocalHostName.get();
