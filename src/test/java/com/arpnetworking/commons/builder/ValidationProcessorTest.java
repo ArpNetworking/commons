@@ -16,7 +16,6 @@
 package com.arpnetworking.commons.builder;
 
 import com.arpnetworking.commons.builder.annotations.SkipValidationProcessor;
-import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.CannotCompileException;
@@ -533,7 +532,7 @@ public final class ValidationProcessorTest {
                 new BufferedOutputStream(new FileOutputStream(file.toString())))) {
             ctClass.toBytecode(outputStream);
         } catch (final IOException | CannotCompileException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -609,7 +608,7 @@ public final class ValidationProcessorTest {
                 // CHECKSTYLE.OFF: IllegalCatch - Constructor is not allowed to throw.
             } catch (final Exception e) {
                 // CHECKSTYLE.ON: IllegalCatch
-                throw Throwables.propagate(e);
+                throw new RuntimeException(e);
             }
         }
 
