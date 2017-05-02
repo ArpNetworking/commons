@@ -54,6 +54,18 @@ public class BackgroundCachingHostResolverTest {
     }
 
     @Test
+    public void testSingleton() {
+        final HostResolver hostResolverA = BackgroundCachingHostResolver.getInstance();
+        Assert.assertTrue(hostResolverA instanceof BackgroundCachingHostResolver);
+
+        final HostResolver hostResolverB = BackgroundCachingHostResolver.getInstance();
+        Assert.assertTrue(hostResolverB instanceof BackgroundCachingHostResolver);
+
+        Assert.assertSame(hostResolverA, hostResolverB);
+    }
+
+
+    @Test
     public void testCaching() throws UnknownHostException {
         final ScheduledExecutorService executor = Mockito.mock(ScheduledExecutorService.class);
         Mockito.doReturn("foo.example.com").when(_hostResolver).getLocalHostName();
