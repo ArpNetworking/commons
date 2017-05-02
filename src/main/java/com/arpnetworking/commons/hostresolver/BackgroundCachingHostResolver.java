@@ -15,6 +15,8 @@
  */
 package com.arpnetworking.commons.hostresolver;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,16 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public class BackgroundCachingHostResolver implements HostResolver {
+
+    /**
+     * Accessor for shared singleton instance of {@code BackgroundCachingHostResolver}
+     * with default configuration of updating every 30 seconds.
+     *
+     * @return singleton instance of {@code BackgroundCachingHostResolver}
+     */
+    public static HostResolver getInstance() {
+        return SINGLETON_BACKGROUND_CACHING_HOST_RESOLVER.get();
+    }
 
     @Override
     public String getLocalHostName() throws UnknownHostException {
@@ -104,6 +116,9 @@ public class BackgroundCachingHostResolver implements HostResolver {
 
     private AtomicReference<String> _cachedLocalHostName = new AtomicReference<>();
 
+    private static final Duration DEFAULT_RATE = Duration.ofSeconds(30);
+    private static final Supplier<HostResolver> SINGLETON_BACKGROUND_CACHING_HOST_RESOLVER =
+            Suppliers.memoize(() -> new BackgroundCachingHostResolver(DEFAULT_RATE));
     private static final HostResolver DEFAULT_WRAPPED_HOST_RESOLVER = new DefaultHostResolver();
     private static final Logger LOGGER = LoggerFactory.getLogger(BackgroundCachingHostResolver.class);
 }
