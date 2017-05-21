@@ -323,7 +323,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private static final class SelfValidationChecker implements Function<Class<? extends Builder<?>>, Boolean> {
     
         @Override
-        public Boolean apply(final Class<? extends Builder<?> targetClazz) {
+        public Boolean apply(final Class<? extends Builder<?>> targetClazz) {
             Class<?> clazz = targetClazz;
             while (!OvalBuilder.class.getName().equals(clazz.getName())) {
                 final Processed processedAnnotation = clazz.getDeclaredAnnotation(Processed.class);
