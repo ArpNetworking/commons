@@ -320,7 +320,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private static final String SETTER_METHOD_PREFIX = "set";
     private static final String UNABLE_TO_CONSTRUCT_TARGET_CLASS = "Unable to construct target class; target_class=%s";
 
-    private static final class SelfValidationChecker implements Function<Class<? extends Builder<?>, Boolean> {
+    private static final class SelfValidationChecker implements Function<Class<? extends Builder<?>>, Boolean> {
     
         @Override
         public Boolean apply(final Class<? extends Builder<?> targetClazz) {
