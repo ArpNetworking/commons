@@ -251,27 +251,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      * @return true if and only if the entire class hierarchy is self validating.
      */
     protected boolean isSelfValidating(final Class<? extends OvalBuilder<?>> builderClass) {
-        return SELF_VALIDATING_CACHE.computeIfAbsent(
-                builderClass,
-                targetClazz -> {
-                    Class<?> clazz = targetClazz;
-                    while (!OvalBuilder.class.getName().equals(clazz.getName())) {
-                        final Processed processedAnnotation = clazz.getDeclaredAnnotation(Processed.class);
-                        boolean found = false;
-                        if (processedAnnotation != null) {
-                            for (final String processorClassName : processedAnnotation.value()) {
-                                if (ValidationProcessor.class.getName().equals(processorClassName)) {
-                                    found = true;
-                                }
-                            }
-                        }
-                        if (!found) {
-                            return false;
-                        }
-                        clazz = clazz.getSuperclass();
-                    }
-                    return true;
-                });
+        return SELF_VALIDATING_CACHE.computeIfAbsent(builderClass, SELF_VALIDATION_CHECKER);
     }
 
     /* package private */ void validateWithReflection(final List<ConstraintViolation> violations) {
@@ -331,6 +311,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private static final Map<Class<?>, Constructor<? extends Builder<?>>> BUILDER_CONSTRUCTOR_CACHE = Maps.newConcurrentMap();
     private static final Map<Class<?>, List<GetterSetter>> BUILDER_METHOD_CACHE = Maps.newConcurrentMap();
     private static final Map<Class<? extends Builder<?>>, Boolean> SELF_VALIDATING_CACHE = Maps.newConcurrentMap();
+    private static final SelfValidationChecker SELF_VALIDATION_CHECKER = new SelfValidationChecker();
     private static final Logger LOGGER = LoggerFactory.getLogger(OvalBuilder.class);
 
     private static final String GETTER_IS_METHOD_PREFIX = "is";
@@ -338,6 +319,30 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private static final String SETTER_METHOD_PREFIX = "set";
     private static final String UNABLE_TO_CONSTRUCT_TARGET_CLASS = "Unable to construct target class; target_class=%s";
 
+    private static final class SelfValidationChecker implements Function<Class<? extends Builder<?>>, Boolean> {
+    
+        @Override
+        public Boolean apply(final Class<? extends Builder<?>> targetClazz) {
+            Class<?> clazz = targetClazz;
+            while (!OvalBuilder.class.getName().equals(clazz.getName())) {
+                final Processed processedAnnotation = clazz.getDeclaredAnnotation(Processed.class);
+                boolean found = false;
+                if (processedAnnotation != null) {
+                    for (final String processorClassName : processedAnnotation.value()) {
+                        if (ValidationProcessor.class.getName().equals(processorClassName)) {
+                            found = true;
+                        }
+                    }
+                }
+                if (!found) {
+                    return false;
+                }
+                clazz = clazz.getSuperclass();
+            }
+            return true;
+        }
+    }
+    
     private static final class GetterSetter {
 
         GetterSetter(final Method getter, final Method setter) {
