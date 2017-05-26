@@ -251,7 +251,9 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      * @return true if and only if the entire class hierarchy is self validating.
      */
     protected boolean isSelfValidating(final Class<? extends OvalBuilder<?>> builderClass) {
-        return SELF_VALIDATING_CACHE.computeIfAbsent(builderClass, SELF_VALIDATION_CHECKER);
+        return LOCAL_SELF_VALIDATING_CACHE.get().computeIfAbsent(
+                builderClass,
+                clazz -> SELF_VALIDATING_CACHE.computeIfAbsent(clazz, SELF_VALIDATION_CHECKER));
     }
 
     /* package private */ void validateWithReflection(final List<ConstraintViolation> violations) {
@@ -311,6 +313,8 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private static final Map<Class<?>, Constructor<? extends Builder<?>>> BUILDER_CONSTRUCTOR_CACHE = Maps.newConcurrentMap();
     private static final Map<Class<?>, List<GetterSetter>> BUILDER_METHOD_CACHE = Maps.newConcurrentMap();
     private static final Map<Class<? extends Builder<?>>, Boolean> SELF_VALIDATING_CACHE = Maps.newConcurrentMap();
+    private static final ThreadLocal<Map<Class<? extends Builder<?>>, Boolean>> LOCAL_SELF_VALIDATING_CACHE =
+            ThreadLocal.withInitial(Maps::newHashMap);
     private static final SelfValidationChecker SELF_VALIDATION_CHECKER = new SelfValidationChecker();
     private static final Logger LOGGER = LoggerFactory.getLogger(OvalBuilder.class);
 
