@@ -89,6 +89,7 @@ If these modules are available they are registered with ```ObjectMapper```:
 * com.fasterxml.jackson.datatype.guava.GuavaModule (from: com.fasterxml.jackson.datatype:jackson-datatype-guava)
 * com.fasterxml.jackson.datatype.jdk8.Jdk8Module (from: com.fasterxml.jackson.datatype:jackson-datatype-jdk8)
 * com.fasterxml.jackson.datatype.joda.JodaModule (from: com.fasterxml.jackson.datatype:jackson-datatype-joda)
+* com.fasterxml.jackson.datatype.jsr310.JavaTimeModule (from: com.fasterxml.jackson.datatype:jackson-datatype-jsr310)
 
 Additionally, you may specify a comma separated list of additional module class names to register using the system
 property _commons.object-mapper-additional-module-class-names_. For example:
