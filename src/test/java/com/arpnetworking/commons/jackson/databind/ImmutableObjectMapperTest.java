@@ -17,7 +17,6 @@ package com.arpnetworking.commons.jackson.databind;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.junit.Assert;
 import org.junit.Test;
 

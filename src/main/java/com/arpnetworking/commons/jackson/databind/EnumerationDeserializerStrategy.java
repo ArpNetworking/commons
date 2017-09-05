@@ -38,5 +38,5 @@ public interface EnumerationDeserializerStrategy<T extends Enum<T>> {
      * @param key The serialized enumeration value to deserialize; cannot be null.
      * @return an <code>Optional</code> instance of the enumeration represented by key.
      */
-    Optional<T> toEnum(final Class<T> enumClass, final String key);
+    Optional<T> toEnum(Class<T> enumClass, String key);
 }

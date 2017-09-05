@@ -528,7 +528,7 @@ public final class ValidationProcessorTest {
         final Path path = Paths.get("./target/test-data");
         path.toFile().mkdirs();
         final Path file = path.resolve(fileName);
-        try (final DataOutputStream outputStream = new DataOutputStream(
+        try (DataOutputStream outputStream = new DataOutputStream(
                 new BufferedOutputStream(new FileOutputStream(file.toString())))) {
             ctClass.toBytecode(outputStream);
         } catch (final IOException | CannotCompileException e) {
