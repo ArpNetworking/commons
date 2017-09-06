@@ -59,7 +59,7 @@ public final class EnumerationDeserializer<T extends Enum<T>> extends JsonDeseri
     public T deserialize(final JsonParser jp, final DeserializationContext ctxt)
             throws IOException {
         // NOTE: By contract with JsonDeserializer the stringValue cannot be null
-        final String stringValue = jp.readValueAs(String.class);
+        final String stringValue = jp.getValueAsString();
         final Optional<T> value = _strategy.toEnum(_enumClass, stringValue);
         if (!value.isPresent()) {
             throw new EnumerationNotFoundException(
