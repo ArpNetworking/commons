@@ -15,8 +15,7 @@
  */
 package com.arpnetworking.commons.hostresolver;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import com.arpnetworking.commons.java.util.function.SingletonSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +25,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * Caches results of a <code>HostResolver</code> and refresh it in the
@@ -118,7 +118,7 @@ public class BackgroundCachingHostResolver implements HostResolver {
 
     private static final Duration DEFAULT_RATE = Duration.ofSeconds(30);
     private static final Supplier<HostResolver> SINGLETON_BACKGROUND_CACHING_HOST_RESOLVER =
-            Suppliers.memoize(() -> new BackgroundCachingHostResolver(DEFAULT_RATE));
+            new SingletonSupplier<>(() -> new BackgroundCachingHostResolver(DEFAULT_RATE));
     private static final HostResolver DEFAULT_WRAPPED_HOST_RESOLVER = new DefaultHostResolver();
     private static final Logger LOGGER = LoggerFactory.getLogger(BackgroundCachingHostResolver.class);
 }
