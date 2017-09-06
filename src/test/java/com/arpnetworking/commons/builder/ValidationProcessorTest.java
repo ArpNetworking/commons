@@ -16,6 +16,7 @@
 package com.arpnetworking.commons.builder;
 
 import com.arpnetworking.commons.builder.annotations.SkipValidationProcessor;
+import com.arpnetworking.commons.builder.annotations.WovenValidation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -87,6 +88,35 @@ public final class ValidationProcessorTest {
                 "com.arpnetworking.commons.builder.ValidationProcessorTest$ImmediateBuilder")));
         Assert.assertTrue(processor.accept(classPool.get(
                 "com.arpnetworking.commons.builder.ValidationProcessorTest$DescendentBuilder")));
+    }
+
+    @Test
+    public void testMarkClassAsWeaved() throws Exception {
+        final ValidationProcessor processor = new ValidationProcessor();
+        final ClassPool classPool = createClassPool();
+
+        // Process a simple class
+        // NOTE: we run this on a non-builder class because we need a class with no annotations to get
+        // full code coverage. The builder classes are processed as part of the build and therefore
+        // get an annotation applied to them (or are skipped by having an annotation applied to them)
+        final CtClass exampleCtClass = classPool.get(
+                "com.arpnetworking.commons.builder.ValidationProcessorTest$SimpleClass");
+
+        exampleCtClass.defrost();
+        processor.markAsProcessed(exampleCtClass);
+        exampleCtClass.defrost();
+        exampleCtClass.setName("com.arpnetworking.commons.builder.ValidationProcessorTest$ProcessedSimpleClass");
+        exampleCtClass.getClassFile().compact();
+        exampleCtClass.rebuildClassFile();
+
+        // Output the class file for debugging
+        writeClassFile(exampleCtClass, "ValidationProcessorTest.ProcessedSimpleClass.class");
+
+        Assert.assertNotNull(exampleCtClass.getAnnotation(WovenValidation.class));
+
+        // Make sure we can re-process the class and not blow up adding the annotation a second time
+        exampleCtClass.defrost();
+        processor.markAsProcessed(exampleCtClass);
     }
 
     @Test(expected = RuntimeException.class)
@@ -750,5 +780,22 @@ public final class ValidationProcessorTest {
 
         @NotNull
         private Object _otherValue;
+    }
+
+    private static class SimpleClass {
+
+        SimpleClass() {
+        }
+
+        public SimpleClass setValue(@Nullable final Object value) {
+            _value = value;
+            return this;
+        }
+
+        public Object getValue() {
+            return _value;
+        }
+
+        private Object _value;
     }
 }
