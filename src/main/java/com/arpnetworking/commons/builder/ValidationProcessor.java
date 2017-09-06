@@ -23,6 +23,8 @@ import javassist.CtField;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.NotFoundException;
+import javassist.bytecode.AnnotationsAttribute;
+import javassist.bytecode.ClassFile;
 import javassist.bytecode.SyntheticAttribute;
 import net.sf.oval.configuration.annotation.AnnotationCheck;
 import net.sf.oval.configuration.annotation.Constraint;
@@ -164,6 +166,7 @@ public final class ValidationProcessor implements ClassProcessor {
                                 + "}"
                 );
             }
+            markAsProcessed(ctClass);
 
             // CHECKSTYLE.OFF: IllegalCatch
         } catch (final Exception e) {
@@ -294,6 +297,27 @@ public final class ValidationProcessor implements ClassProcessor {
         return (fieldName + "_" + checkName).toUpperCase(Locale.getDefault()).replace('.', '_');
     }
 
+    /* package private */ void markAsProcessed(final CtClass ctClass) {
+        final ClassFile classFile = ctClass.getClassFile();
+        AnnotationsAttribute annotationAttribute = null;
+        for (final Object attributeObject : classFile.getAttributes()) {
+            if (attributeObject instanceof AnnotationsAttribute) {
+                annotationAttribute = (AnnotationsAttribute) attributeObject;
+                break;
+            }
+        }
+        if (annotationAttribute == null) {
+            annotationAttribute = new AnnotationsAttribute(classFile.getConstPool(), AnnotationsAttribute.visibleTag);
+            classFile.addAttribute(annotationAttribute);
+        }
+        javassist.bytecode.annotation.Annotation annotation = annotationAttribute.getAnnotation(PROCESSED_ANNOTATION_CLASS);
+        if (annotation == null) {
+            annotation = new javassist.bytecode.annotation.Annotation(PROCESSED_ANNOTATION_CLASS, classFile.getConstPool());
+        }
+        annotationAttribute.addAnnotation(annotation);
+    }
+
+
     // CHECKSTYLE.OFF: IllegalInstantiation - No Guava
     private static final Set<Class<?>> ANNOTATIONS = new HashSet<>();
     // CHECKSTYLE.ON: IllegalInstantiation
@@ -307,6 +331,7 @@ public final class ValidationProcessor implements ClassProcessor {
             "net.sf.oval.constraint.EqualToFieldCheck";
     private static final String FIELDS_NOT_EQUAL_CHECK =
             "net.sf.oval.constraint.NotEqualToFieldCheck";
+    private static final String PROCESSED_ANNOTATION_CLASS = "com.arpnetworking.commons.builder.annotations.WovenValidation";
 
     // CHECKSTYLE.OFF: ExecutableStatementCount - Initialization
     static {

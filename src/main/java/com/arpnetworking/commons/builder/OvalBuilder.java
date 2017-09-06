@@ -15,7 +15,7 @@
  */
 package com.arpnetworking.commons.builder;
 
-import com.arpnetworking.commons.maven.javassist.Processed;
+import com.arpnetworking.commons.builder.annotations.WovenValidation;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.Validator;
 import net.sf.oval.exception.ConstraintsViolatedException;
@@ -332,14 +332,10 @@ public abstract class OvalBuilder<T> implements Builder<T> {
         public Boolean apply(final Class<? extends Builder<?>> targetClazz) {
             Class<?> clazz = targetClazz;
             while (!OvalBuilder.class.getName().equals(clazz.getName())) {
-                final Processed processedAnnotation = clazz.getDeclaredAnnotation(Processed.class);
+                final WovenValidation processedAnnotation = clazz.getDeclaredAnnotation(WovenValidation.class);
                 boolean found = false;
                 if (processedAnnotation != null) {
-                    for (final String processorClassName : processedAnnotation.value()) {
-                        if (ValidationProcessor.class.getName().equals(processorClassName)) {
-                            found = true;
-                        }
-                    }
+                    found = true;
                 }
                 if (!found) {
                     return false;
