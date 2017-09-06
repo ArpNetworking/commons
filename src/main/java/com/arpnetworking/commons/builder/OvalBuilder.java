@@ -44,6 +44,7 @@ import java.util.function.Function;
  * <ul>
  *     <li>net.sf.oval:oval</li>
  *     <li>com.google.guava:guava</li>
+ *     <li>com.arpnetworking.commons:javassist-maven-core</li>
  * </ul>
  *
  * TODO(vkoskela): Once we convert entirely to Java's Optional we can remove the Guava dependency.
