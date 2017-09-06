@@ -88,6 +88,7 @@ public final class ObjectMapperFactory {
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.joda.JodaModule");
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
         registerAdditionalModules(objectMapper, System::getProperty);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
