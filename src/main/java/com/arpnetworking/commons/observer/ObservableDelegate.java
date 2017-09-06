@@ -15,8 +15,7 @@
  */
 package com.arpnetworking.commons.observer;
 
-import com.google.common.collect.Sets;
-
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -95,6 +94,8 @@ public final class ObservableDelegate implements Observable {
 
     private ObservableDelegate() {}
 
-    private final Set<Observer> _observers = Sets.newHashSet();
+    // CHECKSTYLE.OFF: IllegalInstantiation - No Guava
+    private final Set<Observer> _observers = new HashSet<>();
+    // CHECKSTYLE.ON: IllegalInstantiation
     private final ReadWriteLock _lock = new ReentrantReadWriteLock();
 }
