@@ -37,12 +37,12 @@ public interface Observable {
      *
      * @param observer The observer to add.
      */
-    void attach(final Observer observer);
+    void attach(Observer observer);
 
     /**
      * Remove the observer. The observer will no longer be notified of events.
      *
      * @param observer The observer to remove.
      */
-    void detach(final Observer observer);
+    void detach(Observer observer);
 }

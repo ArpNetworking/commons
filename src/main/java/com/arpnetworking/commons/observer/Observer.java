@@ -35,5 +35,5 @@ public interface Observer {
      * @param observable The observable raising the event.
      * @param event The event being raised.
      */
-    void notify(final Observable observable, final Object event);
+    void notify(Observable observable, Object event);
 }
