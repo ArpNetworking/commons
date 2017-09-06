@@ -15,7 +15,6 @@
  */
 package com.arpnetworking.commons.builder;
 
-import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.sf.oval.constraint.AssertFalse;
 import net.sf.oval.constraint.AssertNull;
@@ -54,6 +53,7 @@ import net.sf.oval.constraint.Size;
 import net.sf.oval.constraint.ValidateWithMethod;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -320,11 +320,11 @@ public final class ValidationProcessorBean {
                     .setMatchPatternString("Fooo")
                     .setMaxInteger(-1)
                     .setMaxLengthString("ABC")
-                    .setMaxSizeList(Lists.newArrayList("A", "B"))
+                    .setMaxSizeList(Arrays.asList("A", "B"))
                     .setMemberOfString("Foo")
                     .setMinInteger(1)
                     .setMinLengthString("ABC")
-                    .setMinSizeList(Lists.newArrayList("A", "B"))
+                    .setMinSizeList(Arrays.asList("A", "B"))
                     .setNotBlankString("NotBlank")
                     .setNotEmptyString("Foo")
                     .setNotEqualString("Bar")
@@ -335,7 +335,7 @@ public final class ValidationProcessorBean {
                     .setNotNullObject(LocalDateTime.now())
                     .setPastDate(new Date(System.currentTimeMillis() - 600000))
                     .setRangeDouble(1.5d)
-                    .setSizeList(Lists.newArrayList("A", "B"))
+                    .setSizeList(Arrays.asList("A", "B"))
                     .setValidateWithMethodString("true");
         }
 

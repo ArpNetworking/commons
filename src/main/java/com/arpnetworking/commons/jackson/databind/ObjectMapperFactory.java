@@ -36,6 +36,7 @@ import java.util.function.Function;
  *     <li>com.fasterxml.jackson.core:jackson-core</li>
  *     <li>com.fasterxml.jackson.core:jackson-databind</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-guava (Optional)</li>
+ *     <li>com.google.guava:guava (Optional; only required if above is used)</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-jdk8 (Optional)</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-joda (Optional)</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-jsr310 (Optional)</li>

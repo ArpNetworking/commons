@@ -15,7 +15,6 @@
  */
 package com.arpnetworking.commons.builder;
 
-import com.google.common.collect.Lists;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.constraint.AssertFalseCheck;
 import net.sf.oval.constraint.AssertNullCheck;
@@ -57,6 +56,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -314,7 +314,7 @@ public final class ValidationProcessorBeanTest {
 
     @Test
     public void testMaxSizeCheck() {
-        final List<String> maxList = Lists.newArrayList("A", "B", "C");
+        final List<String> maxList = Arrays.asList("A", "B", "C");
         final ValidationProcessorBean.Builder builder = ValidationProcessorBean.Builder.createValid()
                 .setMaxSizeList(maxList);
         try {
@@ -363,7 +363,7 @@ public final class ValidationProcessorBeanTest {
 
     @Test
     public void testMinSizeCheck() {
-        final List<String> minList = Lists.newArrayList("A");
+        final List<String> minList = Collections.singletonList("A");
         final ValidationProcessorBean.Builder builder = ValidationProcessorBean.Builder.createValid()
                 .setMinSizeList(minList);
         try {
@@ -519,7 +519,7 @@ public final class ValidationProcessorBeanTest {
 
     @Test
     public void testSizeCheck() {
-        final List<String> sizeList = Lists.newArrayList("A", "B", "C");
+        final List<String> sizeList = Arrays.asList("A", "B", "C");
         final ValidationProcessorBean.Builder builder = ValidationProcessorBean.Builder.createValid()
                 .setSizeList(sizeList);
         try {

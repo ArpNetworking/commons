@@ -16,7 +16,6 @@
 package com.arpnetworking.commons.builder;
 
 import com.arpnetworking.commons.builder.annotations.SkipValidationProcessor;
-import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -42,6 +41,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -289,7 +289,9 @@ public final class ValidationProcessorTest {
 
         final StringBuilder validationChecksCode = new StringBuilder();
         final StringBuilder staticInitializerCode = new StringBuilder();
-        final List<String> staticFields = Lists.newArrayList();
+        // CHECKSTYLE.OFF: IllegalInstantiation - No Guava
+        final List<String> staticFields = new ArrayList<>();
+        // CHECKSTYLE.ON: IllegalInstantiation
         processor.generateValidationChecks(
                 ctClass,
                 validationChecksCode,

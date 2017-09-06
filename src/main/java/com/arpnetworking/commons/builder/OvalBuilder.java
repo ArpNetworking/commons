@@ -16,8 +16,6 @@
 package com.arpnetworking.commons.builder;
 
 import com.arpnetworking.commons.maven.javassist.Processed;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.Validator;
 import net.sf.oval.exception.ConstraintsViolatedException;
@@ -29,10 +27,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -150,7 +151,9 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     }
     @Override
     public T build() {
-        final List<ConstraintViolation> violations = Lists.newArrayList();
+        // CHECKSTYLE.OFF: IllegalInstantiation - No Guava
+        final List<ConstraintViolation> violations = new ArrayList<>();
+        // CHECKSTYLE.ON: IllegalInstantiation
         @SuppressWarnings("unchecked")
         final Class<? extends OvalBuilder<?>> ovalBuilderClass = (Class<? extends OvalBuilder<?>>) this.getClass();
         if (isSelfValidating(ovalBuilderClass)) {
@@ -310,11 +313,11 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private final Optional<Function<Builder<T>, T>> _targetConstructor;
 
     private static final Validator VALIDATOR = new Validator();
-    private static final Map<Class<?>, Constructor<? extends Builder<?>>> BUILDER_CONSTRUCTOR_CACHE = Maps.newConcurrentMap();
-    private static final Map<Class<?>, List<GetterSetter>> BUILDER_METHOD_CACHE = Maps.newConcurrentMap();
-    private static final Map<Class<? extends Builder<?>>, Boolean> SELF_VALIDATING_CACHE = Maps.newConcurrentMap();
+    private static final Map<Class<?>, Constructor<? extends Builder<?>>> BUILDER_CONSTRUCTOR_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, List<GetterSetter>> BUILDER_METHOD_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends Builder<?>>, Boolean> SELF_VALIDATING_CACHE = new ConcurrentHashMap<>();
     private static final ThreadLocal<Map<Class<? extends Builder<?>>, Boolean>> LOCAL_SELF_VALIDATING_CACHE =
-            ThreadLocal.withInitial(Maps::newHashMap);
+            ThreadLocal.withInitial(HashMap::new);
     private static final SelfValidationChecker SELF_VALIDATION_CHECKER = new SelfValidationChecker();
     private static final Logger LOGGER = LoggerFactory.getLogger(OvalBuilder.class);
 

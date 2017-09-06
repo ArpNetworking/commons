@@ -16,8 +16,6 @@
 package com.arpnetworking.commons.builder;
 
 import com.arpnetworking.commons.maven.javassist.ClassProcessor;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.CtClass;
 import javassist.CtConstructor;
@@ -64,6 +62,8 @@ import net.sf.oval.constraint.Size;
 import net.sf.oval.constraint.ValidateWithMethod;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -132,7 +132,9 @@ public final class ValidationProcessor implements ClassProcessor {
             // Build code to inject
             final StringBuilder validationChecksCode = new StringBuilder();
             final StringBuilder staticInitializerCode = new StringBuilder();
-            final List<String> staticFields = Lists.newArrayList();
+            // CHECKSTYLE.OFF: IllegalInstantiation - No Guava
+            final List<String> staticFields = new ArrayList<>();
+            // CHECKSTYLE.ON: IllegalInstantiation
             generateValidationChecks(ctClass, validationChecksCode, staticInitializerCode, staticFields);
 
             // Add the static fields
@@ -292,7 +294,9 @@ public final class ValidationProcessor implements ClassProcessor {
         return (fieldName + "_" + checkName).toUpperCase(Locale.getDefault()).replace('.', '_');
     }
 
-    private static final Set<Class<?>> ANNOTATIONS = Sets.newHashSet();
+    // CHECKSTYLE.OFF: IllegalInstantiation - No Guava
+    private static final Set<Class<?>> ANNOTATIONS = new HashSet<>();
+    // CHECKSTYLE.ON: IllegalInstantiation
     private static final String OVAL_BUILDER_CLASS =
             "com.arpnetworking.commons.builder.OvalBuilder";
     private static final String SKIP_VALIDATION_TRANSFORM_CLASS =
