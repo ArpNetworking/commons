@@ -15,6 +15,7 @@
  */
 package com.arpnetworking.commons.builder;
 
+import com.arpnetworking.commons.builder.annotations.WovenValidation;
 import com.arpnetworking.commons.maven.javassist.ClassProcessor;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.CtClass;
@@ -299,22 +300,22 @@ public final class ValidationProcessor implements ClassProcessor {
 
     /* package private */ void markAsProcessed(final CtClass ctClass) {
         final ClassFile classFile = ctClass.getClassFile();
-        AnnotationsAttribute annotationAttribute = null;
         for (final Object attributeObject : classFile.getAttributes()) {
             if (attributeObject instanceof AnnotationsAttribute) {
-                annotationAttribute = (AnnotationsAttribute) attributeObject;
-                break;
+                final AnnotationsAttribute annotationAttribute = (AnnotationsAttribute) attributeObject;
+                final javassist.bytecode.annotation.Annotation annotation = annotationAttribute.getAnnotation(PROCESSED_ANNOTATION_CLASS);
+                if (annotation != null) {
+                    return;
+                }
             }
         }
-        if (annotationAttribute == null) {
-            annotationAttribute = new AnnotationsAttribute(classFile.getConstPool(), AnnotationsAttribute.visibleTag);
-            classFile.addAttribute(annotationAttribute);
-        }
-        javassist.bytecode.annotation.Annotation annotation = annotationAttribute.getAnnotation(PROCESSED_ANNOTATION_CLASS);
-        if (annotation == null) {
-            annotation = new javassist.bytecode.annotation.Annotation(PROCESSED_ANNOTATION_CLASS, classFile.getConstPool());
-        }
+
+        final javassist.bytecode.annotation.Annotation annotation =
+                new javassist.bytecode.annotation.Annotation(PROCESSED_ANNOTATION_CLASS, classFile.getConstPool());
+        final AnnotationsAttribute annotationAttribute =
+                new AnnotationsAttribute(classFile.getConstPool(), AnnotationsAttribute.visibleTag);
         annotationAttribute.addAnnotation(annotation);
+        classFile.addAttribute(annotationAttribute);
     }
 
 
@@ -331,7 +332,7 @@ public final class ValidationProcessor implements ClassProcessor {
             "net.sf.oval.constraint.EqualToFieldCheck";
     private static final String FIELDS_NOT_EQUAL_CHECK =
             "net.sf.oval.constraint.NotEqualToFieldCheck";
-    private static final String PROCESSED_ANNOTATION_CLASS = "com.arpnetworking.commons.builder.annotations.WovenValidation";
+    private static final String PROCESSED_ANNOTATION_CLASS = WovenValidation.class.getCanonicalName();
 
     // CHECKSTYLE.OFF: ExecutableStatementCount - Initialization
     static {

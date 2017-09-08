@@ -78,7 +78,7 @@
     <hamcrest.version>2.0.0.0</hamcrest.version>
     <jackson.version>2.9.0</jackson.version>
     <javassist.version>3.21.0-GA</javassist.version>
-    <javassist.maven.core.version>0.2.0</javassist.maven.core.version>
+    <javassist.maven.core.version>0.2.1</javassist.maven.core.version>
     <joda.time.version>2.9.9</joda.time.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.12</junit.version>
@@ -90,7 +90,7 @@
     <system.rules.version>1.16.1</system.rules.version>
 
     <!-- Plugin versions -->
-    <javassist.maven.plugin.version>0.2.0</javassist.maven.plugin.version>
+    <javassist.maven.plugin.version>0.2.1</javassist.maven.plugin.version>
 
     <!-- Code Coverage -->
     <jacoco.check.line.coverage>1.0</jacoco.check.line.coverage>
