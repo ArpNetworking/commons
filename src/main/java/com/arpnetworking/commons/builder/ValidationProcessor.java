@@ -79,7 +79,7 @@ import java.util.Set;
  * Dependencies:
  * <ul>
  *     <li>com.arpnetworking.commons:javassist-maven-plugin (as plugin only)</li>
- *     <li>com.arpnetworking.commons:javassist-maven-core</li>
+ *     <li>com.arpnetworking.commons:javassist-maven-core (as provided, only needed to avoid compilation warnings</li>
  *     <li>net.sf.oval:oval</li>
  *     <li>com.google.guava:guava</li>
  * </ul>
