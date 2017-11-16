@@ -15,10 +15,10 @@
  */
 package com.arpnetworking.commons.akka;
 
+import akka.actor.AbstractActor;
 import akka.actor.Actor;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.actor.UntypedActor;
 import akka.testkit.TestActorRef;
 import com.google.inject.Injector;
 import org.junit.Assert;
@@ -81,11 +81,11 @@ public class GuiceActorCreatorTest {
     @Mock
     private Injector _injector;
 
-    private static class TestActor extends UntypedActor {
+    private static class TestActor extends AbstractActor {
 
         @Override
-        public void onReceive(final Object message) throws Exception {
-            // Do nothing.
+        public Receive createReceive() {
+            return receiveBuilder().build();
         }
     }
 }
