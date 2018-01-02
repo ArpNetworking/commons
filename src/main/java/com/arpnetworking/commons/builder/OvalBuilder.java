@@ -59,6 +59,12 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      * the source instance. The builder implementation and its default
      * constructor must be accessible by OvalBuilder.
      *
+     * <b>IMPORTANT</b>: If your builder is a subclass of {@link ThreadLocalBuilder}
+     * then you should not use this method. Instead, use one of the {@code clone}
+     * methods in {@link ThreadLocalBuilder}. Using this method for subclasses of
+     * {@link ThreadLocalBuilder} negates performance gains obtained by inheriting
+     * from {@link ThreadLocalBuilder}.
+     *
      * @param <T> The type of object created by the builder.
      * @param <B> The type of builder to return.
      * @param source The source of initial state.
@@ -98,6 +104,12 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     /**
      * Static factory initializes the specified builder with state from the
      * source instance.
+     *
+     * <b>IMPORTANT</b>: If your builder is a subclass of {@link ThreadLocalBuilder}
+     * then you should not use this method. Instead, use one of the {@code clone}
+     * methods in {@link ThreadLocalBuilder}. Using this method for subclasses of
+     * {@link ThreadLocalBuilder} negates performance gains obtained by inheriting
+     * from {@link ThreadLocalBuilder}.
      *
      * @param <T> The type of object created by the builder.
      * @param <B> The type of builder to return.
@@ -327,7 +339,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     private static final String UNABLE_TO_CONSTRUCT_TARGET_CLASS = "Unable to construct target class; target_class=%s";
 
     private static final class SelfValidationChecker implements Function<Class<? extends Builder<?>>, Boolean> {
-    
+
         @Override
         public Boolean apply(final Class<? extends Builder<?>> targetClazz) {
             Class<?> clazz = targetClazz;
@@ -345,7 +357,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
             return true;
         }
     }
-    
+
     private static final class GetterSetter {
 
         GetterSetter(final Method getter, final Method setter) {

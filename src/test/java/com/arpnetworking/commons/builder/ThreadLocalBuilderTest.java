@@ -68,8 +68,8 @@ public final class ThreadLocalBuilderTest {
         final AtomicReference<ThreadLocalBuilder<?>> builderA = new AtomicReference<>();
         final AtomicInteger countA = new AtomicInteger();
 
-        final MyThreadLocalPojo pojoA = MyThreadLocalPojo.Builder.build(
-                MyThreadLocalPojo.Builder.class,
+        final MyCountingThreadLocalPojo pojoA = MyCountingThreadLocalPojo.Builder.build(
+                MyCountingThreadLocalPojo.Builder.class,
                 builder -> {
                     builder.setValue("foo");
 
@@ -79,8 +79,8 @@ public final class ThreadLocalBuilderTest {
         Assert.assertNotNull(pojoA);
         Assert.assertEquals("foo", pojoA.getValue());
 
-        final MyThreadLocalPojo pojoB = MyThreadLocalPojo.Builder.build(
-                MyThreadLocalPojo.Builder.class,
+        final MyCountingThreadLocalPojo pojoB = MyCountingThreadLocalPojo.Builder.build(
+                MyCountingThreadLocalPojo.Builder.class,
                 builder -> {
                     builder.setValue("bar");
 
@@ -110,7 +110,30 @@ public final class ThreadLocalBuilderTest {
         Assert.assertEquals(list, pojo.getValue());
     }
 
+    @Test
+    public void testClone() {
+        final MyThreadLocalPojo beanA = new MyThreadLocalPojo.Builder()
+                .setValue("foo")
+                .build();
+        Assert.assertEquals("foo", beanA.getValue());
+
+        final MyThreadLocalPojo beanB = ThreadLocalBuilder.clone(beanA, MyThreadLocalPojo.Builder.class);
+        Assert.assertNotSame(beanA, beanB);
+        Assert.assertEquals("foo", beanB.getValue());
+
+        final MyThreadLocalPojo beanC = ThreadLocalBuilder.clone(
+                beanA,
+                MyThreadLocalPojo.Builder.class,
+                b -> b.setValue("bar"));
+        Assert.assertNotSame(beanA, beanC);
+        Assert.assertNotSame(beanB, beanC);
+        Assert.assertEquals("bar", beanC.getValue());
+    }
+
     private static final class MyThreadLocalPojo {
+
+        // IMPORTANT: Because of the reset invocation counting you cannot use
+        // this builder class for any tests other than
 
         public String getValue() {
             return _value;
@@ -126,6 +149,42 @@ public final class ThreadLocalBuilderTest {
 
             /* package private */ Builder() {
                 super(MyThreadLocalPojo::new);
+            }
+
+            public Builder setValue(final String value) {
+                _value = value;
+                return this;
+            }
+
+            @Override
+            protected void reset() {
+                _value = null;
+            }
+
+            @NotNull
+            private String _value;
+        }
+    }
+
+    private static final class MyCountingThreadLocalPojo {
+
+        // IMPORTANT: Because of the reset invocation counting you cannot use
+        // this builder class for any tests other than testReuse
+
+        public String getValue() {
+            return _value;
+        }
+
+        private MyCountingThreadLocalPojo(final Builder builder) {
+            _value = builder._value;
+        }
+
+        private final String _value;
+
+        private static final class Builder extends ThreadLocalBuilder<MyCountingThreadLocalPojo> {
+
+            /* package private */ Builder() {
+                super(MyCountingThreadLocalPojo::new);
             }
 
             public int getResetCount() {

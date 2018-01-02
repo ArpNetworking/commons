@@ -129,6 +129,50 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
         }
     }
 
+    /**
+     * Static factory initializes the source type's builder with state from
+     * the source instance. The builder implementation and its default
+     * constructor must be accessible by ThreadLocalBuilder. This method
+     * leverages thread local builders.
+     *
+     * @param <T> The type of object created by the builder.
+     * @param <B> The type of builder to return.
+     * @param source The source of initial state.
+     * @param builderClass The class of the builder.
+     * @return Instance of {@code <T>} populated from source.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T, B extends ThreadLocalBuilder<T>> T clone(final T source, final Class<B> builderClass) {
+        return clone(source, builderClass, (Consumer<B>) NOOP_CONSUMER);
+    }
+
+    /**
+     * Static factory initializes the source type's builder with state from
+     * the source instance. The builder implementation and its default
+     * constructor must be accessible by ThreadLocalBuilder. This method
+     * leverages thread local builders.
+     *
+     * @param <T> The type of object created by the builder.
+     * @param <B> The type of builder to return.
+     * @param source The source of initial state.
+     * @param builderClass The class of the builder.
+     * @param builderConsumer The {@code Consumer} for the builder instance.
+     * @return Instance of {@code <T>} populated from source after consuming its builder {@code <B>}.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T, B extends ThreadLocalBuilder<T>> T clone(
+            final T source,
+            final Class<B> builderClass,
+            final Consumer<B> builderConsumer) {
+        return ThreadLocalBuilder.buildGeneric(
+                builderClass,
+                (B b) -> {
+                    OvalBuilder.clone(source, b);
+                    builderConsumer.accept(b);
+                }
+        );
+    }
+
     @Override
     public T build() {
         if (!_isThreadLocalBuild) {
@@ -158,6 +202,8 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
     }
 
     private boolean _isThreadLocalBuild = false;
+
+    private static final Consumer<?> NOOP_CONSUMER = (Consumer<Object>) o -> { };
 
     private static final ThreadLocal<Map<Class<? extends ThreadLocalBuilder<?>>, Queue<ThreadLocalBuilder<?>>>>
             THREAD_LOCAL_BUILDERS_BY_TYPE = ThreadLocal.withInitial(HashMap::new);
