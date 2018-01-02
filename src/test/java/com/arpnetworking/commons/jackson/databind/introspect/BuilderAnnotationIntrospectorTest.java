@@ -15,6 +15,7 @@
  */
 package com.arpnetworking.commons.jackson.databind.introspect;
 
+import com.arpnetworking.commons.builder.ThreadLocalBuilder;
 import com.arpnetworking.commons.jackson.databind.ObjectMapperFactory;
 import com.arpnetworking.commons.jackson.databind.annotation.JsonIgnoreBuilder;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,6 +26,10 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedClassResolver;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Test for the BuilderAnnotationIntrospector class.
@@ -136,6 +141,54 @@ public class BuilderAnnotationIntrospectorTest {
         Assert.assertNotEquals(otherPojoBuilder.hashCode(), otherPrefixPojoBuilder.hashCode());
     }
 
+    @Test
+    public void testThreadLocalBuilderToPojo() throws IOException {
+        final AtomicReference<PojoWithThreadLocalBuilder.Builder> pojoBuilder = new AtomicReference<>();
+        ThreadLocalBuilder.build(
+                PojoWithThreadLocalBuilder.Builder.class,
+                b -> {
+                    pojoBuilder.set(b);
+                    b.setStrVal("bar");
+        });
+
+        final int countBefore = pojoBuilder.get().getResetCount();
+
+        final PojoWithThreadLocalBuilder pojo = OBJECT_MAPPER.readValue(
+                "{\"strVal\":\"foo\"}",
+                PojoWithThreadLocalBuilder.class);
+
+        final int countAfter = pojoBuilder.get().getResetCount();
+
+        Assert.assertNotNull(pojo);
+        Assert.assertEquals("foo", pojo.getStrVal());
+        Assert.assertEquals(countBefore + 1, countAfter);
+    }
+
+    @Test
+    public void testThreadLocalBuilderToBuilder() throws IOException {
+        final AtomicReference<PojoWithThreadLocalBuilder.Builder> pojoBuilder = new AtomicReference<>();
+        ThreadLocalBuilder.build(
+                PojoWithThreadLocalBuilder.Builder.class,
+                b -> {
+                    pojoBuilder.set(b);
+                    b.setStrVal("bar");
+                });
+
+        final int countBefore = pojoBuilder.get().getResetCount();
+
+        final PojoWithThreadLocalBuilder.Builder builder = OBJECT_MAPPER.readValue(
+                "{\"strVal\":\"foo\"}",
+                PojoWithThreadLocalBuilder.Builder.class);
+        final PojoWithThreadLocalBuilder pojo = builder.build();
+
+        final int countAfter = pojoBuilder.get().getResetCount();
+
+        Assert.assertNotNull(builder);
+        Assert.assertNotNull(pojo);
+        Assert.assertEquals("foo", pojo.getStrVal());
+        Assert.assertEquals(countBefore, countAfter);
+    }
+
     private BuilderAnnotationIntrospector _introspector;
 
     private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.getInstance();
@@ -236,6 +289,50 @@ public class BuilderAnnotationIntrospectorTest {
             private Integer _integerValue;
             private String _strVal;
             private String _source = "builder";
+        }
+    }
+
+    /**
+     * Test class.
+     */
+    public static class PojoWithThreadLocalBuilder {
+
+        protected PojoWithThreadLocalBuilder(final Builder builder) {
+            _strVal = builder._strVal;
+        }
+
+        public String getStrVal() {
+            return _strVal;
+        }
+
+        private final String _strVal;
+
+        /**
+         * Builder for PojoWithBuilder.
+         */
+        public static class Builder extends ThreadLocalBuilder<PojoWithThreadLocalBuilder> {
+
+            public Builder() {
+                super(PojoWithThreadLocalBuilder::new);
+            }
+
+            public Builder setStrVal(final String value) {
+                _strVal = value;
+                return this;
+            }
+
+            public int getResetCount() {
+                return _resetCount.get();
+            }
+
+            @Override
+            protected void reset() {
+                _strVal = null;
+                _resetCount.incrementAndGet();
+            }
+
+            private String _strVal;
+            private final AtomicInteger _resetCount = new AtomicInteger(0);
         }
     }
 

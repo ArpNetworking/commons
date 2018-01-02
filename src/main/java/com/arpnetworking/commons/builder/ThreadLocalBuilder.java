@@ -15,6 +15,10 @@
  */
 package com.arpnetworking.commons.builder;
 
+import com.arpnetworking.commons.slf4j.RateLimitedLogger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -116,11 +120,25 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
             @SuppressWarnings("unchecked")
             final B castThreadLocalBuilder = (B) threadLocalBuilder;
             builderConsumer.accept(castThreadLocalBuilder);
+            threadLocalBuilder._isThreadLocalBuild = true;
             return castThreadLocalBuilder.build();
         } finally {
             // Return the builder instance to the queue
+            threadLocalBuilder._isThreadLocalBuild = false;
             instanceQueue.add(threadLocalBuilder);
         }
+    }
+
+    @Override
+    public T build() {
+        if (!_isThreadLocalBuild) {
+            DIRECT_USAGE_LOGGER.getLogger().warn(
+                    String.format(
+                            "ThreadLocalBuilder subclass %s built directly; "
+                                    + "use ThreadLocalBuilder static 'build' or 'buildGeneric' instead",
+                            this.getClass().getName()));
+        }
+        return super.build();
     }
 
     /**
@@ -139,6 +157,12 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
         super(targetConstructor);
     }
 
+    private boolean _isThreadLocalBuild = false;
+
     private static final ThreadLocal<Map<Class<? extends ThreadLocalBuilder<?>>, Queue<ThreadLocalBuilder<?>>>>
             THREAD_LOCAL_BUILDERS_BY_TYPE = ThreadLocal.withInitial(HashMap::new);
+    private static final RateLimitedLogger DIRECT_USAGE_LOGGER = new RateLimitedLogger(
+            "ThreadLocalBuilderDirectUsage",
+            LoggerFactory.getLogger(ThreadLocalBuilder.class),
+            Duration.ofSeconds(30));
 }

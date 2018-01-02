@@ -15,6 +15,7 @@
  */
 package com.arpnetworking.commons.jackson.databind.module;
 
+import com.arpnetworking.commons.jackson.databind.deser.ThreadLocalBuilderBeanDeserializerModifier;
 import com.arpnetworking.commons.jackson.databind.introspect.BuilderAnnotationIntrospector;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
@@ -30,12 +31,14 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  * </ul>
  *
  * @author Gil Markham (gil at groupon dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
  */
 public class BuilderModule extends SimpleModule {
 
     @Override
     public void setupModule(final SetupContext context) {
         super.setupModule(context);
+        context.addBeanDeserializerModifier(new ThreadLocalBuilderBeanDeserializerModifier());
         context.insertAnnotationIntrospector(
                 new AnnotationIntrospectorPair(
                         new JacksonAnnotationIntrospector(),
