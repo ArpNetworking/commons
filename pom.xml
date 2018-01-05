@@ -79,6 +79,7 @@
     <jackson.version>2.9.2</jackson.version>
     <javassist.version>3.22.0-GA</javassist.version>
     <javassist.maven.core.version>0.2.1</javassist.maven.core.version>
+    <javax.inject.version>1</javax.inject.version>
     <joda.time.version>2.9.9</joda.time.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.12</junit.version>
@@ -229,6 +230,12 @@
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guice.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>${javax.inject.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
