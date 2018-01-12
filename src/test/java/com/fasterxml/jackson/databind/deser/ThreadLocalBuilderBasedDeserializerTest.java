@@ -18,6 +18,7 @@ package com.fasterxml.jackson.databind.deser;
 import com.arpnetworking.commons.builder.ThreadLocalBuilder;
 import com.arpnetworking.commons.jackson.databind.ObjectMapperFactory;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -103,6 +104,12 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
         }
     }
 
+    @Test(expected = JsonProcessingException.class)
+    public void testConstructionFailure() throws IOException {
+        OBJECT_MAPPER.readValue("{}", MyThrowingThreadLocalPojo.class);
+        Assert.fail("build should have thrown");
+    }
+
     private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.getInstance();
 
     private static final class TestBeanWithCreator {
@@ -184,6 +191,25 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
 
             @NotNull
             private Integer _i;
+        }
+    }
+
+    private static final class MyThrowingThreadLocalPojo {
+
+        private MyThrowingThreadLocalPojo(final Builder builder) {
+            throw new NullPointerException("Construction failure");
+        }
+
+        private static final class Builder extends ThreadLocalBuilder<MyThrowingThreadLocalPojo> {
+
+            /* package private */ Builder() {
+                super(MyThrowingThreadLocalPojo::new);
+            }
+
+            @Override
+            protected void reset() {
+                // Nothing to do
+            }
         }
     }
 }

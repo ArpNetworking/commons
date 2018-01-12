@@ -18,6 +18,10 @@ package com.arpnetworking.commons.builder;
 import com.arpnetworking.commons.slf4j.RateLimitedLogger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -105,11 +109,7 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
         // Pull an instance from the queue or create one if one does not exist
         @Nullable ThreadLocalBuilder<?> threadLocalBuilder = instanceQueue.poll();
         if (threadLocalBuilder == null) {
-            try {
-                threadLocalBuilder = threadLocalBuilderClass.newInstance();
-            } catch (final IllegalAccessException | InstantiationException e) {
-                throw new RuntimeException("Cannot instantiate builder: " + threadLocalBuilderClass.getName(), e);
-            }
+            threadLocalBuilder = instantiateBuilder(threadLocalBuilderClass);
         }
 
         // Reset the builder instance
@@ -190,6 +190,26 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
      * and also before any re-use of the builder instance.
      */
     protected abstract void reset();
+
+    @SuppressWarnings("rawtypes")
+    private static ThreadLocalBuilder<?> instantiateBuilder(
+            final Class<? extends ThreadLocalBuilder> threadLocalBuilderClass) {
+        final ThreadLocalBuilder<?> threadLocalBuilder;
+        try {
+            @SuppressWarnings("unchecked")
+            final Constructor<ThreadLocalBuilder<?>> constructor =
+                    (Constructor<ThreadLocalBuilder<?>>) threadLocalBuilderClass.getDeclaredConstructor();
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                constructor.setAccessible(true);
+                return null;
+            });
+            threadLocalBuilder = constructor.newInstance();
+        } catch (final IllegalAccessException | NoSuchMethodException
+                | InvocationTargetException | InstantiationException e) {
+            throw new RuntimeException("Cannot instantiate builder: " + threadLocalBuilderClass.getName(), e);
+        }
+        return threadLocalBuilder;
+    }
 
     /**
      * Protected constructor for subclasses.

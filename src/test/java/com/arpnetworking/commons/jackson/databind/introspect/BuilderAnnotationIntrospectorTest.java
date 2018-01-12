@@ -15,10 +15,12 @@
  */
 package com.arpnetworking.commons.jackson.databind.introspect;
 
+import com.arpnetworking.commons.builder.OvalBuilder;
 import com.arpnetworking.commons.builder.ThreadLocalBuilder;
 import com.arpnetworking.commons.jackson.databind.ObjectMapperFactory;
 import com.arpnetworking.commons.jackson.databind.annotation.JsonIgnoreBuilder;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
@@ -187,6 +189,12 @@ public class BuilderAnnotationIntrospectorTest {
         Assert.assertNotNull(pojo);
         Assert.assertEquals("foo", pojo.getStrVal());
         Assert.assertEquals(countBefore, countAfter);
+    }
+
+    @Test(expected = JsonProcessingException.class)
+    public void testPojoConstructionFailure() throws IOException {
+        OBJECT_MAPPER.readValue("{}", MyThrowingThreadLocalPojo.class);
+        Assert.fail("build should have thrown");
     }
 
     private BuilderAnnotationIntrospector _introspector;
@@ -385,6 +393,20 @@ public class BuilderAnnotationIntrospectorTest {
             private Integer _integerValue;
             private String _strVal;
             private String _source = "builder";
+        }
+    }
+
+    private static final class MyThrowingThreadLocalPojo {
+
+        private MyThrowingThreadLocalPojo(final MyThrowingThreadLocalPojo.Builder builder) {
+            throw new NullPointerException("Construction failure");
+        }
+
+        private static final class Builder extends OvalBuilder<MyThrowingThreadLocalPojo> {
+
+            /* package private */ Builder() {
+                super(MyThrowingThreadLocalPojo::new);
+            }
         }
     }
 }

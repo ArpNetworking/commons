@@ -91,12 +91,20 @@ public final class ThreadLocalBuilderTest {
         Assert.assertEquals("bar", pojoB.getValue());
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testInvalidBuilder() {
-        InvalidThreadLocalPojo.Builder.build(
-                InvalidThreadLocalPojo.Builder.class,
+    @Test
+    public void testPrivatePojoBuilder() {
+        final PrivateThreadLocalPojo pojo = PrivateThreadLocalPojo.Builder.build(
+                PrivateThreadLocalPojo.Builder.class,
                 builder -> { });
-        Assert.fail("Builder construction should have failed");
+        Assert.assertNotNull(pojo);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testFailingPojoBuilder() {
+        ThrowingThreadLocalPojo.Builder.build(
+                ThrowingThreadLocalPojo.Builder.class,
+                builder -> { });
+        Assert.fail("Expected exception not thrown");
     }
 
     @Test
@@ -131,9 +139,6 @@ public final class ThreadLocalBuilderTest {
     }
 
     private static final class MyThreadLocalPojo {
-
-        // IMPORTANT: Because of the reset invocation counting you cannot use
-        // this builder class for any tests other than
 
         public String getValue() {
             return _value;
@@ -208,14 +213,30 @@ public final class ThreadLocalBuilderTest {
         }
     }
 
-    private static final class InvalidThreadLocalPojo {
+    private static final class PrivateThreadLocalPojo {
 
-        private InvalidThreadLocalPojo(final Builder builder) { }
+        private PrivateThreadLocalPojo(final Builder builder) { }
 
-        private static final class Builder extends ThreadLocalBuilder<InvalidThreadLocalPojo> {
+        private static final class Builder extends ThreadLocalBuilder<PrivateThreadLocalPojo> {
 
             private Builder() {
-                super(InvalidThreadLocalPojo::new);
+                super(PrivateThreadLocalPojo::new);
+            }
+
+            @Override
+            protected void reset() { }
+        }
+    }
+
+    private static final class ThrowingThreadLocalPojo {
+
+        private ThrowingThreadLocalPojo(final Builder builder) { }
+
+        private static final class Builder extends ThreadLocalBuilder<ThrowingThreadLocalPojo> {
+
+            private Builder() {
+                super(ThrowingThreadLocalPojo::new);
+                throw new NullPointerException("Builder construction exception");
             }
 
             @Override
