@@ -221,6 +221,10 @@ public class ThreadLocalBuilderBasedDeserializer extends BeanDeserializerBase {
                     });
         } catch (final WrappedIOExceptionException e) {
             throw e.getCause();
+            // CHECKSTYLE.OFF: IllegalCatch - Match behavior in BuilderBasedDeserializer
+        } catch (final Exception e) {
+            // CHECKSTYLE.ON: IllegalCatch
+            return _underlyingBuilderBasedDeserializer.wrapInstantiationProblem(e, ctxt);
         }
     }
 
