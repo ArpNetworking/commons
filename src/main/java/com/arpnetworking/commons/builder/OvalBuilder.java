@@ -343,7 +343,8 @@ public abstract class OvalBuilder<T> implements Builder<T> {
         @Override
         public Boolean apply(final Class<? extends Builder<?>> targetClazz) {
             Class<?> clazz = targetClazz;
-            while (!OvalBuilder.class.getName().equals(clazz.getName())) {
+            while (!OvalBuilder.class.getName().equals(clazz.getName())
+                    && !ThreadLocalBuilder.class.getName().equals(clazz.getName())) {
                 final WovenValidation processedAnnotation = clazz.getDeclaredAnnotation(WovenValidation.class);
                 boolean found = false;
                 if (processedAnnotation != null) {
