@@ -29,7 +29,7 @@
   <name>Common Library</name>
   <description>Common utilities.</description>
   <url>https://github.com/ArpNetworking/commons</url>
-  <version>1.15.4-SNAPSHOT</version>
+  <version>1.16.0</version>
 
   <licenses>
     <license>
@@ -65,7 +65,7 @@
     <connection>scm:git:git@github.com:arpnetworking/commons.git</connection>
     <developerConnection>scm:git:git@github.com:arpnetworking/commons.git</developerConnection>
     <url>https://github.com/arpnetworking/commons</url>
-    <tag>HEAD</tag>
+    <tag>commons-1.16.0</tag>
   </scm>
 
   <properties>
