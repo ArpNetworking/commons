@@ -34,6 +34,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -207,6 +208,20 @@ public class ObjectMapperFactoryTest {
         final ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
         final String actualPresentValue = objectMapper.writeValueAsString(Duration.standardSeconds(10));
         Assert.assertEquals("\"PT10S\"", actualPresentValue);
+    }
+
+    @Test
+    public void testZonedDateTimeSerialization() throws IOException {
+        final ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
+        final String actualValue = objectMapper.writeValueAsString(ZonedDateTime.parse("2014-03-24T12:15:40.008Z"));
+        Assert.assertEquals("\"2014-03-24T12:15:40.008Z\"", actualValue);
+    }
+
+    @Test
+    public void testZonedDateTimeDeserialization() throws IOException {
+        final ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
+        final ZonedDateTime actualValue = objectMapper.readValue("\"2014-03-24T12:15:40.008Z\"", ZonedDateTime.class);
+        Assert.assertEquals(actualValue, ZonedDateTime.parse("2014-03-24T12:15:40.008Z"));
     }
 
     /**
