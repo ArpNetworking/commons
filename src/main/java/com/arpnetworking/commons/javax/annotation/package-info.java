@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Inscope Metrics, Inc.
+ * Copyright 2018 Ville Koskela
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 @ParametersAreNonnullByDefault
 @ReturnValuesAreNonnullByDefault
-package com.arpnetworking.commons.java.util.function;
-
-import com.arpnetworking.commons.javax.annotation.ReturnValuesAreNonnullByDefault;
+package com.arpnetworking.commons.javax.annotation;
 
 import javax.annotation.ParametersAreNonnullByDefault;
