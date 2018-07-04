@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 /**
  * Implementation of {@code Supplier} that provides the same single instance
  * each time using double-check locking. This means that it is open to
- * reflective and serialization attacks in that it does not gurantee that only
+ * reflective and serialization attacks in that it does not guarantee that only
  * a single instance of {@code <T>} exists in the entire application. However,
  * it does guarantee that ony a single instance is returned from this
  * {@code Supplier} for the life of the application.
