@@ -15,6 +15,9 @@
  */
 
 @ParametersAreNonnullByDefault
+@ReturnValuesAreNonnullByDefault
 package com.arpnetworking.commons.jackson.databind.annotation;
+
+import com.arpnetworking.commons.javax.annotation.ReturnValuesAreNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

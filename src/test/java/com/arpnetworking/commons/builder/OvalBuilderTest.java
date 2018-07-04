@@ -639,7 +639,7 @@ public class OvalBuilderTest {
     @SuppressWarnings("deprecation")
     private static final class MethodBean {
 
-        public Object getValid() {
+        public @Nullable Object getValid() {
             return null;
         }
 
@@ -647,21 +647,21 @@ public class OvalBuilderTest {
             return false;
         }
 
-        public Object valid3() {
+        public @Nullable Object valid3() {
             return null;
         }
 
         public void getInvalidReturnType() {}
 
-        public Object doInvalidName() {
+        public @Nullable Object doInvalidName() {
             return null;
         }
 
-        public Object getInvalidArgument(final Object value) {
+        public @Nullable Object getInvalidArgument(final Object value) {
             return null;
         }
 
-        public Object getInvalidAVariablergument(final Object... values) {
+        public @Nullable Object getInvalidAVariablergument(final Object... values) {
             return null;
         }
 
@@ -672,37 +672,37 @@ public class OvalBuilderTest {
                 super(MethodBean.class);
             }
 
-            public Builder setValid(final Object value) {
+            public @Nullable Builder setValid(final Object value) {
                 return null;
             }
 
-            public Builder setValid2(final Object value) {
+            public @Nullable Builder setValid2(final Object value) {
                 return null;
             }
 
-            public Builder setValid3(final Object value) {
+            public @Nullable Builder setValid3(final Object value) {
                 return null;
             }
 
-            public Builder doInvalidName(final Object value) {
+            public @Nullable Builder doInvalidName(final Object value) {
                 return null;
             }
 
             public void setInvalidReturnType(final Object value) {}
 
-            public Builder setInvalidNoArgument() {
+            public @Nullable Builder setInvalidNoArgument() {
                 return null;
             }
 
-            public Builder setInvalidMultipleArguments(final Object value1, final Object value2) {
+            public @Nullable Builder setInvalidMultipleArguments(final Object value1, final Object value2) {
                 return null;
             }
 
-            public Builder setInvalidVariableArgument(final Object... values) {
+            public @Nullable Builder setInvalidVariableArgument(final Object... values) {
                 return null;
             }
 
-            public Builder setNoMatchingGetter(final Object value) {
+            public @Nullable Builder setNoMatchingGetter(final Object value) {
                 return null;
             }
         }
