@@ -28,6 +28,9 @@ import java.util.function.Supplier;
  * it does guarantee that ony a single instance is returned from this
  * {@code Supplier} for the life of the application.
  *
+ * Dependencies:
+ * <i>None</i>
+ *
  * @param <T> the type of object supplied by this {@code Supplier}
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
