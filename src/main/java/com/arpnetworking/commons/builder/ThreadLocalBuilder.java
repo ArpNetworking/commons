@@ -48,6 +48,12 @@ import javax.annotation.Nullable;
  *
  * All concrete subclasses must implement a public no-args constructor.
  *
+ * Dependencies:
+ * <ul>
+ *     <li>net.sf.oval:oval</li>
+ *     <li>com.google.guava:guava</li>
+ * </ul>
+ *
  * @param <T> The type of object created by the builder.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
