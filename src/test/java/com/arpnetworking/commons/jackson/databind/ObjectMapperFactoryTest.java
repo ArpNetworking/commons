@@ -24,8 +24,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
-import org.joda.time.Duration;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,6 +33,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +41,7 @@ import java.util.Optional;
 /**
  * Tests for <code>ObjectMapperFactory</code>.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class ObjectMapperFactoryTest {
 
@@ -147,7 +147,7 @@ public class ObjectMapperFactoryTest {
         final ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
         ObjectMapperFactory.registerAdditionalModules(
                 objectMapper,
-                s -> "com.fasterxml.jackson.datatype.guava.GuavaModule,com.fasterxml.jackson.datatype.joda.JodaModule");
+                s -> "com.fasterxml.jackson.datatype.guava.GuavaModule,com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
 
         final ArgumentCaptor<Module> captor = ArgumentCaptor.forClass(Module.class);
         Mockito.verify(objectMapper, Mockito.times(2)).registerModule(captor.capture());
@@ -155,7 +155,7 @@ public class ObjectMapperFactoryTest {
         final List<Module> registered = captor.getAllValues();
         Assert.assertEquals(2, registered.size());
         Assert.assertTrue(registered.get(0) instanceof GuavaModule);
-        Assert.assertTrue(registered.get(1) instanceof JodaModule);
+        Assert.assertTrue(registered.get(1) instanceof JavaTimeModule);
     }
 
     @Test
@@ -206,7 +206,7 @@ public class ObjectMapperFactoryTest {
     @Test
     public void testDurationSerialization() throws JsonProcessingException {
         final ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
-        final String actualPresentValue = objectMapper.writeValueAsString(Duration.standardSeconds(10));
+        final String actualPresentValue = objectMapper.writeValueAsString(Duration.ofSeconds(10));
         Assert.assertEquals("\"PT10S\"", actualPresentValue);
     }
 

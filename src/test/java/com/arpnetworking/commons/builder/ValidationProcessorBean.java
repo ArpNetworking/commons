@@ -63,7 +63,7 @@ import javax.annotation.Nullable;
 /**
  * Test bean pojo for validation processor.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 @SuppressFBWarnings("EI_EXPOSE_REP")
 public final class ValidationProcessorBean {

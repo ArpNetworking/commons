@@ -18,7 +18,7 @@
   <parent>
     <groupId>com.arpnetworking.build</groupId>
     <artifactId>arpnetworking-parent-pom</artifactId>
-    <version>1.1.8</version>
+    <version>2.0.1</version>
     <relativePath />
   </parent>
 
@@ -43,18 +43,18 @@
   <developers>
     <developer>
       <id>brandonarp</id>
-      <email>brandon.arp@inscopemetrics.com</email>
+      <email>brandon.arp@inscopemetrics.io</email>
       <organization>Inscope Metrics</organization>
-      <organizationUrl>http://www.inscopemetrics.com</organizationUrl>
+      <organizationUrl>http://www.inscopemetrics.io</organizationUrl>
       <roles>
         <role>developer</role>
       </roles>
     </developer>
     <developer>
       <id>villekoskela</id>
-      <email>ville.koskela@inscopemetrics.com</email>
+      <email>ville.koskela@inscopemetrics.io</email>
       <organization>Inscope Metrics</organization>
-      <organizationUrl>http://www.inscopemetrics.com</organizationUrl>
+      <organizationUrl>http://www.inscopemetrics.io</organizationUrl>
       <roles>
         <role>developer</role>
       </roles>
@@ -70,28 +70,28 @@
 
   <properties>
     <!--Dependency versions-->
-    <akka.version>2.5.6</akka.version>
-    <cglib.version>3.2.6</cglib.version>
-    <findbugs.annotations.version>3.0.1</findbugs.annotations.version>
-    <guava.version>25.1-jre</guava.version>
-    <guice.version>4.2.0</guice.version>
-    <hamcrest.version>2.0.0.0</hamcrest.version>
-    <jackson.version>2.9.6</jackson.version>
-    <javassist.version>3.22.0-GA</javassist.version>
-    <javassist.maven.core.version>0.2.1</javassist.maven.core.version>
+    <akka.version>2.5.25</akka.version>
+    <cglib.version>3.3.0</cglib.version>
+    <guava.version>28.1-jre</guava.version>
+    <guice.version>4.2.2</guice.version>
+    <hamcrest.version>2.1</hamcrest.version>
+    <jackson.version>2.9.9</jackson.version>
+    <jackson.databind.version>2.9.9</jackson.databind.version>
+    <javassist.version>3.25.0-GA</javassist.version>
+    <javassist.maven.core.version>0.2.2</javassist.maven.core.version>
     <javax.inject.version>1</javax.inject.version>
-    <joda.time.version>2.10</joda.time.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.12</junit.version>
-    <mockito.version>2.19.0</mockito.version>
+    <mockito.version>2.23.4</mockito.version>
     <oval.version>1.90</oval.version>
-    <scala.version>2.12</scala.version>
-    <scala.library.version>2.12.6</scala.library.version>
+    <scala.version>2.13</scala.version>
+    <scala.library.version>2.13.1</scala.library.version>
     <slf4j.version>1.7.25</slf4j.version>
-    <system.rules.version>1.18.0</system.rules.version>
+    <spotbugs.annotations.version>3.1.12</spotbugs.annotations.version>
+    <system.rules.version>1.19.0</system.rules.version>
 
     <!-- Plugin versions -->
-    <javassist.maven.plugin.version>0.2.1</javassist.maven.plugin.version>
+    <javassist.maven.plugin.version>0.2.2</javassist.maven.plugin.version>
 
     <!-- Code Coverage -->
     <jacoco.check.line.coverage>1.0</jacoco.check.line.coverage>
@@ -117,8 +117,8 @@
         <artifactId>maven-failsafe-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>com.rimerosolutions.maven.plugins</groupId>
@@ -167,9 +167,9 @@
       <version>${jsr305.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>findbugs-annotations</artifactId>
-      <version>${findbugs.annotations.version}</version>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-annotations</artifactId>
+      <version>${spotbugs.annotations.version}</version>
     </dependency>
     <!-- Provided -->
     <dependency>
@@ -193,7 +193,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
+      <version>${jackson.databind.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -205,12 +205,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jdk8</artifactId>
-      <version>${jackson.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-joda</artifactId>
       <version>${jackson.version}</version>
       <scope>provided</scope>
     </dependency>
@@ -267,18 +261,21 @@
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
       <scope>provided</scope>
+      <exclusions>
+        <!-- TODO(ville): Remove once JUnit depends on modern hamcrest; see:
+            http://hamcrest.org/JavaHamcrest/distributables
+        -->
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- Test - General -->
     <dependency>
       <groupId>org.hamcrest</groupId>
-      <artifactId>java-hamcrest</artifactId>
+      <artifactId>hamcrest</artifactId>
       <version>${hamcrest.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>${joda.time.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

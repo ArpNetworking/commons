@@ -28,7 +28,7 @@ import javax.annotation.meta.TypeQualifierDefault;
  * {@code ParametersAreNonnullByDefault} found in {@code javax.annotation} in
  * the {@code com.google.code.findbugs:jsr305} package.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 @Documented
 @Nonnull

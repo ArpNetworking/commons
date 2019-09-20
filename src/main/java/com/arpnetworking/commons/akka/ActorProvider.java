@@ -26,7 +26,7 @@ import javax.inject.Provider;
 /**
  * A dependency injection {@link Provider} to assist in the creation of Akka actors.
  *
- * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
  */
 public final class ActorProvider implements Provider<ActorRef> {
     @Override

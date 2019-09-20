@@ -28,7 +28,7 @@ import java.nio.charset.Charset;
 /**
  * Tests for <code>ImmutableObjectMapper</code>.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class ImmutableObjectMapperTest {
 

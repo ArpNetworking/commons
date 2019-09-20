@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Tests for the CompletableFutures class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class CompletableFuturesTest {
 

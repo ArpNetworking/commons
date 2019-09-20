@@ -84,7 +84,7 @@ import java.util.Set;
  *     <li>com.google.guava:guava</li>
  * </ul>
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class ValidationProcessor implements ClassProcessor {
 

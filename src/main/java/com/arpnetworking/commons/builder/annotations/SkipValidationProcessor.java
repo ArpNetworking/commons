@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  *
  * <b>Important:</b> The annotation must be on the builder class and not its target pojo.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

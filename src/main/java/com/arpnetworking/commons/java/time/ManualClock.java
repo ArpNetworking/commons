@@ -29,7 +29,7 @@ import java.time.ZoneId;
  *     <li><i>None</i></li>
  * </ul>
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class ManualClock extends Clock {
 

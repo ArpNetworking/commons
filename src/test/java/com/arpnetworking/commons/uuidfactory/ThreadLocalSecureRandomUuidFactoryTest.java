@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * The mutex allows us to make sure that the property is set for one, but not the other.  Unfortunately,
  * this means we must also restore the original state of the EGD property to avoid a race.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class ThreadLocalSecureRandomUuidFactoryTest {
     @Test

@@ -41,7 +41,7 @@ import java.util.Set;
  *
  * Consumers of Arpnetworking Commons should _not_ depend directly on this class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class ThreadLocalBuilderBasedDeserializer extends BeanDeserializerBase {
 

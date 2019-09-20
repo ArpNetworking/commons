@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * <b>Note</b>: This class is automatically applied by the weaver and should not be added manually to any class.
  * <b>Important:</b> The annotation must be on the builder class and not its target pojo.
  *
- * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

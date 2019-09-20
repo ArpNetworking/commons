@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import scala.collection.JavaConversions;
+import scala.collection.JavaConverters;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -35,7 +35,7 @@ import java.util.Iterator;
 /**
  * Tests for the GuiceActorCreator class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class GuiceActorCreatorTest {
 
@@ -47,7 +47,7 @@ public class GuiceActorCreatorTest {
     @Test
     public void testCreatorProps() {
         final Props props = GuiceActorCreator.props(_injector, TestActor.class);
-        final Collection<Object> args = JavaConversions.asJavaCollection(props.args());
+        final Collection<Object> args = JavaConverters.asJava(props.args());
         Assert.assertEquals(2, args.size());
         final Iterator<Object> argIterator = args.iterator();
         Assert.assertSame(_injector, argIterator.next());

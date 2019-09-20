@@ -37,7 +37,7 @@ import java.util.function.Function;
 /**
  * Tests for the CachingHostResolver class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 @RunWith(Parameterized.class)
 public class CachingHostResolverTest {

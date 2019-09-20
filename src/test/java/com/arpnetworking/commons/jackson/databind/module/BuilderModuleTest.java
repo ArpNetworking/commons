@@ -33,7 +33,7 @@ import java.util.Objects;
 /**
  * Test for the BuilderModule class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class BuilderModuleTest {
 

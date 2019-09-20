@@ -45,7 +45,7 @@ import java.util.UUID;
  * version 1.8.0_92-b14.
  *
  * @author Matthew Hayter (mhayter at groupon dot com)
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class DefaultUuidFactory implements UuidFactory {
 

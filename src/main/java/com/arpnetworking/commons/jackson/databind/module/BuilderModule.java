@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  * </ul>
  *
  * @author Gil Markham (gil at groupon dot com)
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class BuilderModule extends SimpleModule {
 

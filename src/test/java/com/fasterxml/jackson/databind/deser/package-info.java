@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Groupon.com
+ * Copyright 2019 Inscope Metrics
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.arpnetworking.commons.hostresolver;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+@ParametersAreNonnullByDefault
+@ReturnValuesAreNonnullByDefault
+package com.fasterxml.jackson.databind.deser;
 
-/**
- * Resolves a host name using the built-in java functions.
- *
- * Dependencies:
- * <ul>
- *     <li><i>None</i></li>
- * </ul>
- *
- * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
- */
-public class DefaultHostResolver implements HostResolver {
+import com.arpnetworking.commons.javax.annotation.ReturnValuesAreNonnullByDefault;
 
-    @Override
-    public String getLocalHostName() throws UnknownHostException {
-        return InetAddress.getLocalHost().getCanonicalHostName();
-    }
-}
+import javax.annotation.ParametersAreNonnullByDefault;
