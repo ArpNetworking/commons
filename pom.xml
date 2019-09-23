@@ -75,8 +75,7 @@
     <guava.version>28.1-jre</guava.version>
     <guice.version>4.2.2</guice.version>
     <hamcrest.version>2.1</hamcrest.version>
-    <jackson.version>2.9.9</jackson.version>
-    <jackson.databind.version>2.9.9</jackson.databind.version>
+    <jackson.version>2.9.10</jackson.version>
     <javassist.version>3.25.0-GA</javassist.version>
     <javassist.maven.core.version>0.2.2</javassist.maven.core.version>
     <javax.inject.version>1</javax.inject.version>
@@ -193,7 +192,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson.databind.version}</version>
+      <version>${jackson.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
