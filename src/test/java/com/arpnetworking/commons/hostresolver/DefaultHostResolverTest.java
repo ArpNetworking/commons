@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 /**
  * Tests for the DefaultHostResolver class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 @RunWith(Parameterized.class)
 public class DefaultHostResolverTest {

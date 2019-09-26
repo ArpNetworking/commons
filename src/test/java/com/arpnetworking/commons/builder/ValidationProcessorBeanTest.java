@@ -65,7 +65,7 @@ import javax.annotation.Nullable;
  * Tests for the <code>ValidationProcessorBean</code> class's
  * <code>OvalBuilder</code> transformed by <code>ValidationProcessor</code>.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class ValidationProcessorBeanTest {
 

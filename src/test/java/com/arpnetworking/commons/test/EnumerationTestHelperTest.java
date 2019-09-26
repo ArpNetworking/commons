@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * Tests for the {@link EnumerationTestHelper} class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class EnumerationTestHelperTest {
 

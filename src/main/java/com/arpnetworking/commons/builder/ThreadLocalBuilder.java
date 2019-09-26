@@ -56,7 +56,7 @@ import javax.annotation.Nullable;
  *
  * @param <T> The type of object created by the builder.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
 

@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 /**
  * Tests for the SingletonSupplier class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class SingletonSupplierTest {
 

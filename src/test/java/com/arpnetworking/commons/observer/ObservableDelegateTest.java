@@ -22,7 +22,7 @@ import org.mockito.Mockito;
 /**
  * Tests for the ObservableDelegate class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class ObservableDelegateTest {
 

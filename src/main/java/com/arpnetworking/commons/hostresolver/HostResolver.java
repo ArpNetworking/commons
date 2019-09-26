@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  *     <li><i>None</i></li>
  * </ul>
  *
- * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
  */
 public interface HostResolver extends Supplier<String> {
 

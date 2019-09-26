@@ -36,7 +36,7 @@ import java.util.Optional;
  *     <li>junit:junit</li>
  * </ul>
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class BuildableTestHelper {
 

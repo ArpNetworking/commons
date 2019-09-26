@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.deser.ThreadLocalBuilderBasedDeserializer;
  * Bean deserializer builder for Jackson which leverages
  * {@link ThreadLocalBuilder} instances.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class ThreadLocalBuilderBeanDeserializerBuilder extends BeanDeserializerBuilder {
 

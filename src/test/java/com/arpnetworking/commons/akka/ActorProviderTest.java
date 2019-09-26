@@ -28,7 +28,7 @@ import org.mockito.Mockito;
 /**
  * Tests for the ActorProvider class.
  *
- * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
  */
 public final class ActorProviderTest {
 

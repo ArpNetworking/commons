@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 /**
  * Tests for the {@link BuildableTestHelper} class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class BuildableTestHelperTest {
 

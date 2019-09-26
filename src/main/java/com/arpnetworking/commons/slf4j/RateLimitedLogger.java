@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Rate limited {@code Logger} wrapper.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class RateLimitedLogger {
 

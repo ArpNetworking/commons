@@ -25,7 +25,7 @@ package com.arpnetworking.commons.builder;
  *
  * @param <T> The type of the object created by this builder.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public interface Builder<T> {
 

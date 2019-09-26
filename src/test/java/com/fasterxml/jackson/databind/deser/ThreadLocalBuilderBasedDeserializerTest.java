@@ -33,7 +33,7 @@ import java.io.IOException;
 /**
  * Tests for the ThreadLocalBuilderBasedDeserializer class.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class ThreadLocalBuilderBasedDeserializerTest {
 

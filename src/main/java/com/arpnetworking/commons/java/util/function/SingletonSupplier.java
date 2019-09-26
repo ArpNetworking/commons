@@ -33,7 +33,7 @@ import java.util.function.Supplier;
  *
  * @param <T> the type of object supplied by this {@code Supplier}
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class SingletonSupplier<T> implements Supplier<T> {
 

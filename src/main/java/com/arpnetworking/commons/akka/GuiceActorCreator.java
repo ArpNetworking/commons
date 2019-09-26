@@ -30,7 +30,7 @@ import com.google.inject.Injector;
  *     <li>org.scala-lang:scala-library</li>
  * </ul>
  *
- * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
  */
 public class GuiceActorCreator implements IndirectActorProducer {
 

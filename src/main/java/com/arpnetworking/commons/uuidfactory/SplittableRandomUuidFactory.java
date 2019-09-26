@@ -45,8 +45,8 @@ import java.util.UUID;
  * 1600 Mhz DDR3 and a 256 GB SSD running Mac OS 10.12.2 under Oracle JRE
  * version 1.8.0_92-b14.
  *
- * @author Brandon Arp (brandon dot arp at inscopemetrics dot com)
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class SplittableRandomUuidFactory implements UuidFactory {
 

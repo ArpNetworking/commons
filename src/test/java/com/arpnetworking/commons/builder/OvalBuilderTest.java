@@ -37,7 +37,7 @@ import javax.naming.NamingException;
  * is not to test Oval, but the OvalBuilder and serve as illustration with a few
  * simple use cases.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public class OvalBuilderTest {
 

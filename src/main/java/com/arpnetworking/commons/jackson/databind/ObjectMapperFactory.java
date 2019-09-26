@@ -38,12 +38,11 @@ import java.util.function.Function;
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-guava (Optional)</li>
  *     <li>com.google.guava:guava (Optional; only required if above is used)</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-jdk8 (Optional)</li>
- *     <li>com.fasterxml.jackson.datatype:jackson-datatype-joda (Optional)</li>
  *     <li>com.fasterxml.jackson.datatype:jackson-datatype-jsr310 (Optional)</li>
  *     <li>cglib:cglib (3.1+; transitively through ImmutableObjectMapper)</li>
  * </ul>
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class ObjectMapperFactory {
 
@@ -86,7 +85,6 @@ public final class ObjectMapperFactory {
         objectMapper.registerModule(new BuilderModule());
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.guava.GuavaModule");
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.jdk8.Jdk8Module");
-        registerModule(objectMapper, "com.fasterxml.jackson.datatype.joda.JodaModule");
         registerModule(objectMapper, "com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
         registerAdditionalModules(objectMapper, System::getProperty);
         objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true);

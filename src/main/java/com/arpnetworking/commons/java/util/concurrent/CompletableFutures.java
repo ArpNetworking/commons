@@ -24,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
  * Dependencies:
  * <i>None</i>
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class CompletableFutures {
 

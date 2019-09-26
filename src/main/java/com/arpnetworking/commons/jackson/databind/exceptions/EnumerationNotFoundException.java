@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
  * </ul>
  *
  * @author Carlos Indo (carlos at groupon dot com)
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class EnumerationNotFoundException extends JsonProcessingException {
 

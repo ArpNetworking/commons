@@ -32,7 +32,7 @@ import java.util.function.Supplier;
  * </ul>
  *
  * @author Matthew Hayter (mhayter at groupon dot com)
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public interface UuidFactory extends Supplier<UUID> {
 

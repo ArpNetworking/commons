@@ -50,7 +50,7 @@ import java.util.function.Function;
  *
  * @param <T> The type of object created by the builder.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public abstract class OvalBuilder<T> implements Builder<T> {
 

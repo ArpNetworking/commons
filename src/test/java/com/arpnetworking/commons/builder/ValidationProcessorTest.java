@@ -52,7 +52,7 @@ import javax.annotation.Nullable;
 /**
  * Tests for the <code>ValidationProcessor</code>.
  *
- * @author Ville Koskela (ville dot koskela at inscopemetrics dot com)
+ * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
 public final class ValidationProcessorTest {
 
