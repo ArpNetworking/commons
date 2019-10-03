@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fasterxml.jackson.databind.deser;
+package com.arpnetworking.commons.jackson.databind.deser;
 
 import com.arpnetworking.commons.builder.ThreadLocalBuilder;
 import com.arpnetworking.commons.jackson.databind.ObjectMapperFactory;
@@ -26,9 +26,10 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import net.sf.oval.constraint.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Tests for the ThreadLocalBuilderBasedDeserializer class.
@@ -38,24 +39,42 @@ import java.io.IOException;
 public final class ThreadLocalBuilderBasedDeserializerTest {
 
     @Test
-    public void testSupportsUpdate() {
-        @SuppressWarnings("unchecked")
-        final Class<ThreadLocalBuilder<?>> threadLocalBuilder = (Class) TestBeanWithCreator.Builder.class;
-        Assert.assertFalse(
-                new ThreadLocalBuilderBasedDeserializer(threadLocalBuilder, Mockito.mock(BuilderBasedDeserializer.class))
-                        .supportsUpdate(OBJECT_MAPPER.getDeserializationConfig()));
-    }
-
-    @Test
-    public void testNotObjectDeserializationFromObject() throws IOException {
+    public void testObjectWithValueCreatorDeserializationFromObject() throws IOException {
         final TestBeanWithCreator bean = OBJECT_MAPPER.readValue("{\"i\":123}", TestBeanWithCreator.class);
         Assert.assertEquals(123, bean.getI());
     }
 
     @Test
-    public void testNotObjectDeserializationFromValue() throws IOException {
+    public void testObjectWithValueCreatorDeserializationFromValue() throws IOException {
         final TestBeanWithCreator bean = OBJECT_MAPPER.readValue("123", TestBeanWithCreator.class);
         Assert.assertEquals(123, bean.getI());
+    }
+
+    @Test
+    public void testObjectWithArrayCreatorDeserializationFromObject() throws IOException {
+        final TestBeanWithArrayCreator bean = ObjectMapperFactory.createInstance()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
+                .readValue("{\"i\":3,\"j\":1}", TestBeanWithArrayCreator.class);
+        Assert.assertEquals(3, bean.getI());
+        Assert.assertEquals(1, bean.getJ());
+    }
+
+    @Test
+    public void testObjectWithArrayCreatorDeserializationFromArray() throws IOException {
+        final TestBeanWithArrayCreator bean = ObjectMapperFactory.createInstance()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
+                .readValue("[3,1]", TestBeanWithArrayCreator.class);
+        Assert.assertEquals(3, bean.getI());
+        Assert.assertEquals(1, bean.getJ());
+    }
+
+    @Test
+    public void testObjectWithObjectCreatorDeserializationFromObject() throws IOException {
+        final TestBeanWithObjectCreator bean = ObjectMapperFactory.createInstance()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
+                .readValue("{\"i\":3,\"j\":1}", TestBeanWithObjectCreator.class);
+        Assert.assertEquals(3, bean.getI());
+        Assert.assertEquals(1, bean.getJ());
     }
 
     @Test(expected = IOException.class)
@@ -73,7 +92,7 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
             Assert.assertEquals(
                     "Cannot deserialize value of type `java.lang.Integer` from String \"foo\": not a valid Integer "
                     + "value\n at [Source: (String)\"{\"i\":\"foo\"}\"; line: 1, column: 6] (through reference chain: "
-                    + "com.fasterxml.jackson.databind.deser.ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder["
+                    + "com.arpnetworking.commons.jackson.databind.deser.ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder["
                     + "\"i\"])",
                     e.getMessage());
         }
@@ -95,10 +114,10 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
         } catch (final IOException e) {
             Assert.assertTrue(e instanceof UnrecognizedPropertyException);
             Assert.assertEquals(
-                    "Unrecognized field \"j\" (class com.fasterxml.jackson.databind.deser."
+                    "Unrecognized field \"j\" (class com.arpnetworking.commons.jackson.databind.deser."
                     + "ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder), not marked as ignorable (one known "
                     + "property: \"i\"])\n at [Source: (String)\"{\"i\":3,\"j\":\"foo\"}\"; line: 1, column: 13] "
-                    + "(through reference chain: com.fasterxml.jackson.databind.deser."
+                    + "(through reference chain: com.arpnetworking.commons.jackson.databind.deser."
                     + "ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder[\"j\"])",
                     e.getMessage());
         }
@@ -191,6 +210,124 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
 
             @NotNull
             private Integer _i;
+        }
+    }
+
+    private static final class TestBeanWithArrayCreator {
+        public int getI() {
+            return _i;
+        }
+
+        public int getJ() {
+            return _j;
+        }
+
+        private TestBeanWithArrayCreator(final Builder builder) {
+            _i = builder._i;
+            _j = builder._j;
+        }
+
+        private final int _i;
+        private final int _j;
+
+        // CHECKSTYLE.OFF: RedundantModifierCheck - Invoked reflectively
+        public static final class Builder extends ThreadLocalBuilder<TestBeanWithArrayCreator> {
+            // CHECKSTYLE.ON: RedundantModifierCheck
+
+            // CHECKSTYLE.OFF: RedundantModifierCheck - Invoked reflectively
+            public Builder() {
+                // CHECKSTYLE.ON: RedundantModifierCheck
+                super(TestBeanWithArrayCreator::new);
+            }
+
+            // CHECKSTYLE.OFF: RedundantModifierCheck - Invoked reflectively
+            @JsonCreator
+            public Builder(final List<Object> jsonArray) {
+                // CHECKSTYLE.ON: RedundantModifierCheck
+                super(TestBeanWithArrayCreator::new);
+                setI((Integer) jsonArray.get(0));
+                setJ((Integer) jsonArray.get(1));
+            }
+
+            public Builder setI(final Integer value) {
+                _i = value;
+                return this;
+            }
+
+            public Builder setJ(final Integer value) {
+                _j = value;
+                return this;
+            }
+
+            @Override
+            protected void reset() {
+                _i = null;
+                _j = null;
+            }
+
+            @NotNull
+            private Integer _i;
+            @NotNull
+            private Integer _j;
+        }
+    }
+
+    private static final class TestBeanWithObjectCreator {
+        public int getI() {
+            return _i;
+        }
+
+        public int getJ() {
+            return _j;
+        }
+
+        private TestBeanWithObjectCreator(final Builder builder) {
+            _i = builder._i;
+            _j = builder._j;
+        }
+
+        private final int _i;
+        private final int _j;
+
+        // CHECKSTYLE.OFF: RedundantModifierCheck - Invoked reflectively
+        public static final class Builder extends ThreadLocalBuilder<TestBeanWithObjectCreator> {
+            // CHECKSTYLE.ON: RedundantModifierCheck
+
+            // CHECKSTYLE.OFF: RedundantModifierCheck - Invoked reflectively
+            public Builder() {
+                // CHECKSTYLE.ON: RedundantModifierCheck
+                super(TestBeanWithObjectCreator::new);
+            }
+
+            // CHECKSTYLE.OFF: RedundantModifierCheck - Invoked reflectively
+            @JsonCreator
+            public Builder(final Map<String, Object> jsonObject) {
+                // CHECKSTYLE.ON: RedundantModifierCheck
+                super(TestBeanWithObjectCreator::new);
+                setI((Integer) jsonObject.get("i"));
+                setJ((Integer) jsonObject.get("j"));
+            }
+
+            public Builder setI(final Integer value) {
+                _i = value;
+                return this;
+            }
+
+            public Builder setJ(final Integer value) {
+                _j = value;
+                return this;
+            }
+
+            @Override
+            protected void reset() {
+                _i = null;
+                _j = null;
+            }
+
+            @NotNull
+            private Integer _i;
+            @NotNull
+            private Integer _j;
         }
     }
 

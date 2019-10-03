@@ -16,7 +16,7 @@
 
 @ParametersAreNonnullByDefault
 @ReturnValuesAreNonnullByDefault
-package com.fasterxml.jackson.databind.deser;
+package com.arpnetworking.commons.jackson.databind.deser;
 
 import com.arpnetworking.commons.javax.annotation.ReturnValuesAreNonnullByDefault;
 
