@@ -146,7 +146,31 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <configuration>
           <excludes>
-            <exclude>com/fasterxml/jackson/databind/deser/*</exclude>
+            <!-- TODO(ville): Remove the exclusion once we can remove code
+                copied from Jackson when there is a type factory method
+                available in the base class or some other strategy to reuse
+                the logic.
+
+                See:
+                https://github.com/FasterXML/jackson-databind/issues/2487
+            -->
+            <exclude>com/arpnetworking/commons/jackson/databind/deser/ThreadLocalBuilderBeanDeserializerBuilder.class</exclude>
+            <!-- TODO(ville): Remove the exclusion once we can upgrade
+                Jackson to a version that includes:
+
+                1) A wrapAndThrow implementation which returns the throwable
+                as well.
+
+                See:
+                https://github.com/FasterXML/jackson-databind/pull/1871
+
+                2) Addresses the difference between @JsonCreator behavior
+                between primitives and arrays.
+
+                See:
+                https://github.com/FasterXML/jackson-databind/issues/2486
+            -->
+            <exclude>com/arpnetworking/commons/jackson/databind/deser/ThreadLocalBuilderBasedDeserializer.class</exclude>
           </excludes>
         </configuration>
       </plugin>

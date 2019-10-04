@@ -19,9 +19,14 @@ import com.arpnetworking.commons.builder.ThreadLocalBuilder;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.PropertyMetadata;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerBuilder;
-import com.fasterxml.jackson.databind.deser.BuilderBasedDeserializer;
-import com.fasterxml.jackson.databind.deser.ThreadLocalBuilderBasedDeserializer;
+import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
+import com.fasterxml.jackson.databind.deser.impl.BeanPropertyMap;
+import com.fasterxml.jackson.databind.deser.impl.ObjectIdValueProperty;
+
+import java.util.Collection;
 
 /**
  * Bean deserializer builder for Jackson which leverages
@@ -46,16 +51,81 @@ public final class ThreadLocalBuilderBeanDeserializerBuilder extends BeanDeseria
         _threadLocalBuilderClass = threadLocalBuilderClass;
     }
 
+    /**
+     * Copied from {@link com.fasterxml.jackson.databind.deser.BeanDeserializerBuilder}
+     * and modified to create {@link ThreadLocalBuilderBasedDeserializer} instead.
+     *
+     * Instead the {@link com.fasterxml.jackson.databind.deser.BeanDeserializerBuilder}
+     * implementation should be be extensible to allow a different compatible builder
+     * deserializer to be instantiated instead of reproducing this entire method.
+     *
+     * See:
+     * https://github.com/FasterXML/jackson-databind/issues/2487
+     */
     @Override
     public JsonDeserializer<?> buildBuilderBased(
             final JavaType valueType,
             final String expBuildMethodName)
             throws JsonMappingException {
-        final BuilderBasedDeserializer underlyingBuilderBasedDeserializer =
-                (BuilderBasedDeserializer) super.buildBuilderBased(valueType, expBuildMethodName);
+        // First: validation; must have build method that returns compatible type
+        if (_buildMethod == null) {
+            // as per [databind#777], allow empty name
+            if (!expBuildMethodName.isEmpty()) {
+                _context.reportBadDefinition(_beanDesc.getType(),
+                        String.format("Builder class %s does not have build method (name: '%s')",
+                                _beanDesc.getBeanClass().getName(),
+                                expBuildMethodName));
+            }
+        } else {
+            // also: type of the method must be compatible
+            final Class<?> rawBuildType = _buildMethod.getRawReturnType();
+            final Class<?> rawValueType = valueType.getRawClass();
+            if ((rawBuildType != rawValueType)
+                    && !rawBuildType.isAssignableFrom(rawValueType)
+                    && !rawValueType.isAssignableFrom(rawBuildType)) {
+                _context.reportBadDefinition(_beanDesc.getType(),
+                        String.format("Build method '%s' has wrong return type (%s), not compatible with POJO type (%s)",
+                                _buildMethod.getFullName(),
+                                rawBuildType.getName(),
+                                valueType.getRawClass().getName()));
+            }
+        }
+        // And if so, we can try building the deserializer
+        final Collection<SettableBeanProperty> props = _properties.values();
+        _fixAccess(props);
+        BeanPropertyMap propertyMap = BeanPropertyMap.construct(props,
+                _config.isEnabled(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES),
+                _collectAliases(props));
+        propertyMap.assignIndexes();
+
+        boolean anyViews = !_config.isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION);
+
+        if (!anyViews) {
+            for (SettableBeanProperty prop : props) {
+                if (prop.hasViews()) {
+                    anyViews = true;
+                    break;
+                }
+            }
+        }
+
+        if (_objectIdReader != null) {
+            // May or may not have annotations for id property; but no easy access.
+            // But hard to see id property being optional, so let's consider required at this point.
+            final ObjectIdValueProperty prop = new ObjectIdValueProperty(_objectIdReader,
+                    PropertyMetadata.STD_REQUIRED);
+            propertyMap = propertyMap.withProperty(prop);
+        }
 
         return new ThreadLocalBuilderBasedDeserializer(
                 _threadLocalBuilderClass,
-                underlyingBuilderBasedDeserializer);
+                this,
+                _beanDesc,
+                valueType,
+                propertyMap,
+                _backRefProperties,
+                _ignorableProps,
+                _ignoreAllUnknown,
+                anyViews);
     }
 }

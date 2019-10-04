@@ -66,6 +66,14 @@ public class BuilderModuleTest {
     @Test
     @Ignore
     public void testGenericRoundTrip() throws IOException {
+        // TODO(ville): Enable this test.
+        //
+        // Depends on release and upgrade to a version of Jackson that supports
+        // basic generic builder deserialization.
+        //
+        // See:
+        // https://github.com/FasterXML/jackson-databind/issues/921
+        // https://github.com/FasterXML/jackson-databind/pull/1796
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new BuilderModule());
 
