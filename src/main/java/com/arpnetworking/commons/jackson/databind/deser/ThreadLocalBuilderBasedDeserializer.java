@@ -34,14 +34,6 @@ import java.util.HashSet;
 /**
  * Supports {@link ThreadLocalBuilder} use during deserialization.
  *
- * IMPORTANT: This class should be in the {@code com.arpnetworking.commons.jackson.databind.deser}
- * package; however, because we cannot extend {@link BuilderBasedDeserializer}
- * due to {@code final} and {@code private} methods we must use delegation and
- * in order to delegate {@code protected} methods must be in the same package.
- *
- * See:
- * https://github.com/FasterXML/jackson-databind/issues/1869
- *
  * Consumers of Arpnetworking Commons should _not_ depend directly on this class.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
