@@ -70,10 +70,11 @@ public final class EqualityTestHelper {
         final Object objectB = builderB.build();
 
         // Test the simple equality cases
-        Assert.assertTrue("Self equality failed", Objects.equals(objectA, objectA));
-        Assert.assertTrue("Clone equality failed", Objects.equals(objectA, builderA.build()));
-        Assert.assertFalse("Null inequality failed", Objects.equals(objectA, null));
-        Assert.assertFalse("Type inequality failed", Objects.equals(objectA, new Object()));
+        // NOTE: Do not use Objects.equals here to ensure that the actual equals method is exercised
+        Assert.assertTrue("Self equality failed", objectA.equals(objectA));
+        Assert.assertTrue("Clone equality failed", objectA.equals(builderA.build()));
+        Assert.assertFalse("Null inequality failed", objectA.equals(null));
+        Assert.assertFalse("Type inequality failed", objectA.equals(new Object()));
 
         // While we're here let's just check the hash codes of two separate but identical instances are the same
         Assert.assertEquals("Equal instance hashcodes differ", objectA.hashCode(), builderA.build().hashCode());
