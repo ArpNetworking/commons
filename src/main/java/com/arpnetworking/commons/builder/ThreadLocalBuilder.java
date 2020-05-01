@@ -182,7 +182,7 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
     @Override
     public T build() {
         if (!_isThreadLocalBuild) {
-            DIRECT_USAGE_LOGGER.getLogger().warn(
+            DIRECT_USAGE_LOGGER.warn(
                     String.format(
                             "ThreadLocalBuilder subclass %s built directly; "
                                     + "use ThreadLocalBuilder static 'build' or 'buildGeneric' instead",
