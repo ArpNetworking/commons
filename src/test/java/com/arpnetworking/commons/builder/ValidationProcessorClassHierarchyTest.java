@@ -29,7 +29,7 @@ import org.junit.Test;
 import java.util.function.Function;
 
 /**
- * Tests for the <code>ValidationProcessor</code> fpr processing of class
+ * Tests for the {@link ValidationProcessor} fpr processing of class
  * hierarchies in various states of processing.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)

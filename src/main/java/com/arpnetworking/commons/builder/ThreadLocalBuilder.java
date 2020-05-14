@@ -220,7 +220,7 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
     /**
      * Protected constructor for subclasses.
      *
-     * @param <B> The <code>Builder</code> type.
+     * @param <B> The {@link Builder} type.
      * @param targetConstructor The constructor for the concrete type to be created by this builder.
      */
     protected <B extends Builder<T>> ThreadLocalBuilder(final Function<B, T> targetConstructor) {

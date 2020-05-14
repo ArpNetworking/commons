@@ -343,7 +343,7 @@ public final class ValidationProcessorBean {
          * Set the false boolean field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setFalseBoolean(final Boolean value) {
             _falseBoolean = value;
@@ -354,7 +354,7 @@ public final class ValidationProcessorBean {
          * Set the null object field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNullObject(@Nullable final Object value) {
             _nullObject = value;
@@ -365,7 +365,7 @@ public final class ValidationProcessorBean {
          * Set the true boolean field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setTrueBoolean(final Boolean value) {
             _trueBoolean = value;
@@ -376,7 +376,7 @@ public final class ValidationProcessorBean {
          * Set the url string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setUrlString(final String value) {
             _urlString = value;
@@ -387,7 +387,7 @@ public final class ValidationProcessorBean {
          * Set the check with string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setCheckWithString(final String value) {
             _checkWithString = value;
@@ -398,7 +398,7 @@ public final class ValidationProcessorBean {
          * Set the range date field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setRangeDate(final Date value) {
             _rangeDate = value;
@@ -409,7 +409,7 @@ public final class ValidationProcessorBean {
          * Set the digit string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setDigitsString(final String value) {
             _digitsString = value;
@@ -420,7 +420,7 @@ public final class ValidationProcessorBean {
          * Set the email string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setEmailString(final String value) {
             _emailString = value;
@@ -431,7 +431,7 @@ public final class ValidationProcessorBean {
          * Set the equal to field string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setEqualToFieldString(@Nullable final String value) {
             _equalToFieldString = value;
@@ -442,7 +442,7 @@ public final class ValidationProcessorBean {
          * Set the equal to field counterpart string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setEqualToFieldCounterpartString(@Nullable final String value) {
             _equalToFieldCounterpartString = value;
@@ -453,7 +453,7 @@ public final class ValidationProcessorBean {
          * Set the future date field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setFutureDate(final Date value) {
             _futureDate = value;
@@ -464,7 +464,7 @@ public final class ValidationProcessorBean {
          * Set the has substring string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setHasSubstringString(final String value) {
             _hasSubstringString = value;
@@ -475,7 +475,7 @@ public final class ValidationProcessorBean {
          * Set the instance of any object field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setInstanceOfAnyObject(final Object value) {
             _instanceOfAnyObject = value;
@@ -486,7 +486,7 @@ public final class ValidationProcessorBean {
          * Set the instance of object field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setInstanceOfObject(final Object value) {
             _instanceOfObject = value;
@@ -497,7 +497,7 @@ public final class ValidationProcessorBean {
          * Set the length string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setLengthString(final String value) {
             _lengthString = value;
@@ -508,7 +508,7 @@ public final class ValidationProcessorBean {
          * Set the match pattern string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setMatchPatternString(final String value) {
             _matchPatternString = value;
@@ -519,7 +519,7 @@ public final class ValidationProcessorBean {
          * Set the max integer field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setMaxInteger(final Integer value) {
             _maxInteger = value;
@@ -530,7 +530,7 @@ public final class ValidationProcessorBean {
          * Set the max length string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setMaxLengthString(final String value) {
             _maxLengthString = value;
@@ -541,7 +541,7 @@ public final class ValidationProcessorBean {
          * Set the max size list field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setMaxSizeList(final List<String> value) {
             _maxSizeList = value;
@@ -552,7 +552,7 @@ public final class ValidationProcessorBean {
          * Set the member of string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setMemberOfString(final String value) {
             _memberOfString = value;
@@ -563,7 +563,7 @@ public final class ValidationProcessorBean {
          * Set the min integer field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setMinInteger(final Integer value) {
             _minInteger = value;
@@ -574,7 +574,7 @@ public final class ValidationProcessorBean {
          * Set the min length string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setMinLengthString(final String value) {
             _minLengthString = value;
@@ -585,7 +585,7 @@ public final class ValidationProcessorBean {
          * Set the min size list field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setMinSizeList(final List<String> value) {
             _minSizeList = value;
@@ -596,7 +596,7 @@ public final class ValidationProcessorBean {
          * Set the not blank string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotBlankString(final String value) {
             _notBlankString = value;
@@ -607,7 +607,7 @@ public final class ValidationProcessorBean {
          * Set the not empty string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotEmptyString(final String value) {
             _notEmptyString = value;
@@ -618,7 +618,7 @@ public final class ValidationProcessorBean {
          * Set the not equal string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotEqualString(final String value) {
             _notEqualString = value;
@@ -629,7 +629,7 @@ public final class ValidationProcessorBean {
          * Set the not equal to field string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotEqualToFieldString(@Nullable final String value) {
             _notEqualToFieldString = value;
@@ -640,7 +640,7 @@ public final class ValidationProcessorBean {
          * Set the not equal to field counterpart string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotEqualToFieldCounterpartString(@Nullable final String value) {
             _notEqualToFieldCounterpartString = value;
@@ -651,7 +651,7 @@ public final class ValidationProcessorBean {
          * Set the not match pattern string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotMatchPatternString(final String value) {
             _notMatchPatternString = value;
@@ -662,7 +662,7 @@ public final class ValidationProcessorBean {
          * Set the not member of string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotMemberOfString(final String value) {
             _notMemberOfString = value;
@@ -673,7 +673,7 @@ public final class ValidationProcessorBean {
          * Set the not negative integer field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotNegativeInteger(final Integer value) {
             _notNegativeInteger = value;
@@ -688,7 +688,7 @@ public final class ValidationProcessorBean {
          * @Nullable.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setNotNullObject(@Nullable final Object value) {
             _notNullObject = value;
@@ -699,7 +699,7 @@ public final class ValidationProcessorBean {
          * Set the past date field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setPastDate(final Date value) {
             _pastDate = value;
@@ -710,7 +710,7 @@ public final class ValidationProcessorBean {
          * Set the range double field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setRangeDouble(final Double value) {
             _rangeDouble = value;
@@ -721,7 +721,7 @@ public final class ValidationProcessorBean {
          * Set the size list field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setSizeList(final List<String> value) {
             _sizeList = value;
@@ -732,7 +732,7 @@ public final class ValidationProcessorBean {
          * Set the validate with method string field.
          *
          * @param value the value
-         * @return this <code>Builder</code>
+         * @return this {@link Builder}
          */
         public Builder setValidateWithMethodString(@Nullable final String value) {
             _validateWithMethodString = value;

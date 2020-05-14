@@ -26,7 +26,7 @@ import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
 
 /**
- * Tests for <code>ImmutableObjectMapper</code>.
+ * Tests for {@link ImmutableObjectMapper}.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */

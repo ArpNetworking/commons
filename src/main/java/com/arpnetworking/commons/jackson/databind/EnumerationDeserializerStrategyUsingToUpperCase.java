@@ -19,7 +19,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Implementation of <code>EnumerationDeserializerStrategy</code> that converts
+ * Implementation of {@link EnumerationDeserializerStrategy} that converts
  * the serialized string value to upper case before looking up the value in the
  * enumeration.
  *
@@ -36,10 +36,10 @@ public final class EnumerationDeserializerStrategyUsingToUpperCase<T extends Enu
         implements EnumerationDeserializerStrategy<T> {
 
     /**
-     * Creates a new instance of <code>EnumerationDeserializerStrategyUsingToUpperCase</code>.
+     * Creates a new instance of {@link EnumerationDeserializerStrategyUsingToUpperCase}.
      *
      * @param <T> The class/type of enumeration.
-     * @return a new instance of <code>EnumerationDeserializerStrategyUsingToUpperCase</code>.
+     * @return a new instance of {@link EnumerationDeserializerStrategyUsingToUpperCase}.
      */
     public static <T extends Enum<T>> EnumerationDeserializerStrategy<T> newInstance() {
         return new EnumerationDeserializerStrategyUsingToUpperCase<T>();

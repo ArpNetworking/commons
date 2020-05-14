@@ -38,7 +38,7 @@ public class GuiceActorCreator implements IndirectActorProducer {
      * Public constructor.
      *
      * @param injector the Guice injector to create actors from.
-     * @param clazz the <code>Actor</code> class to instantiate.
+     * @param clazz the {@link Actor} class to instantiate.
      */
     public GuiceActorCreator(final Injector injector, final Class<? extends Actor> clazz) {
         _injector = injector;
@@ -46,11 +46,11 @@ public class GuiceActorCreator implements IndirectActorProducer {
     }
 
     /**
-     * Creates a <code>Props</code> for the <code>GuiceActorCreator</code>.
+     * Creates a {@link Props} for the {@link GuiceActorCreator}.
      *
      * @param injector the Guice injector to create actors from.
-     * @param clazz the <code>Actor</code> class to instantiate.
-     * @return a new <code>Props</code> instance.
+     * @param clazz the {@link Actor} class to instantiate.
+     * @return a new {@link Props} instance.
      */
     public static Props props(final Injector injector, final Class<? extends Actor> clazz) {
         return Props.create(GuiceActorCreator.class, injector, clazz);

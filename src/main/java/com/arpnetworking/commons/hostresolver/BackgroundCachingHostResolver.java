@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
- * Caches results of a <code>HostResolver</code> and refresh it in the
+ * Caches results of a {@link HostResolver} and refresh it in the
  * background to avoid any blocking.
  *
  * Dependencies:
@@ -68,7 +68,8 @@ public class BackgroundCachingHostResolver implements HostResolver {
     }
 
     /**
-     * Constructor for a <code>BackgroundCachingHostResolver</code> wrapping the <code>DefaultHostResolver</code>.
+     * Constructor for a {@link BackgroundCachingHostResolver} wrapping the
+     * {@link DefaultHostResolver}.
      *
      * @param rate The time period in which to execute one background refresh.
      */
@@ -77,9 +78,10 @@ public class BackgroundCachingHostResolver implements HostResolver {
     }
 
     /**
-     * Constructor for a <code>BackgroundCachingHostResolver</code> wrapping the specified <code>HostResolver</code>.
+     * Constructor for a {@link BackgroundCachingHostResolver} wrapping the
+     * specified {@link HostResolver}.
      *
-     * @param wrappedHostResolver The <code>HostResolver</code> to delegate to periodically.
+     * @param wrappedHostResolver The {@link HostResolver} to delegate to periodically.
      * @param rate The time period in which to execute one background refresh.
      */
     public BackgroundCachingHostResolver(final HostResolver wrappedHostResolver, final Duration rate) {

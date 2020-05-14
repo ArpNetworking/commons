@@ -21,7 +21,7 @@ import java.time.Duration;
 import java.util.Optional;
 
 /**
- * Caches results of a <code>HostResolver</code>.
+ * Caches results of a {@link HostResolver}.
  *
  * Dependencies:
  * <ul>
@@ -46,7 +46,8 @@ public class CachingHostResolver implements HostResolver {
     }
 
     /**
-     * Constructor for a <code>CachingHostResolver</code> wrapping the <code>DefaultHostResolver</code>.
+     * Constructor for a {@link CachingHostResolver} wrapping the
+     * {@link DefaultHostResolver}.
      *
      * @param ttl The time to live on the cache. Does <b>not</b> perform negative caching.
      */
@@ -55,9 +56,10 @@ public class CachingHostResolver implements HostResolver {
     }
 
     /**
-     * Constructor for a <code>CachingHostResolver</code> wrapping the specified <code>HostResolver</code>.
+     * Constructor for a {@link CachingHostResolver} wrapping the specified
+     * {@link HostResolver}.
      *
-     * @param wrappedHostResolver The <code>HostResolver</code> to delegate to on a cache miss.
+     * @param wrappedHostResolver The {@link HostResolver} to delegate to on a cache miss.
      * @param ttl The time to live on the cache. Does <b>not</b> perform negative caching.
      */
     public CachingHostResolver(final HostResolver wrappedHostResolver, final Duration ttl) {

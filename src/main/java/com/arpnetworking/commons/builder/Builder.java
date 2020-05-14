@@ -30,11 +30,11 @@ package com.arpnetworking.commons.builder;
 public interface Builder<T> {
 
     /**
-     * Create a new instance of <code>T</code> based on the attributes currently
+     * Create a new instance of {@code <T>} based on the attributes currently
      * set on this builder. The method will throw an exception if a valid
-     * instance of <code>T</code> cannot be constructed.
+     * instance of {@code <T>} cannot be constructed.
      *
-     * @return New instance of <code>T</code>.
+     * @return New instance of {@code <T>}.
      */
     T build();
 }

@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 public final class EnumerationNotFoundException extends JsonProcessingException {
 
     /**
-     * Creates an <code>EnumerationNotFoundException</code>.
+     * Creates an {@link EnumerationNotFoundException}.
      * A predefined message is created based on the value not found and
      * the enum class.
      *
@@ -59,7 +59,7 @@ public final class EnumerationNotFoundException extends JsonProcessingException 
     }
 
     /**
-     * Creates an <code>EnumerationNotFoundException</code>.
+     * Creates an {@link EnumerationNotFoundException}.
      * A predefined message is created based on the value not found and
      * the enum class.
      *

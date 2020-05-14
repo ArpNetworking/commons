@@ -34,6 +34,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -60,7 +61,9 @@ public abstract class OvalBuilder<T> implements Builder<T> {
      * constructor must be accessible by OvalBuilder.
      *
      * <b>IMPORTANT</b>: If your builder is a subclass of {@link ThreadLocalBuilder}
-     * then you should not use this method. Instead, use one of the {@code clone}
+     * then you should not use this method. Instead, use one of {@link ThreadLocalBuilder#clone()},
+     * {@link ThreadLocalBuilder#clone(Object)}, {@link ThreadLocalBuilder#clone(Object, Builder)},
+     * {@link ThreadLocalBuilder#clone(Object, Class)}, or {@link ThreadLocalBuilder#clone(Object, Class, Consumer)}.
      * methods in {@link ThreadLocalBuilder}. Using this method for subclasses of
      * {@link ThreadLocalBuilder} negates performance gains obtained by inheriting
      * from {@link ThreadLocalBuilder}.
@@ -183,9 +186,9 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     }
 
     /**
-     * Validate this <code>Builder</code> instance.
+     * Validate this {@link Builder} instance.
      *
-     * @param violations <code>List</code> of <code>ConstraintViolation</code>
+     * @param violations {@link List} of {@link ConstraintViolation}
      * instances to populate.
      */
     protected void validate(final List<ConstraintViolation> violations) {
@@ -235,7 +238,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
     /**
      * Protected constructor for subclasses.
      *
-     * @param <B> The <code>Builder</code> type.
+     * @param <B> The {@link Builder} type.
      * @param targetConstructor The constructor for the concrete type to be created by this builder.
      */
     @SuppressWarnings("unchecked")

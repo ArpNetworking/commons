@@ -17,10 +17,10 @@ package com.arpnetworking.commons.observer;
 
 /**
  * Interface for classes which are observable. This interface was used in place
- * of Java's <code>Observable</code> for two main reasons:
+ * of Java's {@link Observable} for two main reasons:
  *
- * 1) Java's <code>Observable</code> is an implementation and not an interface.
- * 2) Java's <code>Observable</code> does not permit cascading events; that is
+ * 1) Java's {@link Observable} is an implementation and not an interface.
+ * 2) Java's {@link Observable} does not permit cascading events; that is
  * an observer triggering further events.
  *
  * Dependencies:

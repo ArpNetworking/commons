@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Tests for the <code>EnumerationDeserializer</code> class.
+ * Tests for the {@linkl EnumerationDeserializer} class.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
