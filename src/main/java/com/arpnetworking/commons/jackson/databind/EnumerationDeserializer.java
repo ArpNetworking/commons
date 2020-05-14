@@ -25,8 +25,7 @@ import java.util.Optional;
 
 /**
  * Custom deserializer for Enums. The deserialization occurs based on the
- * deserialization strategy specified on an
- * <code>EnumerationDeserializerStrategy</code>.
+ * deserialization strategy specified on an {@link EnumerationDeserializerStrategy}.
  *
  * Dependencies:
  * <ul>
@@ -42,12 +41,12 @@ import java.util.Optional;
 public final class EnumerationDeserializer<T extends Enum<T>> extends JsonDeserializer<T> {
 
     /**
-     * Creates a new instance of <code>JsonDeserializer&lt;T&gt;</code>.
+     * Creates a new instance of {@link JsonDeserializer}.
      *
      * @param <T> The type of enumeration.
-     * @param enumClass The <code>Class</code> for the enumeration type.
-     * @param strategy The <code>EnumerationDeserializerStrategy</code> instance.
-     * @return New instance of <code>JsonDeserializer&lt;T&gt;</code>.
+     * @param enumClass The {@link Class} for the enumeration type.
+     * @param strategy The {@link EnumerationDeserializerStrategy} instance.
+     * @return New instance of {@link JsonDeserializer}.
      */
     public static <T extends Enum<T>> JsonDeserializer<T> newInstance(
             final Class<T> enumClass,

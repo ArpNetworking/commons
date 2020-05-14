@@ -50,7 +50,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Tests for the <code>ValidationProcessor</code>.
+ * Tests for the {@link ValidationProcessor}.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */

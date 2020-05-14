@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Tests for the <code>ThreadLocalBuilder</code> class.
+ * Tests for the {@link ThreadLocalBuilder} class.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */

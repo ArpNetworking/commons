@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Immutable decorator for <code>ObjectMapper</code>.
+ * Immutable decorator for {@link ObjectMapper}.
  *
  * Dependencies:
  * <ul>
@@ -44,14 +44,14 @@ import java.util.Set;
 public final class ImmutableObjectMapper {
 
     /**
-     * Decorate an <code>ObjectMapper</code> instance so that it is immutable.
+     * Decorate an {@link ObjectMapper} instance so that it is immutable.
      *
      * <i>Warning:</i> Anyone with a reference to the original
-     * <code>ObjectMapper</code> instance may modify it and thus appear to
+     * {@link ObjectMapper} instance may modify it and thus appear to
      * modify the decorated instance as well.
      *
-     * @param objectMapper The <code>ObjectMapper</code> instance to decorate.
-     * @return Immutable <code>ObjectMapper</code> instance.
+     * @param objectMapper The {@link ObjectMapper} instance to decorate.
+     * @return Immutable {@link ObjectMapper} instance.
      */
     public static ObjectMapper of(final ObjectMapper objectMapper) {
         final Callback[] callbacks = new Callback[2];

@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Tests for <code>ObjectMapperFactory</code>.
+ * Tests for {@link ObjectMapperFactory}.
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */

@@ -21,8 +21,8 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * This is an implementation of <code>Observable</code> that may be used by
- * classes which implement <code>Observable</code> to delegate common
+ * This is an implementation of {@link Observable} that may be used by
+ * classes which implement {@link Observable} to delegate common
  * functionality to. This class is thread safe and ensures that a notification
  * is sent all observers registered at the time it is posted.
  *
@@ -36,9 +36,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public final class ObservableDelegate implements Observable {
 
     /**
-     * Create a new instance of <code>Observable</code>.
+     * Create a new instance of {@link Observable}.
      *
-     * @return New instance of <code>Observable</code>
+     * @return New instance of {@link Observable}
      */
     public static ObservableDelegate newInstance() {
         return new ObservableDelegate();

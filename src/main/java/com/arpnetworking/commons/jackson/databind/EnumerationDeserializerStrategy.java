@@ -18,7 +18,7 @@ package com.arpnetworking.commons.jackson.databind;
 import java.util.Optional;
 
 /**
- * Interface for the strategy pattern on the <code>EnumerationDeserializer</code>.
+ * Interface for the strategy pattern on the {@link EnumerationDeserializer}.
  *
  * Dependencies:
  * <ul>
@@ -32,11 +32,11 @@ import java.util.Optional;
 public interface EnumerationDeserializerStrategy<T extends Enum<T>> {
 
     /**
-     * Strategy method to map enumerations of type <code>E</code> from a <code>String</code>.
+     * Strategy method to map enumerations of type {@code <E>} from a {@link String}.
      *
      * @param enumClass The enumeration class/type.
      * @param key The serialized enumeration value to deserialize; cannot be null.
-     * @return an <code>Optional</code> instance of the enumeration represented by key.
+     * @return an {@link Optional} instance of the enumeration represented by key.
      */
     Optional<T> toEnum(Class<T> enumClass, String key);
 }

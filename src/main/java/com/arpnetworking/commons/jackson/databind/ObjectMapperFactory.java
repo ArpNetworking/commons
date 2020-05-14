@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Create a "standard" <code>ObjectMapper</code> instance.
+ * Create a "standard" {@link ObjectMapper} instance.
  *
  * Dependencies:
  * <ul>
@@ -47,31 +47,31 @@ import java.util.function.Function;
 public final class ObjectMapperFactory {
 
     /**
-     * Create a new <code>ObjectMapper</code> configured with standard
+     * Create a new {@link ObjectMapper} configured with standard
      * settings. New instances can be safely customized by clients.
      *
-     * @return New mutable <code>ObjectMapper</code> instance.
+     * @return New mutable {@link ObjectMapper} instance.
      */
     public static ObjectMapper createInstance() {
         return createModifiableObjectMapper();
     }
 
     /**
-     * Create a new <code>ObjectMapper</code> configured with standard
+     * Create a new {@link ObjectMapper} configured with standard
      * settings. New instances can be safely customized by clients.
      *
-     * @param jsonFactory Instance of <code>JsonFactory</code>.
-     * @return New mutable <code>ObjectMapper</code> instance.
+     * @param jsonFactory Instance of {@link JsonFactory}.
+     * @return New mutable {@link ObjectMapper} instance.
      */
     public static ObjectMapper createInstance(final JsonFactory jsonFactory) {
         return createModifiableObjectMapper(new ObjectMapper(jsonFactory));
     }
 
     /**
-     * Get <code>ObjectMapper</code> instance configured with standard
+     * Get {@link ObjectMapper} instance configured with standard
      * settings. These instances are considered shared and are immutable.
      *
-     * @return Shared immutable <code>ObjectMapper</code> instance.
+     * @return Shared immutable {@link ObjectMapper} instance.
      */
     public static ObjectMapper getInstance() {
         return UNMODIFIABLE_OBJECT_MAPPER;

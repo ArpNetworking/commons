@@ -21,8 +21,10 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 /**
- * Concrete implementation of <code>Clock</code> which returns the same <code>Instant</code> until advanced manually by
- * invoking the <code>tick</code> method upon which the time moves forward by the amount specified to the constructor.
+ * Concrete implementation of {@link Clock} which returns the same
+ * {@link Instant} until advanced manually by invoking the
+ * {@link ManualClock#tick()} method upon which the time moves forward by the
+ * amount specified to the constructor.
  *
  * Dependencies:
  * <ul>
@@ -49,7 +51,7 @@ public class ManualClock extends Clock {
     }
 
     /**
-     * Move this <code>Clock</code> forward by a single tick duration.
+     * Move this {@link Clock} forward by a single tick duration.
      */
     public void tick() {
         _instant = _instant.plus(_tickDuration);
@@ -59,8 +61,8 @@ public class ManualClock extends Clock {
      * Public constructor.
      *
      * @param initialTime The initial time returned by this clock.
-     * @param tickDuration The duration incurred for each <code>tick</code> invocation.
-     * @param zone The <code>ZoneId</code> for the <code>Clock</code>.
+     * @param tickDuration The duration incurred for each {@link ManualClock#tick()} invocation.
+     * @param zone The {@link ZoneId} for the {@link Clock}.
      */
     public ManualClock(final Instant initialTime, final Duration tickDuration, final ZoneId zone) {
         _instant = initialTime;

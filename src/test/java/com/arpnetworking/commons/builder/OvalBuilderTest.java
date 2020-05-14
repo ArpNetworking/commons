@@ -22,6 +22,7 @@ import net.sf.oval.constraint.Min;
 import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.exception.ConstraintsViolatedException;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +34,7 @@ import javax.annotation.Nullable;
 import javax.naming.NamingException;
 
 /**
- * Tests for the <code>OvalBuilder</code> class. Note, the purpose of this class
+ * Tests for the {@link OvalBuilder} class. Note, the purpose of this class
  * is not to test Oval, but the OvalBuilder and serve as illustration with a few
  * simple use cases.
  *
@@ -107,7 +108,7 @@ public class OvalBuilderTest {
             Assert.assertEquals(1, e.getConstraintViolations().length);
             final ConstraintViolation cv = e.getConstraintViolations()[0];
             Assert.assertEquals("net.sf.oval.constraint.NotNullCheck", cv.getCheckName());
-            Assert.assertThat(cv.getContext().toString(),
+            MatcherAssert.assertThat(cv.getContext().toString(),
                     Matchers.containsString("OvalBuilderTest$TestBean$Builder._int"));
             Assert.assertNull(cv.getInvalidValue());
         }
@@ -126,7 +127,7 @@ public class OvalBuilderTest {
             Assert.assertEquals(1, e.getConstraintViolations().length);
             final ConstraintViolation cv = e.getConstraintViolations()[0];
             Assert.assertEquals("net.sf.oval.constraint.NotNullCheck", cv.getCheckName());
-            Assert.assertThat(cv.getContext().toString(),
+            MatcherAssert.assertThat(cv.getContext().toString(),
                     Matchers.containsString("OvalBuilderTest$TestBean$Builder._int"));
             Assert.assertNull(cv.getInvalidValue());
         }
@@ -145,7 +146,7 @@ public class OvalBuilderTest {
             Assert.assertEquals(1, e.getConstraintViolations().length);
             final ConstraintViolation cv = e.getConstraintViolations()[0];
             Assert.assertEquals("net.sf.oval.constraint.MinCheck", cv.getCheckName());
-            Assert.assertThat(cv.getContext().toString(),
+            MatcherAssert.assertThat(cv.getContext().toString(),
                     Matchers.containsString("OvalBuilderTest$TestBean$Builder._rangeInt"));
             Assert.assertEquals(-1, cv.getInvalidValue());
         }
@@ -164,7 +165,7 @@ public class OvalBuilderTest {
             Assert.assertEquals(1, e.getConstraintViolations().length);
             final ConstraintViolation cv = e.getConstraintViolations()[0];
             Assert.assertEquals("net.sf.oval.constraint.MaxCheck", cv.getCheckName());
-            Assert.assertThat(cv.getContext().toString(),
+            MatcherAssert.assertThat(cv.getContext().toString(),
                     Matchers.containsString("OvalBuilderTest$TestBean$Builder._rangeInt"));
             Assert.assertEquals(101, cv.getInvalidValue());
         }
