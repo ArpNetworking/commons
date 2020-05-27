@@ -59,19 +59,14 @@ public final class BuildableTestHelper {
         final Map<Method, Object> expectedValues = Maps.newHashMap();
 
         // Analyze the builder state
-        for (final Method method : builderClass.getMethods()) {
-            if (method.getName().startsWith(SETTER_PREFIX)
-                    && Builder.class.isAssignableFrom(method.getReturnType())
-                    && method.getParameters().length == 1
-                    && !method.isVarArgs()) {
-                final Optional<Field> field = getField(builderClass, method);
-                if (!field.isPresent()) {
-                    throw new IllegalStateException("Builder setter does not have matching field");
-                }
-                final Object expectedValue = getFieldValue(builder, field.get());
-                Assert.assertNotNull("Expected value can not be null", expectedValue);
-                expectedValues.put(method, expectedValue);
+        for (final Method method : BuilderTestUtility.getSetters(builderClass)) {
+            final Optional<Field> field = BuilderTestUtility.getField(builderClass, method);
+            if (!field.isPresent()) {
+                throw new IllegalStateException("Builder setter does not have matching field");
             }
+            final Object expectedValue = BuilderTestUtility.getFieldValue(builder, field.get());
+            Assert.assertNotNull("Expected value can not be null", expectedValue);
+            expectedValues.put(method, expectedValue);
         }
 
         // Build the target
@@ -82,14 +77,14 @@ public final class BuildableTestHelper {
             final Method setter = entry.getKey();
             final Object expectedValue = entry.getValue();
             Object actualValue;
-            final Optional<Method> getter = getterForSetter(targetClass, setter);
-            final Optional<Field> field = getField(targetClass, setter);
+            final Optional<Method> getter = BuilderTestUtility.getterForSetter(targetClass, setter);
+            final Optional<Field> field = BuilderTestUtility.getField(targetClass, setter);
             if (getter.isPresent()) {
                 getter.get().setAccessible(true);
                 actualValue = getter.get().invoke(target);
             } else if (field.isPresent()) {
                 field.get().setAccessible(true);
-                actualValue = getFieldValue(target, field.get());
+                actualValue = BuilderTestUtility.getFieldValue(target, field.get());
             } else {
                 throw new IllegalStateException("Unsupported access pattern");
             }
@@ -101,33 +96,5 @@ public final class BuildableTestHelper {
         }
     }
 
-    private static <T> Optional<Field> getField(final Class<T> targetClass, final Method setter) {
-        final String fieldName =
-                "_" + Character.toLowerCase(setter.getName().charAt(SETTER_PREFIX.length()))
-                        + setter.getName().substring(SETTER_PREFIX.length() + 1);
-        try {
-            return Optional.of(targetClass.getDeclaredField(fieldName));
-        } catch (final NoSuchFieldException e) {
-            return Optional.empty();
-        }
-    }
-
-    private static <T> Object getFieldValue(final T target, final Field field) throws IllegalAccessException {
-        field.setAccessible(true);
-        return field.get(target);
-    }
-
-    private static <T> Optional<Method> getterForSetter(final Class<T> targetClass, final Method setter) {
-        final String getterName = GETTER_PREFIX + setter.getName().substring(SETTER_PREFIX.length());
-        try {
-            return Optional.of(targetClass.getDeclaredMethod(getterName));
-        } catch (final NoSuchMethodException e) {
-            return Optional.empty();
-        }
-    }
-
     private BuildableTestHelper() {}
-
-    private static final String SETTER_PREFIX = "set";
-    private static final String GETTER_PREFIX = "get";
 }
