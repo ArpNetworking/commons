@@ -81,8 +81,11 @@
     <javax.inject.version>1</javax.inject.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.13</junit.version>
+    <junit.benchmarks.version>0.7.2</junit.benchmarks.version>
+    <logback.version>1.2.3</logback.version>
     <mockito.version>2.23.4</mockito.version>
     <oval.version>1.90</oval.version>
+    <performance.test.version>1.2.1</performance.test.version>
     <scala.version>2.13</scala.version>
     <scala.library.version>2.13.2</scala.library.version>
     <slf4j.version>1.7.30</slf4j.version>
@@ -325,5 +328,68 @@
       <version>${system.rules.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- Test - Performance -->
+    <dependency>
+      <groupId>com.carrotsearch</groupId>
+      <artifactId>junit-benchmarks</artifactId>
+      <version>${junit.benchmarks.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.arpnetworking.test</groupId>
+      <artifactId>performance-test</artifactId>
+      <version>${performance.test.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.arpnetworking.commons</groupId>
+          <artifactId>commons</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>unitPerformanceTest</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-test</id>
+                <configuration>
+                  <includes>
+                    <include>**/*TestPerf.java</include>
+                  </includes>
+                  <parallel combine.self="override" />
+                  <forkMode>always</forkMode>
+                  <forkCount>1</forkCount>
+                  <reuseForks>false</reuseForks>
+                  <argLine combine.self="override">-agentlib:hprof=cpu=samples,depth=20,interval=10,force=y,verbose=y,doe=n,file=${project.build.directory}/perf.unit.hprof.txt -Dlogback.configurationFile="logback-perf.xml"</argLine>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

@@ -157,6 +157,19 @@ You may also need to add the local repository to your build in order to pick-up 
 * Gradle - Add *mavenLocal()* to *build.gradle* in the *repositories* block.
 * SBT - Add *resolvers += Resolver.mavenLocal* into *project/plugins.sbt*.
 
+Performance Test
+----------------
+
+Running:
+
+    commons> ./jdk-wrapper.sh ./mvnw test -PunitPerformanceTest
+
+Results:
+
+* JSON formatted performance results are generated into `target/perf` as specified in each test's `JsonBenchmarkConsumer`.
+* Each JSON performance result file references an [HPROF](https://docs.oracle.com/javase/8/docs/technotes/samples/hprof.html) cpu profile generated during the test in `profileFile` field.
+* The performance profiles are text files and have been prefiltered using [performance-test](https://github.com/ArpNetworking/performance-test).
+
 License
 -------
 
