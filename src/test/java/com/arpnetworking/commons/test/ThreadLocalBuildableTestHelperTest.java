@@ -16,7 +16,12 @@
 package com.arpnetworking.commons.test;
 
 import com.arpnetworking.commons.builder.ThreadLocalBuilder;
+import net.sf.oval.constraint.NotNull;
 import org.junit.Test;
+
+import java.time.Instant;
+import java.util.function.Function;
+import javax.annotation.Nullable;
 
 /**
  * Tests for the {@link BuildableTestHelper} class.
@@ -51,6 +56,22 @@ public final class ThreadLocalBuildableTestHelperTest {
         ThreadLocalBuildableTestHelper.testReset(
                 new PojoMissingFieldBuilder.Builder()
                         .setValue("foo"));
+    }
+
+    @Test
+    public void testInheritance() throws Exception  {
+        ThreadLocalBuildableTestHelper.testReset(
+                new ConcretePojoWithInheritance.Builder()
+                        .setParentField("foo")
+                        .setChildField("bar"));
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testInheritanceChecksInheritedFields() throws Exception  {
+        ThreadLocalBuildableTestHelper.testReset(
+                new ConcretePojoWithInheritanceMissingSuperReset.Builder()
+                        .setParentField("foo")
+                        .setChildField("bar"));
     }
 
     private static final class PojoWorkingBuilder {
@@ -179,6 +200,117 @@ public final class ThreadLocalBuildableTestHelperTest {
             }
 
             private String _fooValue;
+        }
+    }
+
+    public static abstract class AbstractPojoWithInheritance {
+
+        protected AbstractPojoWithInheritance(final Builder<?, ?> builder) {
+            _parentField = builder._parentField;
+        }
+
+        public String getParentField() {
+            return _parentField;
+        }
+
+        private final String _parentField;
+
+        public abstract static class Builder<B extends Builder<?, T>, T extends AbstractPojoWithInheritance> extends ThreadLocalBuilder<T> {
+
+            protected Builder(final Function<B, T> targetConstructor) {
+                super(targetConstructor);
+            }
+
+            protected abstract B self();
+
+            public B setParentField(@Nullable final String value) {
+                _parentField = value;
+                return self();
+            }
+
+            @Override
+            protected void reset() {
+                _parentField = null;
+            }
+
+            @NotNull
+            private String _parentField;
+        }
+    }
+
+    public static final class ConcretePojoWithInheritance extends AbstractPojoWithInheritance {
+
+        private ConcretePojoWithInheritance(final Builder builder) {
+            super(builder);
+            _childField = builder._childField;
+        }
+
+        public String getChildField() {
+            return _childField;
+        }
+
+        private final String _childField;
+
+        public static final class Builder extends AbstractPojoWithInheritance.Builder<Builder, ConcretePojoWithInheritance> {
+            public Builder() {
+                super(ConcretePojoWithInheritance::new);
+            }
+
+            @Override
+            protected void reset() {
+                super.reset();
+                _childField = null;
+            }
+
+            @Override
+            protected Builder self() {
+                return this;
+            }
+
+            public Builder setChildField(final String value) {
+                _childField = value;
+                return this;
+            }
+
+            private String _childField;
+        }
+    }
+
+    public static final class ConcretePojoWithInheritanceMissingSuperReset extends AbstractPojoWithInheritance {
+
+        private ConcretePojoWithInheritanceMissingSuperReset(final Builder builder) {
+            super(builder);
+            _childField = builder._childField;
+        }
+
+        public String getChildField() {
+            return _childField;
+        }
+
+        private final String _childField;
+
+        public static final class Builder
+                extends AbstractPojoWithInheritance.Builder<Builder, ConcretePojoWithInheritanceMissingSuperReset> {
+            public Builder() {
+                super(ConcretePojoWithInheritanceMissingSuperReset::new);
+            }
+
+            @Override
+            protected void reset() {
+                _childField = null;
+            }
+
+            @Override
+            protected Builder self() {
+                return this;
+            }
+
+            public Builder setChildField(final String value) {
+                _childField = value;
+                return this;
+            }
+
+            private String _childField;
         }
     }
 }
