@@ -203,7 +203,7 @@ public final class ThreadLocalBuildableTestHelperTest {
         }
     }
 
-    public static abstract class AbstractPojoWithInheritance {
+    private static abstract class AbstractPojoWithInheritance {
 
         protected AbstractPojoWithInheritance(final Builder<?, ?> builder) {
             _parentField = builder._parentField;
@@ -238,7 +238,7 @@ public final class ThreadLocalBuildableTestHelperTest {
         }
     }
 
-    public static final class ConcretePojoWithInheritance extends AbstractPojoWithInheritance {
+    private static final class ConcretePojoWithInheritance extends AbstractPojoWithInheritance {
 
         private ConcretePojoWithInheritance(final Builder builder) {
             super(builder);
@@ -276,7 +276,7 @@ public final class ThreadLocalBuildableTestHelperTest {
         }
     }
 
-    public static final class ConcretePojoWithInheritanceMissingSuperReset extends AbstractPojoWithInheritance {
+    private static final class ConcretePojoWithInheritanceMissingSuperReset extends AbstractPojoWithInheritance {
 
         private ConcretePojoWithInheritanceMissingSuperReset(final Builder builder) {
             super(builder);
