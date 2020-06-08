@@ -24,6 +24,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Map;
 import java.util.Optional;
 
@@ -82,7 +84,10 @@ public final class ThreadLocalBuildableTestHelper {
 
         // Create a new builder for comparison
         final Constructor<? extends ThreadLocalBuilder<T>> ctor = builderClass.getDeclaredConstructor();
-        ctor.setAccessible(true);
+        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            ctor.setAccessible(true);
+            return null;
+        });
         final ThreadLocalBuilder<? extends T> newBuilder = ctor.newInstance();
 
         // Reset the provided builder for comparison
