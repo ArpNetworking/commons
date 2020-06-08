@@ -20,6 +20,7 @@ import com.arpnetworking.commons.builder.ThreadLocalBuilder;
 import com.google.common.collect.Maps;
 import org.junit.Assert;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -80,7 +81,9 @@ public final class ThreadLocalBuildableTestHelper {
         }
 
         // Create a new builder for comparison
-        final ThreadLocalBuilder<? extends T> newBuilder = builderClass.newInstance();
+        final Constructor<? extends ThreadLocalBuilder<T>> ctor = builderClass.getDeclaredConstructor();
+        ctor.setAccessible(true);
+        final ThreadLocalBuilder<? extends T> newBuilder = ctor.newInstance();
 
         // Reset the provided builder for comparison
         // NOTE: This is destructive on the state of the provided builder!

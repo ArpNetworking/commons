@@ -251,9 +251,7 @@ public final class ThreadLocalBuildableTestHelperTest {
         private final String _childField;
 
         public static final class Builder extends AbstractPojoWithInheritance.Builder<Builder, ConcretePojoWithInheritance> {
-            // CHECKSTYLE.OFF: RedundantModifier
-            public Builder() {
-            // CHECKSTYLE.ON: RedundantModifier
+            Builder() {
                 super(ConcretePojoWithInheritance::new);
             }
 
@@ -292,9 +290,7 @@ public final class ThreadLocalBuildableTestHelperTest {
 
         public static final class Builder
                 extends AbstractPojoWithInheritance.Builder<Builder, ConcretePojoWithInheritanceMissingSuperReset> {
-            // CHECKSTYLE.OFF: RedundantModifier
-            public Builder() {
-            // CHECKSTYLE.ON: RedundantModifier
+            Builder() {
                 super(ConcretePojoWithInheritanceMissingSuperReset::new);
             }
 
