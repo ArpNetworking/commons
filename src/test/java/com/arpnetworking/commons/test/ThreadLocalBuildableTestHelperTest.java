@@ -19,7 +19,6 @@ import com.arpnetworking.commons.builder.ThreadLocalBuilder;
 import net.sf.oval.constraint.NotNull;
 import org.junit.Test;
 
-import java.time.Instant;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 
@@ -203,7 +202,7 @@ public final class ThreadLocalBuildableTestHelperTest {
         }
     }
 
-    private static abstract class AbstractPojoWithInheritance {
+    private abstract static class AbstractPojoWithInheritance {
 
         protected AbstractPojoWithInheritance(final Builder<?, ?> builder) {
             _parentField = builder._parentField;
@@ -252,7 +251,9 @@ public final class ThreadLocalBuildableTestHelperTest {
         private final String _childField;
 
         public static final class Builder extends AbstractPojoWithInheritance.Builder<Builder, ConcretePojoWithInheritance> {
+            // CHECKSTYLE.OFF: RedundantModifier
             public Builder() {
+            // CHECKSTYLE.ON: RedundantModifier
                 super(ConcretePojoWithInheritance::new);
             }
 
@@ -291,7 +292,9 @@ public final class ThreadLocalBuildableTestHelperTest {
 
         public static final class Builder
                 extends AbstractPojoWithInheritance.Builder<Builder, ConcretePojoWithInheritanceMissingSuperReset> {
+            // CHECKSTYLE.OFF: RedundantModifier
             public Builder() {
+            // CHECKSTYLE.ON: RedundantModifier
                 super(ConcretePojoWithInheritanceMissingSuperReset::new);
             }
 
