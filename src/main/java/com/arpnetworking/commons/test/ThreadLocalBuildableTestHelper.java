@@ -67,7 +67,7 @@ public final class ThreadLocalBuildableTestHelper {
 
         // Capture the builder state
         for (final Method method : BuilderTestUtility.getSetters(builderClass)) {
-            final Optional<Field> field = getThreadLocalBuilderField(builderClass, method);
+            final Optional<Field> field = BuilderTestUtility.getField(builderClass, method);
             if (!field.isPresent()) {
                 throw new IllegalStateException(String.format(
                         "Builder setter %s does not have matching field",
@@ -118,21 +118,6 @@ public final class ThreadLocalBuildableTestHelper {
                     newBuilderValue,
                     resetBuilderValue);
         }
-    }
-
-    private static <T> Optional<Field> getThreadLocalBuilderField(
-            final Class<? extends ThreadLocalBuilder<T>> builderClass,
-            final Method method
-    ) {
-        Class<?> clazz = builderClass;
-        while (clazz != null) {
-            final Optional<Field> field = BuilderTestUtility.getField(clazz, method);
-            if (field.isPresent()) {
-                return field;
-            }
-            clazz = clazz.getSuperclass();
-        }
-        return Optional.empty();
     }
 
     private ThreadLocalBuildableTestHelper() {}

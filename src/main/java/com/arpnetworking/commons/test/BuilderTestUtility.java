@@ -50,11 +50,15 @@ public final class BuilderTestUtility {
         final String fieldName =
                 "_" + Character.toLowerCase(setter.getName().charAt(SETTER_PREFIX.length()))
                         + setter.getName().substring(SETTER_PREFIX.length() + 1);
-        try {
-            return Optional.of(targetClass.getDeclaredField(fieldName));
-        } catch (final NoSuchFieldException e) {
-            return Optional.empty();
+        Class<?> clazz = targetClass;
+        while (clazz != null) {
+            try {
+                return Optional.of(clazz.getDeclaredField(fieldName));
+            } catch (final NoSuchFieldException e) {
+                clazz = clazz.getSuperclass();
+            }
         }
+        return Optional.empty();
     }
 
     static <T> Object getFieldValue(final T target, final Field field) throws IllegalAccessException {
