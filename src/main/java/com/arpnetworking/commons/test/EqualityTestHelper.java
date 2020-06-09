@@ -117,11 +117,15 @@ public final class EqualityTestHelper {
 
     private static <T> Optional<Method> getterForSetter(final Class<T> targetClass, final Method setter) {
         final String getterName = GETTER_PREFIX + setter.getName().substring(SETTER_PREFIX.length());
-        try {
-            return Optional.of(targetClass.getDeclaredMethod(getterName));
-        } catch (final NoSuchMethodException e) {
-            return Optional.empty();
+        Class<?> clazz = targetClass;
+        while (clazz != null) {
+            try {
+                return Optional.of(clazz.getDeclaredMethod(getterName));
+            } catch (final NoSuchMethodException e) {
+                clazz = clazz.getSuperclass();
+            }
         }
+        return Optional.empty();
     }
 
     private EqualityTestHelper() {}
