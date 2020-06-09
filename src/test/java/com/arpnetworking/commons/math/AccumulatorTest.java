@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -42,6 +43,7 @@ public final class AccumulatorTest {
 
     private static final List<Double> RANDOM_VALUE_DATA_SET;
     private static final List<Double> RANDOM_CANCEL_DATA_SET;
+    public static final int SAMPLE_COUNT = 4000000;
     private static final Logger LOGGER = LoggerFactory.getLogger(AccumulatorTest.class);
 
     static {
@@ -50,16 +52,14 @@ public final class AccumulatorTest {
         final Random valueRandom = new Random(564564359);
         final double max = 1.0e16;
         final double min = -1.0e16;
-        for (int i = 0; i < 4000000; ++i) {
-            valueDataSet.add(valueRandom.nextDouble() * (max - min) + min);
-        }
-        RANDOM_VALUE_DATA_SET = Collections.unmodifiableList(valueDataSet);
+        RANDOM_VALUE_DATA_SET = Collections.unmodifiableList(
+                valueRandom.doubles(SAMPLE_COUNT, min, max).boxed().collect(Collectors.toList()));
 
         // Random cancellations data set
         final List<Double> cancelDataSet = new ArrayList<>();
         final Random cancelRandom = new Random(1591215254);
-        for (int i = 0; i < 4000000; ++i) {
-            final int group = cancelRandom .nextInt(4);
+        for (int i = 0; i < SAMPLE_COUNT; ++i) {
+            final int group = cancelRandom.nextInt(4);
             switch (group) {
                 case 0:
                     cancelDataSet.add(1.0);
@@ -87,12 +87,18 @@ public final class AccumulatorTest {
     private final double _randomValuesMargin;
 
     public AccumulatorTest(
-            final Supplier<Accumulator> accumulatorSupplier,
+            final Class<? extends Accumulator> accumulatorClass,
             final Double differentMagnitudesMargin,
             final Double differentSignsMargin,
             final Double randomCancellationMargin,
             final Double randomValuesMargin) {
-        _accumulatorSupplier = accumulatorSupplier;
+        _accumulatorSupplier = () -> {
+            try {
+                return accumulatorClass.newInstance();
+            } catch (final IllegalAccessException | InstantiationException e) {
+                throw new RuntimeException(e);
+            }
+        };
         _differentMagnitudesMargin = differentMagnitudesMargin;
         _differentSignsMargin = differentSignsMargin;
         _randomCancellationMargin = randomCancellationMargin;
@@ -103,31 +109,31 @@ public final class AccumulatorTest {
     public static Collection<Object[]> parameters() {
         return Arrays.asList(
                 new Object[]{
-                        (Supplier<Accumulator>) NaiveAccumulator::new,
+                        NaiveAccumulator.class,
                         1.0E10,     // magnitudes
-                        0.0001,     // signs
+                        0.0,        // signs
                         1.1e3,      // random cancel
                         3.9e6},     // random values
                 new Object[]{
-                        (Supplier<Accumulator>) BigDecimalAccumulator::new,
-                        0.0001,     // magnitudes
-                        0.0001,     // signs
-                        0.0001,     // random cancel
-                        0.0001},    // random values
+                        BigDecimalAccumulator.class,
+                        0.0,        // magnitudes
+                        0.0,        // signs
+                        0.0,        // random cancel
+                        0.0},       // random values
                 new Object[]{
-                        (Supplier<Accumulator>) KahanAccumulator::new,
-                        0.0001,     // magnitudes
-                        0.0001,     // signs
-                        0.0001,     // random cancel
+                        KahanAccumulator.class,
+                        0.0,        // magnitudes
+                        0.0,        // signs
+                        0.0,        // random cancel
                         0.5e4},     // random values
                 new Object[]{
-                        (Supplier<Accumulator>) NeumaierAccumulator::new,
-                        0.0001,     // magnitudes
-                        0.0001,     // signs
-                        0.0001,     // random cancel
-                        0.0001},    // random values
+                        NeumaierAccumulator.class,
+                        0.0,        // magnitudes
+                        0.0,        // signs
+                        0.0,        // random cancel
+                        0.0},       // random values
                 new Object[]{
-                        (Supplier<Accumulator>) PairwiseAccumulator::new,
+                        PairwiseAccumulator.class,
                         8.0e9,      // magnitudes
                         3.0e16,     // signs
                         1.1e3,      // random cancel
@@ -147,7 +153,7 @@ public final class AccumulatorTest {
     @Test
     public void testDifferentSigns() {
         final Accumulator accumulator = _accumulatorSupplier.get();
-        for (int i = 0; i < 4000000; ++i) {
+        for (int i = 0; i < SAMPLE_COUNT; ++i) {
             final int group = i % 4;
             switch (group) {
                 case 0:
@@ -176,7 +182,7 @@ public final class AccumulatorTest {
             accumulator.accumulate(value);
         }
 
-        // The actual value is below and is approximately 3.32e18; all the
+        // The actual value is below and is approximately -2.71e18; all the
         // algorithms did surprising well including Naive which did better than
         // Pairwise. Other accumulator sums are:
         //

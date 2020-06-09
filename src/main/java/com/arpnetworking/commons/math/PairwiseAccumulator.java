@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Accumulator implementation using Kahan Sum algorithm. This has O(log N) error.
+ * Accumulator implementation using pair-wise sum algorithm. This has O(log N) error.
  *
  * https://en.wikipedia.org/wiki/Pairwise_summation
  *

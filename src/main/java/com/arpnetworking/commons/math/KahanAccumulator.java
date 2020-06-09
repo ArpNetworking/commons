@@ -17,7 +17,8 @@
 package com.arpnetworking.commons.math;
 
 /**
- * Accumulator implementation using Kahan Sum algorithm. This has O(1) error.
+ * Accumulator implementation using Kahan Sum algorithm. This has effectively
+ * O(1) error.
  *
  * https://en.wikipedia.org/wiki/Kahan_summation_algorithm
  *

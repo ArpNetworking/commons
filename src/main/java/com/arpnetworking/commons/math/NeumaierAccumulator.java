@@ -18,7 +18,7 @@ package com.arpnetworking.commons.math;
 
 /**
  * Accumulator implementation using Neumaier version of the Kahan Sum algorithm.
- * This has O(1) error.
+ * This has effectively O(1) error.
  *
  * https://en.wikipedia.org/wiki/Kahan_summation_algorithm
  *
