@@ -18,12 +18,15 @@ package com.arpnetworking.commons.test;
 import com.arpnetworking.commons.builder.Builder;
 import com.arpnetworking.commons.builder.OvalBuilder;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import net.sf.oval.constraint.NotNull;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import javax.annotation.Nullable;
 
 /**
  * Tests for the {@link EqualityTestHelper} class.
@@ -109,6 +112,30 @@ public class EqualityTestHelperTest {
                 new PojoMissingGetterBuilder.Builder()
                         .setValue("bar"),
                 PojoMissingGetterBuilder.class);
+    }
+
+    @Test
+    public void testInheritance() throws InvocationTargetException, IllegalAccessException {
+        EqualityTestHelper.testEquality(
+                new ConcretePojoWithInheritance.Builder()
+                        .setParentField("first parentField value")
+                        .setChildField("first childField value"),
+                new ConcretePojoWithInheritance.Builder()
+                        .setParentField("second parentField value")
+                        .setChildField("second childField value"),
+                ConcretePojoWithInheritance.class);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testInheritanceMissingParentReference() throws InvocationTargetException, IllegalAccessException {
+        EqualityTestHelper.testEquality(
+                new ConcretePojoWithInheritanceMissingSuperCheck.Builder()
+                        .setParentField("first parentField value")
+                        .setChildField("first childField value"),
+                new ConcretePojoWithInheritanceMissingSuperCheck.Builder()
+                        .setParentField("second parentField value")
+                        .setChildField("second childField value"),
+                ConcretePojoWithInheritanceMissingSuperCheck.class);
     }
 
     private static final class PojoA {
@@ -431,6 +458,135 @@ public class EqualityTestHelperTest {
             }
 
             private String _value;
+        }
+    }
+    private abstract static class AbstractPojoWithInheritance {
+
+        protected AbstractPojoWithInheritance(final AbstractPojoWithInheritance.Builder<?, ?> builder) {
+            _parentField = builder._parentField;
+        }
+
+        public String getParentField() {
+            return _parentField;
+        }
+
+        private final String _parentField;
+
+        public abstract static class Builder<B extends AbstractPojoWithInheritance.Builder<?, T>, T extends AbstractPojoWithInheritance>
+                extends OvalBuilder<T> {
+
+            protected Builder(final Function<B, T> targetConstructor) {
+                super(targetConstructor);
+            }
+
+            protected abstract B self();
+
+            public B setParentField(@Nullable final String value) {
+                _parentField = value;
+                return self();
+            }
+
+            @NotNull
+            private String _parentField;
+        }
+    }
+
+    private static final class ConcretePojoWithInheritance extends AbstractPojoWithInheritance {
+
+        private ConcretePojoWithInheritance(final ConcretePojoWithInheritance.Builder builder) {
+            super(builder);
+            _childField = builder._childField;
+        }
+
+        public String getChildField() {
+            return _childField;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            final ConcretePojoWithInheritance that = (ConcretePojoWithInheritance) o;
+            return _childField.equals(that._childField) && getParentField().equals(that.getParentField());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_childField, getParentField());
+        }
+
+        private final String _childField;
+
+        public static final class Builder
+                extends AbstractPojoWithInheritance.Builder<ConcretePojoWithInheritance.Builder, ConcretePojoWithInheritance> {
+            Builder() {
+                super(ConcretePojoWithInheritance::new);
+            }
+
+            @Override
+            protected ConcretePojoWithInheritance.Builder self() {
+                return this;
+            }
+
+            public ConcretePojoWithInheritance.Builder setChildField(final String value) {
+                _childField = value;
+                return this;
+            }
+
+            private String _childField;
+        }
+    }
+
+    private static final class ConcretePojoWithInheritanceMissingSuperCheck extends AbstractPojoWithInheritance {
+
+        private ConcretePojoWithInheritanceMissingSuperCheck(final Builder builder) {
+            super(builder);
+            _childField = builder._childField;
+        }
+
+        public String getChildField() {
+            return _childField;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            final ConcretePojoWithInheritanceMissingSuperCheck that = (ConcretePojoWithInheritanceMissingSuperCheck) o;
+            return _childField.equals(that._childField) /* MISSING: && getParentField().equals(that.getParentField()) */;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_childField /* MISSING: , getParentField() */);
+        }
+
+        private final String _childField;
+
+        public static final class Builder
+                extends AbstractPojoWithInheritance.Builder<Builder, ConcretePojoWithInheritanceMissingSuperCheck> {
+            Builder() {
+                super(ConcretePojoWithInheritanceMissingSuperCheck::new);
+            }
+
+            protected Builder self() {
+                return this;
+            }
+
+            public Builder setChildField(final String value) {
+                _childField = value;
+                return this;
+            }
+
+            private String _childField;
         }
     }
 }
