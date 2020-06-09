@@ -119,7 +119,17 @@ public final class ThreadLocalBuildableTestHelper {
                             field.getName()),
                     providedValue,
                     resetBuilderValue);
-            Assert.assertSame(
+            // It would be better for this next one to be `assertSame()` rather than `assertEquals()`,
+            //   since that would require default field values to be reused, thereby discouraging `reset()`
+            //   from creating new objects.
+            // However: consider JSON deserialization with a @JsonAnySetter.
+            //   Such a method might get called many, many times, and we don't want to build a new ImmutableMap each time,
+            //   so we want the underlying map to be mutable.
+            // ...but that means that `reset()` _must_ create a new Map.
+            // So, for now, this test checks `.equals` instead of `==`.
+            // TODO(spencerpearson): can/should we somehow specially bless ^^^ that pattern,
+            //   so that in _other_ cases we can use `==`, like we want to?
+            Assert.assertEquals(
                     String.format(
                             "Field %s is not the same on reset and construction",
                             field.getName()),
