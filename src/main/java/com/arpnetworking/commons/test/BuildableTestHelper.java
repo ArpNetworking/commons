@@ -62,7 +62,10 @@ public final class BuildableTestHelper {
         for (final Method method : BuilderTestUtility.getSetters(builderClass)) {
             final Optional<Field> field = BuilderTestUtility.getField(builderClass, method);
             if (!field.isPresent()) {
-                throw new IllegalStateException("Builder setter does not have matching field");
+                throw new IllegalStateException(String.format(
+                        "Builder setter %s does not have matching field",
+                        method.getName()
+                ));
             }
             final Object expectedValue = BuilderTestUtility.getFieldValue(builder, field.get());
             Assert.assertNotNull("Expected value " + field.get().getName() + " can not be null", expectedValue);
