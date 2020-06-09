@@ -127,7 +127,8 @@ public final class ThreadLocalBuildableTestHelper {
             //   so we want the underlying map to be mutable.
             // ...but that means that `reset()` _must_ create a new Map.
             // So, for now, this test checks `.equals` instead of `==`.
-            // TODO: can/should we somehow specially bless ^^^ that pattern, so that in _other_ cases we can use `==`, like we want to?
+            // TODO(spencerpearson): can/should we somehow specially bless ^^^ that pattern,
+            //   so that in _other_ cases we can use `==`, like we want to?
             Assert.assertEquals(
                     String.format(
                             "Field %s is not the same on reset and construction",
