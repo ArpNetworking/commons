@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +74,7 @@ public final class ObjectMapperFactory {
      *
      * @return Shared immutable {@link ObjectMapper} instance.
      */
+    @SuppressFBWarnings("MS_EXPOSE_REP")
     public static ObjectMapper getInstance() {
         return UNMODIFIABLE_OBJECT_MAPPER;
     }
@@ -108,11 +110,12 @@ public final class ObjectMapperFactory {
         }
     }
 
+    @SuppressFBWarnings("REC_CATCH_EXCEPTION")
     /* package private */ static void registerModule(final ObjectMapper objectMapper, final String className) {
         final Optional<Class<? extends Module>> moduleClass = getClass(className);
         if (moduleClass.isPresent()) {
             try {
-                final Module module = moduleClass.get().newInstance();
+                final Module module = moduleClass.get().getDeclaredConstructor().newInstance();
                 objectMapper.registerModule(module);
                 // CHECKSTYLE.OFF: IllegalCatch - Catch any exceptions thrown by reflection or the module constructor.
             } catch (final Exception e) {

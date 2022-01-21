@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -118,7 +120,7 @@ public class ObjectMapperFactoryTest {
     public void testRegisterModule() {
         final ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
         ObjectMapperFactory.registerModule(objectMapper, "foo.bar");
-        Mockito.verifyZeroInteractions(objectMapper);
+        Mockito.verifyNoInteractions(objectMapper);
 
         ObjectMapperFactory.registerModule(objectMapper, "com.fasterxml.jackson.datatype.guava.GuavaModule");
         Mockito.verify(objectMapper).registerModule(Mockito.any(Module.class));
@@ -130,7 +132,7 @@ public class ObjectMapperFactoryTest {
         ObjectMapperFactory.registerModule(
                 objectMapper,
                 "com.arpnetworking.commons.jackson.databind.ObjectMapperFactoryTest$BadModule");
-        Mockito.verifyZeroInteractions(objectMapper);
+        Mockito.verifyNoInteractions(objectMapper);
     }
 
     @Test
@@ -154,8 +156,8 @@ public class ObjectMapperFactoryTest {
         Mockito.verifyNoMoreInteractions(objectMapper);
         final List<Module> registered = captor.getAllValues();
         Assert.assertEquals(2, registered.size());
-        Assert.assertTrue(registered.get(0) instanceof GuavaModule);
-        Assert.assertTrue(registered.get(1) instanceof JavaTimeModule);
+        MatcherAssert.assertThat(registered.get(0), Matchers.instanceOf(GuavaModule.class));
+        MatcherAssert.assertThat(registered.get(1), Matchers.instanceOf(JavaTimeModule.class));
     }
 
     @Test
@@ -164,7 +166,7 @@ public class ObjectMapperFactoryTest {
         ObjectMapperFactory.registerAdditionalModules(
                 objectMapper,
                 s -> null);
-        Mockito.verifyZeroInteractions(objectMapper);
+        Mockito.verifyNoInteractions(objectMapper);
     }
 
     @Test

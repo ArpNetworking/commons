@@ -17,6 +17,7 @@
 package com.arpnetworking.commons.performance;
 
 import com.arpnetworking.commons.math.Accumulator;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ import java.util.Random;
  *
  * @author Ville Koskela (ville at inscopemetrics dot io)
  */
+@SuppressFBWarnings("DMI_RANDOM_USED_ONLY_ONCE")
 public abstract class BaseAccumulatorTestPerf {
 
     private static final List<Double> RANDOM_VALUE_DATA_SET;

@@ -18,6 +18,9 @@ package com.arpnetworking.commons.jackson.databind;
 import com.arpnetworking.commons.jackson.databind.exceptions.EnumerationNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +38,23 @@ import java.util.Optional;
  */
 public class EnumerationDeserializerTest {
 
+    private AutoCloseable _mockCloser;
+
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        _mockCloser = MockitoAnnotations.openMocks(this);
+    }
+
+    @After
+    public void close() {
+        try {
+            _mockCloser.close();
+            // CHECKSTYLE.OFF: IllegalCatch - Required for testing
+        } catch (final Exception e) {
+            // CHECKSTYLE.ON: IllegalCatch
+            // Expected exception
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -68,7 +85,7 @@ public class EnumerationDeserializerTest {
             final TestContainer c = objectMapper.readValue("{\"enum\":\"bar\"}", TestContainer.class);
             Assert.fail("Expected exception not thrown");
         } catch (final IOException e) {
-            Assert.assertTrue(e.getCause() instanceof EnumerationNotFoundException);
+            MatcherAssert.assertThat(e.getCause(), Matchers.instanceOf(EnumerationNotFoundException.class));
             Mockito.verify(_strategy).toEnum(TestEnum.class, "bar");
             Mockito.verifyNoMoreInteractions(_strategy);
         }

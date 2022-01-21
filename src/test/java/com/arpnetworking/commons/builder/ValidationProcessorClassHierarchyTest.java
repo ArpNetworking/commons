@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.function.Function;
+import javax.annotation.Nullable;
 
 /**
  * Tests for the {@link ValidationProcessor} fpr processing of class
@@ -207,12 +208,12 @@ public class ValidationProcessorClassHierarchyTest {
     private static void assertViolation(
             final ConstraintViolation violation,
             final Class<?> checkClass,
-            final Object invalidValue,
+            @Nullable final Object invalidValue,
             final String fieldName) {
         Assert.assertEquals(checkClass.getName(), violation.getCheckName());
         Assert.assertEquals(invalidValue, violation.getInvalidValue());
-        Assert.assertTrue(violation.getContext() instanceof FieldContext);
-        final FieldContext context = (FieldContext) violation.getContext();
+        Assert.assertTrue(violation.getContextPath().get(0) instanceof FieldContext);
+        final FieldContext context = (FieldContext) violation.getContextPath().get(0);
         Assert.assertEquals(fieldName, context.getField().getName());
     }
 

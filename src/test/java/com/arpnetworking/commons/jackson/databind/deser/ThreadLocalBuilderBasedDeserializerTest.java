@@ -24,6 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import net.sf.oval.constraint.NotNull;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -88,9 +90,9 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
             OBJECT_MAPPER.readValue("{\"i\":\"foo\"}", TestBean.class);
             Assert.fail("Expected exception not thrown");
         } catch (final IOException e) {
-            Assert.assertTrue(e instanceof InvalidFormatException);
+            MatcherAssert.assertThat(e, Matchers.instanceOf(InvalidFormatException.class));
             Assert.assertEquals(
-                    "Cannot deserialize value of type `java.lang.Integer` from String \"foo\": not a valid Integer "
+                    "Cannot deserialize value of type `int` from String \"foo\": not a valid `int` "
                     + "value\n at [Source: (String)\"{\"i\":\"foo\"}\"; line: 1, column: 6] (through reference chain: "
                     + "com.arpnetworking.commons.jackson.databind.deser.ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder["
                     + "\"i\"])",
@@ -112,7 +114,7 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
                     .readValue("{\"i\":3,\"j\":\"foo\"}", TestBean.class);
             Assert.fail("Expected exception not thrown");
         } catch (final IOException e) {
-            Assert.assertTrue(e instanceof UnrecognizedPropertyException);
+            MatcherAssert.assertThat(e, Matchers.instanceOf(UnrecognizedPropertyException.class));
             Assert.assertEquals(
                     "Unrecognized field \"j\" (class com.arpnetworking.commons.jackson.databind.deser."
                     + "ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder), not marked as ignorable (one known "

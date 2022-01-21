@@ -16,12 +16,14 @@
 
 package com.arpnetworking.commons.math;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,6 +41,7 @@ import static org.junit.Assert.assertEquals;
  * @author Ville Koskela (ville at koskilabs dot com)
  */
 @RunWith(Parameterized.class)
+@SuppressFBWarnings("DMI_RANDOM_USED_ONLY_ONCE")
 public final class AccumulatorTest {
 
     private static final List<Double> RANDOM_VALUE_DATA_SET;
@@ -94,8 +97,8 @@ public final class AccumulatorTest {
             final Double randomValuesMargin) {
         _accumulatorSupplier = () -> {
             try {
-                return accumulatorClass.newInstance();
-            } catch (final IllegalAccessException | InstantiationException e) {
+                return accumulatorClass.getDeclaredConstructor().newInstance();
+            } catch (final IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
         };

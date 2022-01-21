@@ -80,7 +80,7 @@ public final class ThreadLocalBuilderBeanDeserializerBuilder extends BeanDeseria
             // also: type of the method must be compatible
             final Class<?> rawBuildType = _buildMethod.getRawReturnType();
             final Class<?> rawValueType = valueType.getRawClass();
-            if ((rawBuildType != rawValueType)
+            if (rawBuildType != rawValueType
                     && !rawBuildType.isAssignableFrom(rawValueType)
                     && !rawValueType.isAssignableFrom(rawBuildType)) {
                 _context.reportBadDefinition(_beanDesc.getType(),
@@ -93,9 +93,11 @@ public final class ThreadLocalBuilderBeanDeserializerBuilder extends BeanDeseria
         // And if so, we can try building the deserializer
         final Collection<SettableBeanProperty> props = _properties.values();
         _fixAccess(props);
-        BeanPropertyMap propertyMap = BeanPropertyMap.construct(props,
-                _config.isEnabled(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES),
-                _collectAliases(props));
+        BeanPropertyMap propertyMap = BeanPropertyMap.construct(
+                _config,
+                props,
+                _collectAliases(props),
+                _config.isEnabled(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES));
         propertyMap.assignIndexes();
 
         boolean anyViews = !_config.isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION);

@@ -278,7 +278,8 @@ public final class ValidationProcessor implements ClassProcessor {
                         + "}\n";
             }
         }
-        return "if (!" + checkName + ".isSatisfied(this, " + fieldName + ", null, null)) {\n"
+        return  "final " + VALIDATION_CYCLE_CLASS + " cycle = new " + VALIDATION_CYCLE_CLASS + "(this);\n"
+                + "if (!" + checkName + ".isSatisfied(this, " + fieldName + ", cycle)) {\n"
                 + "violations.add(new net.sf.oval.ConstraintViolation("
                 + checkName + ", " + checkName + ".getMessage(), this, " + fieldName + ", " + checkName + "_CONTEXT));\n"
                 + "}\n";
@@ -324,6 +325,8 @@ public final class ValidationProcessor implements ClassProcessor {
     // CHECKSTYLE.ON: IllegalInstantiation
     private static final String OVAL_BUILDER_CLASS =
             "com.arpnetworking.commons.builder.OvalBuilder";
+    private static final String VALIDATION_CYCLE_CLASS =
+            "com.arpnetworking.commons.builder.OBValidationCycle";
     private static final String SKIP_VALIDATION_TRANSFORM_CLASS =
             "com.arpnetworking.commons.builder.annotations.SkipValidationProcessor";
     private static final String VALIDATE_WITH_METHOD_CHECK =

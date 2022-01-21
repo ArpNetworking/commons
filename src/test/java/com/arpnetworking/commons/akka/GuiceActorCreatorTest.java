@@ -21,6 +21,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.testkit.TestActorRef;
 import com.google.inject.Injector;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,9 +40,23 @@ import java.util.Iterator;
  */
 public class GuiceActorCreatorTest {
 
+    private AutoCloseable _mockCloser;
+
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        _mockCloser = MockitoAnnotations.openMocks(this);
+    }
+
+    @After
+    public void close() {
+        try {
+            _mockCloser.close();
+            // CHECKSTYLE.OFF: IllegalCatch - Required for testing
+        } catch (final Exception e) {
+            // CHECKSTYLE.ON: IllegalCatch
+            // Expected exception
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

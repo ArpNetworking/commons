@@ -16,6 +16,8 @@
 package com.arpnetworking.commons.jackson.databind.exceptions;
 
 import com.fasterxml.jackson.core.JsonLocation;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,7 +52,7 @@ public class EnumerationNotFoundExceptionTest {
         Assert.assertTrue(e.getMessage().contains("FOO"));
         Assert.assertTrue(e.getMessage().contains(TestEnumeration.class.toString()));
         Assert.assertEquals(location, e.getLocation());
-        Assert.assertTrue(e.getCause() instanceof NullPointerException);
+        MatcherAssert.assertThat(e.getCause(), Matchers.instanceOf(NullPointerException.class));
     }
 
     private enum TestEnumeration {

@@ -559,8 +559,8 @@ public final class ValidationProcessorBeanTest {
         Assert.assertEquals("Violations: " + Arrays.toString(violations), 1, violations.length);
         Assert.assertEquals(checkClass.getName(), violations[0].getCheckName());
         Assert.assertEquals(invalidValue, violations[0].getInvalidValue());
-        Assert.assertTrue(violations[0].getContext() instanceof FieldContext);
-        final FieldContext context = (FieldContext) violations[0].getContext();
+        Assert.assertTrue(violations[0].getContextPath().get(0) instanceof FieldContext);
+        final FieldContext context = (FieldContext) violations[0].getContextPath().get(0);
         Assert.assertEquals(fieldName, context.getField().getName());
         Assert.assertSame(validatedObject, violations[0].getValidatedObject());
     }

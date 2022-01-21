@@ -16,6 +16,7 @@
 package com.arpnetworking.commons.slf4j;
 
 import org.hamcrest.Matchers;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,19 @@ public final class RateLimitedLoggerTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        _mockCloser = MockitoAnnotations.openMocks(this);
+    }
+
+    @After
+    public void close() {
+        try {
+            _mockCloser.close();
+            // CHECKSTYLE.OFF: IllegalCatch - Required for testing
+        } catch (final Exception e) {
+            // CHECKSTYLE.ON: IllegalCatch
+            // Expected exception
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -316,6 +329,8 @@ public final class RateLimitedLoggerTest {
     private Logger _logger;
     @Mock
     private Marker _marker;
+
+    private AutoCloseable _mockCloser;
 
     private static final class TickingClock extends Clock {
 

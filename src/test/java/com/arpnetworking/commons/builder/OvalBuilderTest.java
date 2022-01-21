@@ -108,7 +108,7 @@ public class OvalBuilderTest {
             Assert.assertEquals(1, e.getConstraintViolations().length);
             final ConstraintViolation cv = e.getConstraintViolations()[0];
             Assert.assertEquals("net.sf.oval.constraint.NotNullCheck", cv.getCheckName());
-            MatcherAssert.assertThat(cv.getContext().toString(),
+            MatcherAssert.assertThat(cv.getContextPathAsString(),
                     Matchers.containsString("OvalBuilderTest$TestBean$Builder._int"));
             Assert.assertNull(cv.getInvalidValue());
         }
@@ -127,7 +127,7 @@ public class OvalBuilderTest {
             Assert.assertEquals(1, e.getConstraintViolations().length);
             final ConstraintViolation cv = e.getConstraintViolations()[0];
             Assert.assertEquals("net.sf.oval.constraint.NotNullCheck", cv.getCheckName());
-            MatcherAssert.assertThat(cv.getContext().toString(),
+            MatcherAssert.assertThat(cv.getContextPathAsString(),
                     Matchers.containsString("OvalBuilderTest$TestBean$Builder._int"));
             Assert.assertNull(cv.getInvalidValue());
         }
@@ -146,7 +146,7 @@ public class OvalBuilderTest {
             Assert.assertEquals(1, e.getConstraintViolations().length);
             final ConstraintViolation cv = e.getConstraintViolations()[0];
             Assert.assertEquals("net.sf.oval.constraint.MinCheck", cv.getCheckName());
-            MatcherAssert.assertThat(cv.getContext().toString(),
+            MatcherAssert.assertThat(cv.getContextPathAsString(),
                     Matchers.containsString("OvalBuilderTest$TestBean$Builder._rangeInt"));
             Assert.assertEquals(-1, cv.getInvalidValue());
         }
@@ -165,7 +165,7 @@ public class OvalBuilderTest {
             Assert.assertEquals(1, e.getConstraintViolations().length);
             final ConstraintViolation cv = e.getConstraintViolations()[0];
             Assert.assertEquals("net.sf.oval.constraint.MaxCheck", cv.getCheckName());
-            MatcherAssert.assertThat(cv.getContext().toString(),
+            MatcherAssert.assertThat(cv.getContextPathAsString(),
                     Matchers.containsString("OvalBuilderTest$TestBean$Builder._rangeInt"));
             Assert.assertEquals(101, cv.getInvalidValue());
         }
@@ -223,8 +223,8 @@ public class OvalBuilderTest {
             // CHECKSTYLE.OFF: IllegalCatch - Need to validate details of the exception thrown.
         } catch (final RuntimeException rte) {
             // CHECKSTYLE.ON: IllegalCatch
-            Assert.assertTrue(rte.getCause() instanceof InvocationTargetException);
-            Assert.assertTrue(rte.getCause().getCause() instanceof IllegalArgumentException);
+            MatcherAssert.assertThat(rte.getCause(), Matchers.instanceOf(InvocationTargetException.class));
+            MatcherAssert.assertThat(rte.getCause().getCause(), Matchers.instanceOf(IllegalArgumentException.class));
             Assert.assertEquals("This constructor throws!", rte.getCause().getCause().getMessage());
         }
     }
@@ -273,7 +273,7 @@ public class OvalBuilderTest {
             // CHECKSTYLE.OFF: IllegalCatch - Need to validate details of the exception thrown.
         } catch (final RuntimeException rte) {
             // CHECKSTYLE.ON: IllegalCatch
-            Assert.assertTrue(rte.getCause() instanceof ClassNotFoundException);
+            MatcherAssert.assertThat(rte.getCause(), Matchers.instanceOf(ClassNotFoundException.class));
         }
     }
 
@@ -288,8 +288,8 @@ public class OvalBuilderTest {
             // CHECKSTYLE.OFF: IllegalCatch - Need to validate details of the exception thrown.
         } catch (final RuntimeException rte) {
             // CHECKSTYLE.ON: IllegalCatch
-            Assert.assertTrue(rte.getCause() instanceof InvocationTargetException);
-            Assert.assertTrue(rte.getCause().getCause() instanceof IllegalArgumentException);
+            MatcherAssert.assertThat(rte.getCause(), Matchers.instanceOf(InvocationTargetException.class));
+            MatcherAssert.assertThat(rte.getCause().getCause(), Matchers.instanceOf(IllegalArgumentException.class));
             Assert.assertEquals("This setter throws!", rte.getCause().getCause().getMessage());
         }
     }

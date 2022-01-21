@@ -49,7 +49,7 @@ public final class EnumerationDeserializerStrategyUsingToUpperCase<T extends Enu
     public Optional<T> toEnum(final Class<T> enumClass, final String key) {
         try {
             return Optional.of(Enum.valueOf(enumClass, key.toUpperCase(Locale.getDefault())));
-        } catch (final IllegalArgumentException | NullPointerException ex) {
+        } catch (final IllegalArgumentException ex) {
             return Optional.empty();
         }
     }

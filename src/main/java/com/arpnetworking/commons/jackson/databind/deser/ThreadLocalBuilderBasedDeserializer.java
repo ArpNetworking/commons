@@ -158,16 +158,16 @@ public class ThreadLocalBuilderBasedDeserializer extends BuilderBasedDeserialize
         // See:
         // https://github.com/FasterXML/jackson-databind/issues/2486
 
-        final boolean nonStandardCreation = (_unwrappedPropertyHandler != null)
+        final boolean nonStandardCreation = _unwrappedPropertyHandler != null
                 || _valueInstantiator.canCreateUsingDelegate()
                 || _valueInstantiator.canCreateFromObjectWith()
                 || !_valueInstantiator.canCreateUsingDefault();
 
         return !nonStandardCreation
-                && (_injectables == null)
+                && _injectables == null
                 && !_needViewProcesing
                 // also, may need to reorder stuff if we expect Object Id:
-                && (_objectIdReader == null);
+                && _objectIdReader == null;
     }
 
     @SuppressFBWarnings("BC_UNCONFIRMED_CAST_OF_RETURN_VALUE")

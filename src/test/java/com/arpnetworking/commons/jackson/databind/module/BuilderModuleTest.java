@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -37,9 +38,23 @@ import java.util.Objects;
  */
 public class BuilderModuleTest {
 
+    private AutoCloseable _mockCloser;
+
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        _mockCloser = MockitoAnnotations.openMocks(this);
+    }
+
+    @After
+    public void close() {
+        try {
+            _mockCloser.close();
+            // CHECKSTYLE.OFF: IllegalCatch - Required for testing
+        } catch (final Exception e) {
+            // CHECKSTYLE.ON: IllegalCatch
+            // Expected exception
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

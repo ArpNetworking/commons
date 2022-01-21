@@ -16,6 +16,7 @@
 package com.arpnetworking.commons.builder;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import net.sf.oval.Validator;
 import net.sf.oval.constraint.AssertFalse;
 import net.sf.oval.constraint.AssertNull;
 import net.sf.oval.constraint.AssertTrue;
@@ -51,6 +52,7 @@ import net.sf.oval.constraint.Past;
 import net.sf.oval.constraint.Range;
 import net.sf.oval.constraint.Size;
 import net.sf.oval.constraint.ValidateWithMethod;
+import net.sf.oval.context.OValContext;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -844,7 +846,11 @@ public final class ValidationProcessorBean {
         private static final class CheckWithString implements CheckWithCheck.SimpleCheck {
 
             @Override
-            public boolean isSatisfied(final Object validatedObject, final Object value) {
+            public boolean isSatisfied(
+                    final Object validatedObject,
+                    final Object value,
+                    final OValContext context,
+                    final Validator validator) {
                 return value instanceof String && Boolean.parseBoolean((String) value);
             }
 

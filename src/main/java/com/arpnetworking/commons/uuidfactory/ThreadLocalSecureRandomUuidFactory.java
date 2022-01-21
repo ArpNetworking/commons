@@ -15,6 +15,7 @@
  */
 package com.arpnetworking.commons.uuidfactory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +53,7 @@ import java.util.UUID;
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
+@SuppressFBWarnings("DMI_RANDOM_USED_ONLY_ONCE")
 public final class ThreadLocalSecureRandomUuidFactory implements UuidFactory {
 
     @Override
@@ -89,7 +91,7 @@ public final class ThreadLocalSecureRandomUuidFactory implements UuidFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThreadLocalSecureRandomUuidFactory.class);
 
-    private static final ThreadLocal<SecureRandom> SECURE_RANDOM_THREAD_LOCAL = new ThreadLocal<SecureRandom>() {
+    private static final ThreadLocal<SecureRandom> SECURE_RANDOM_THREAD_LOCAL = new ThreadLocal<>() {
         @Override
         protected SecureRandom initialValue() {
             if (!URANDOM.equals(System.getProperty(KEY))) {

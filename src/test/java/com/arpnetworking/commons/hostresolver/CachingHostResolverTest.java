@@ -16,6 +16,7 @@
 package com.arpnetworking.commons.hostresolver;
 
 import com.arpnetworking.commons.java.time.ManualClock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,8 @@ import java.util.function.Function;
 @RunWith(Parameterized.class)
 public class CachingHostResolverTest {
 
+    private AutoCloseable _mockCloser;
+
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         final Function<HostResolver, String> methodA = CachingHostResolverTest::methodA;
@@ -52,7 +55,19 @@ public class CachingHostResolverTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        _mockCloser = MockitoAnnotations.openMocks(this);
+    }
+
+    @After
+    public void close() {
+        try {
+            _mockCloser.close();
+            // CHECKSTYLE.OFF: IllegalCatch - Required for testing
+        } catch (final Exception e) {
+            // CHECKSTYLE.ON: IllegalCatch
+            // Expected exception
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

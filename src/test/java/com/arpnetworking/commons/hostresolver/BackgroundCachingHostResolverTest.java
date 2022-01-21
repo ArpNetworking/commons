@@ -15,6 +15,9 @@
  */
 package com.arpnetworking.commons.hostresolver;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +43,8 @@ import java.util.function.Function;
 @RunWith(Parameterized.class)
 public class BackgroundCachingHostResolverTest {
 
+    private AutoCloseable _mockCloser;
+
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         final Function<HostResolver, String> methodA = BackgroundCachingHostResolverTest::methodA;
@@ -48,22 +53,33 @@ public class BackgroundCachingHostResolverTest {
         return Arrays.asList(new Object[][] { { methodA }, { methodB } });
     }
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
-
     @Test
     public void testSingleton() {
         final HostResolver hostResolverA = BackgroundCachingHostResolver.getInstance();
-        Assert.assertTrue(hostResolverA instanceof BackgroundCachingHostResolver);
+        MatcherAssert.assertThat(hostResolverA, Matchers.instanceOf(BackgroundCachingHostResolver.class));
 
         final HostResolver hostResolverB = BackgroundCachingHostResolver.getInstance();
-        Assert.assertTrue(hostResolverB instanceof BackgroundCachingHostResolver);
+        MatcherAssert.assertThat(hostResolverB, Matchers.instanceOf(BackgroundCachingHostResolver.class));
 
         Assert.assertSame(hostResolverA, hostResolverB);
     }
 
+    @Before
+    public void setUp() {
+        _mockCloser = MockitoAnnotations.openMocks(this);
+    }
+
+    @After
+    public void close() {
+        try {
+            _mockCloser.close();
+            // CHECKSTYLE.OFF: IllegalCatch - Required for testing
+        } catch (final Exception e) {
+            // CHECKSTYLE.ON: IllegalCatch
+            // Expected exception
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     public void testCaching() throws UnknownHostException {
