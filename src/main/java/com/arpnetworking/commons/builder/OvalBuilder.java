@@ -25,8 +25,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,10 +82,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
                                 true, // initialize
                                 clazz.getClassLoader());
                         final Constructor<B> builderConstructor = builderClass.getDeclaredConstructor();
-                        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                            builderConstructor.setAccessible(true);
-                            return null;
-                        });
+                        builderConstructor.setAccessible(true);
                         return builderConstructor;
                     } catch (final NoSuchMethodException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
@@ -129,10 +124,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
                         if (isSetterMethod(targetMethod)) {
                             final Optional<Method> getterMethod = getGetterForSetter(targetMethod, clazz);
                             if (getterMethod.isPresent()) {
-                                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                    getterMethod.get().setAccessible(true);
-                                    return null;
-                                });
+                                getterMethod.get().setAccessible(true);
                                 builderMethods.add(new GetterSetter(getterMethod.get(), targetMethod));
                             } else {
                                 LOGGER.warn(
@@ -207,10 +199,7 @@ public abstract class OvalBuilder<T> implements Builder<T> {
         }
         try {
             final Constructor<? extends T> constructor = _targetClass.get().getDeclaredConstructor(this.getClass());
-            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                constructor.setAccessible(true);
-                return null;
-            });
+            constructor.setAccessible(true);
             return constructor.newInstance(this);
 
         } catch (final NoSuchMethodException

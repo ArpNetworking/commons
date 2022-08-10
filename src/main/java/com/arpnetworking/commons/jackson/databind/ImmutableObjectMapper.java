@@ -16,6 +16,7 @@
 package com.arpnetworking.commons.jackson.databind;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.CallbackFilter;
 import net.sf.cglib.proxy.Enhancer;
@@ -25,8 +26,6 @@ import net.sf.cglib.proxy.MethodProxy;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -157,6 +156,7 @@ public final class ImmutableObjectMapper {
         }
 
         // CHECKSTYLE.OFF: IllegalThrows - Required by external interface
+        @SuppressFBWarnings("DP_DO_INSIDE_DO_PRIVILEGED")
         @Override
         public Object intercept(
                 final Object obj,
@@ -164,10 +164,7 @@ public final class ImmutableObjectMapper {
                 final Object[] args,
                 final MethodProxy proxy) throws Throwable {
             // CHECKSTYLE.ON: IllegalThrows
-            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                method.setAccessible(true);
-                return null;
-            });
+            method.setAccessible(true);
             try {
                 return method.invoke(_wrapper, args);
             } catch (final InvocationTargetException e) {

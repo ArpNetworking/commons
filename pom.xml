@@ -18,7 +18,7 @@
   <parent>
     <groupId>com.arpnetworking.build</groupId>
     <artifactId>arpnetworking-parent-pom</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.8</version>
     <relativePath />
   </parent>
 
@@ -72,12 +72,12 @@
     <!--Dependency versions-->
     <akka.version>2.6.18</akka.version>
     <cglib.version>3.3.0</cglib.version>
-    <guava.version>31.0.1-jre</guava.version>
-    <guice.version>5.0.1</guice.version>
+    <guava.version>31.1-jre</guava.version>
+    <guice.version>5.1.0</guice.version>
     <hamcrest.version>2.2</hamcrest.version>
     <jackson.version>2.13.1</jackson.version>
-    <javassist.version>3.28.0-GA</javassist.version>
-    <javassist.maven.core.version>0.2.3</javassist.maven.core.version>
+    <javassist.version>3.29.0-GA</javassist.version>
+    <javassist.maven.core.version>0.2.5</javassist.maven.core.version>
     <javax.inject.version>1</javax.inject.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.13.2</junit.version>
@@ -93,7 +93,7 @@
     <system.rules.version>1.19.0</system.rules.version>
 
     <!-- Plugin versions -->
-    <javassist.maven.plugin.version>0.2.3</javassist.maven.plugin.version>
+    <javassist.maven.plugin.version>0.2.5</javassist.maven.plugin.version>
 
     <!-- Code Coverage -->
     <jacoco.check.line.coverage>1.0</jacoco.check.line.coverage>
