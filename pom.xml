@@ -75,7 +75,7 @@
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
     <hamcrest.version>2.2</hamcrest.version>
-    <jackson.version>2.13.1</jackson.version>
+    <jackson.version>2.13.2.1</jackson.version>
     <javassist.version>3.29.0-GA</javassist.version>
     <javassist.maven.core.version>0.2.5</javassist.maven.core.version>
     <javax.inject.version>1</javax.inject.version>
