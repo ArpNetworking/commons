@@ -16,11 +16,10 @@
 package com.arpnetworking.commons.test;
 
 import com.arpnetworking.commons.builder.Builder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,11 +60,9 @@ public final class BuilderTestUtility {
         return Optional.empty();
     }
 
+    @SuppressFBWarnings("DP_DO_INSIDE_DO_PRIVILEGED")
     static <T> Object getFieldValue(final T target, final Field field) throws IllegalAccessException {
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            field.setAccessible(true);
-            return null;
-        });
+        field.setAccessible(true);
         return field.get(target);
     }
 

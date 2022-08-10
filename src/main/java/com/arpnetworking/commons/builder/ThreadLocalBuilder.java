@@ -20,8 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -205,10 +203,7 @@ public abstract class ThreadLocalBuilder<T> extends OvalBuilder<T> {
             @SuppressWarnings("unchecked")
             final Constructor<ThreadLocalBuilder<?>> constructor =
                     (Constructor<ThreadLocalBuilder<?>>) threadLocalBuilderClass.getDeclaredConstructor();
-            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                constructor.setAccessible(true);
-                return null;
-            });
+            constructor.setAccessible(true);
             threadLocalBuilder = constructor.newInstance();
         } catch (final IllegalAccessException | NoSuchMethodException
                 | InvocationTargetException | InstantiationException e) {
