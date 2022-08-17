@@ -91,12 +91,11 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
             Assert.fail("Expected exception not thrown");
         } catch (final IOException e) {
             MatcherAssert.assertThat(e, Matchers.instanceOf(InvalidFormatException.class));
-            Assert.assertEquals(
-                    "Cannot deserialize value of type `int` from String \"foo\": not a valid `int` "
-                    + "value\n at [Source: (String)\"{\"i\":\"foo\"}\"; line: 1, column: 6] (through reference chain: "
+            MatcherAssert.assertThat(e.getMessage(), Matchers.containsString("Cannot deserialize value of type"));
+            MatcherAssert.assertThat(e.getMessage(), Matchers.containsString(
+                    "value\n at [Source: (String)\"{\"i\":\"foo\"}\"; line: 1, column: 6] (through reference chain: "
                     + "com.arpnetworking.commons.jackson.databind.deser.ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder["
-                    + "\"i\"])",
-                    e.getMessage());
+                    + "\"i\"])"));
         }
     }
 

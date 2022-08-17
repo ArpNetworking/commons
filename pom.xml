@@ -18,7 +18,7 @@
   <parent>
     <groupId>com.arpnetworking.build</groupId>
     <artifactId>arpnetworking-parent-pom</artifactId>
-    <version>3.0.8</version>
+    <version>3.0.9</version>
     <relativePath />
   </parent>
 
@@ -70,26 +70,26 @@
 
   <properties>
     <!--Dependency versions-->
-    <akka.version>2.6.18</akka.version>
+    <akka.version>2.6.19</akka.version>
     <bytebuddy.version>1.12.13</bytebuddy.version>
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
     <hamcrest.version>2.2</hamcrest.version>
-    <jackson.version>2.13.2.1</jackson.version>
-    <javassist.version>3.29.0-GA</javassist.version>
+    <jackson.version>2.13.3</jackson.version>
+    <javassist.version>3.29.1-GA</javassist.version>
     <javassist.maven.core.version>0.2.5</javassist.maven.core.version>
     <javax.inject.version>1</javax.inject.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.13.2</junit.version>
     <junit.benchmarks.version>0.7.2</junit.benchmarks.version>
     <logback.version>1.2.10</logback.version>
-    <mockito.version>4.2.0</mockito.version>
+    <mockito.version>4.7.0</mockito.version>
     <oval.version>3.2.1</oval.version>
     <performance.test.version>1.2.1</performance.test.version>
     <scala.version>2.13</scala.version>
     <scala.library.version>2.13.8</scala.library.version>
-    <slf4j.version>1.7.33</slf4j.version>
-    <spotbugs.annotations.version>4.5.3</spotbugs.annotations.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <spotbugs.annotations.version>4.7.1</spotbugs.annotations.version>
     <system.rules.version>1.19.0</system.rules.version>
 
     <!-- Plugin versions -->
