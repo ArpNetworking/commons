@@ -71,4 +71,13 @@ public class ImmutableObjectMapperTest {
         final ObjectMapper objectMapper = ImmutableObjectMapper.of(new ObjectMapper());
         objectMapper.readValue("".getBytes(Charset.defaultCharset()), String.class);
     }
+
+    @Test(expected = RuntimeException.class)
+    public void testBadEnhanceClass() {
+       class BadEnhanceClass {
+              BadEnhanceClass(final String someArg) {
+              }
+       }
+       ImmutableObjectMapper.enhanceAndProxy(new BadEnhanceClass("foo"), BadEnhanceClass.class);
+    }
 }

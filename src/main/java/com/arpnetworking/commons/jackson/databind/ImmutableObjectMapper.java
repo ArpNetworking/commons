@@ -17,26 +17,23 @@ package com.arpnetworking.commons.jackson.databind;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import net.sf.cglib.proxy.Callback;
-import net.sf.cglib.proxy.CallbackFilter;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.annotation.Nonnull;
 
 /**
  * Immutable decorator for {@link ObjectMapper}.
- *
- * Dependencies:
- * <ul>
- *     <li>com.fasterxml.jackson.core:jackson-databind</li>
- *     <li>cglib:cglib  (3.1+)</li>
- * </ul>
  *
  * @author Ville Koskela (ville dot koskela at inscopemetrics dot io)
  */
@@ -44,7 +41,6 @@ public final class ImmutableObjectMapper {
 
     /**
      * Decorate an {@link ObjectMapper} instance so that it is immutable.
-     *
      * <i>Warning:</i> Anyone with a reference to the original
      * {@link ObjectMapper} instance may modify it and thus appear to
      * modify the decorated instance as well.
@@ -53,26 +49,37 @@ public final class ImmutableObjectMapper {
      * @return Immutable {@link ObjectMapper} instance.
      */
     public static ObjectMapper of(final ObjectMapper objectMapper) {
-        final Callback[] callbacks = new Callback[2];
-        callbacks[0] = new SafeMethodCallback(objectMapper);
-        callbacks[1] = UNSAFE_METHOD_CALLBACK;
+        return enhanceAndProxy(objectMapper, ObjectMapper.class);
+    }
 
-        final Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(ObjectMapper.class);
-        enhancer.setCallbackFilter(CALLBACK_FILTER);
-        enhancer.setCallbacks(callbacks);
+    /*package private*/ static <T> T enhanceAndProxy(final T proxy, final Class<T> clazz) {
+        try {
+            final ByteBuddy byteBuddy = new ByteBuddy();
+            final Class<? extends T> enhanced = byteBuddy.subclass(clazz)
+                    .method(ElementMatchers.any())
+                    .intercept(InvocationHandlerAdapter.of(new SafeMethodCallback<>(proxy)))
+                    .method(new UnsafeMethodMatcher())
+                    .intercept(InvocationHandlerAdapter.of(new UnsafeMethodCallback()))
+                    .make()
+                    .load(ImmutableObjectMapper.class.getClassLoader())
+                    .getLoaded();
 
-        return (ObjectMapper) enhancer.create();
+            return enhanced.getDeclaredConstructor().newInstance();
+        } catch (final InvocationTargetException
+                       | InstantiationException
+                       | IllegalAccessException
+                       | NoSuchMethodException
+                       | IllegalAccessError e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private ImmutableObjectMapper() {}
 
-    private static final CallbackFilter CALLBACK_FILTER = new ImmutableObjectMapperCallbackFilter();
-    private static final Callback UNSAFE_METHOD_CALLBACK = new UnsafeMethodCallback();
 
-    private static final class ImmutableObjectMapperCallbackFilter implements CallbackFilter {
+    private static final class UnsafeMethodMatcher implements ElementMatcher<MethodDescription> {
 
-        ImmutableObjectMapperCallbackFilter() {}
+        UnsafeMethodMatcher() {}
 
         // CHECKSTYLE.OFF: IllegalInstantiation - No Guava Dependency
         private static final Set<String> SAFE_METHOD_NAMES = new HashSet<>();
@@ -135,34 +142,32 @@ public final class ImmutableObjectMapper {
         // CHECKSTYLE.ON: ExecutableStatementCount
 
         @Override
-        public int accept(final Method method) {
+        public boolean matches(@Nonnull final MethodDescription target) {
+            Objects.requireNonNull(target);
+
             // All non-public methods are considered safe
-            if ((method.getModifiers() & Modifier.PUBLIC) == 0) {
-                return 0;
+            if ((target.getModifiers() & Modifier.PUBLIC) == 0) {
+                return false;
             }
             // All methods declared on root Object class are considered safe
-            if (method.getDeclaringClass().equals(Object.class)) {
-                return 0;
+            if (target.getDeclaringType().getTypeName().equals(Object.class.getName())) {
+                return false;
             }
             // All methods explicitly listed are considered safe
-            return SAFE_METHOD_NAMES.contains(method.getName()) ? 0 : 1;
+            return !SAFE_METHOD_NAMES.contains(target.getName());
         }
     }
 
-    private static final class SafeMethodCallback implements MethodInterceptor {
+    private static final class SafeMethodCallback<T> implements InvocationHandler {
 
-        SafeMethodCallback(final ObjectMapper wrapper) {
+        SafeMethodCallback(final T wrapper) {
             _wrapper = wrapper;
         }
 
         // CHECKSTYLE.OFF: IllegalThrows - Required by external interface
         @SuppressFBWarnings("DP_DO_INSIDE_DO_PRIVILEGED")
         @Override
-        public Object intercept(
-                final Object obj,
-                final Method method,
-                final Object[] args,
-                final MethodProxy proxy) throws Throwable {
+        public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             // CHECKSTYLE.ON: IllegalThrows
             method.setAccessible(true);
             try {
@@ -174,18 +179,13 @@ public final class ImmutableObjectMapper {
             }
         }
 
-        private final ObjectMapper _wrapper;
+        private final T _wrapper;
     }
 
-    private static final class UnsafeMethodCallback implements MethodInterceptor {
-
+    private static final class UnsafeMethodCallback implements InvocationHandler {
         // CHECKSTYLE.OFF: IllegalThrows - Required by external interface
         @Override
-        public Object intercept(
-                final Object obj,
-                final Method method,
-                final Object[] args,
-                final MethodProxy proxy) throws Throwable {
+        public Object invoke(final Object proxy, final Method method, final Object[] args) {
             // CHECKSTYLE.ON: IllegalThrows
             throw new UnsupportedOperationException(String.format(
                     "Cannot mutate immutable ObjectMapper; method=%s",
