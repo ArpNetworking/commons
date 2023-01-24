@@ -70,7 +70,7 @@
 
   <properties>
     <!--Dependency versions-->
-    <akka.version>2.6.19</akka.version>
+    <akka.version>2.7.0</akka.version>
     <bytebuddy.version>1.12.13</bytebuddy.version>
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
