@@ -44,7 +44,6 @@ pipeline {
             sh "./jdk-wrapper.sh ./mvnw $target -U -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Ddocker.verbose=true"
           }
         }
-	jacoco()
       }
     }
   }
@@ -53,6 +52,7 @@ pipeline {
       recordIssues(
           enabledForFailure: true, aggregatingResults: true,
           tools: [java(), checkStyle(reportEncoding: 'UTF-8'), spotBugs()])
+      jacoco()
     }
   }
 }
