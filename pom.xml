@@ -93,7 +93,7 @@
     <system.rules.version>1.19.0</system.rules.version>
 
     <!-- Plugin versions -->
-    <javassist.maven.plugin.version>0.2.5</javassist.maven.plugin.version>
+    <javassist.maven.plugin.version>0.2.6</javassist.maven.plugin.version>
 
     <!-- Code Coverage -->
     <jacoco.check.line.coverage>1.0</jacoco.check.line.coverage>
