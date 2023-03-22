@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -79,7 +78,6 @@ public class BuilderModuleTest {
     }
 
     @Test
-    @Ignore
     public void testGenericRoundTrip() throws IOException {
         // TODO(ville): Enable this test.
         //
