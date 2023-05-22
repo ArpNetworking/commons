@@ -75,20 +75,20 @@
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
     <hamcrest.version>2.2</hamcrest.version>
-    <jackson.version>2.15.0</jackson.version>
+    <jackson.version>2.15.1</jackson.version>
     <javassist.version>3.29.2-GA</javassist.version>
     <javassist.maven.core.version>0.2.6</javassist.maven.core.version>
     <javax.inject.version>1</javax.inject.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.13.2</junit.version>
     <junit.benchmarks.version>0.7.2</junit.benchmarks.version>
-    <logback.version>1.2.11</logback.version>
+    <logback.version>1.4.7</logback.version>
     <mockito.version>5.3.1</mockito.version>
     <oval.version>3.2.1</oval.version>
     <performance.test.version>1.2.1</performance.test.version>
     <scala.version>2.13</scala.version>
     <scala.library.version>2.13.10</scala.library.version>
-    <slf4j.version>1.7.36</slf4j.version>
+    <slf4j.version>2.0.7</slf4j.version>
     <spotbugs.annotations.version>4.7.3</spotbugs.annotations.version>
     <system.rules.version>1.19.0</system.rules.version>
 
