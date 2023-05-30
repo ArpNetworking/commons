@@ -73,7 +73,7 @@
     <akka.version>2.6.19</akka.version>
     <bytebuddy.version>1.14.4</bytebuddy.version>
     <guava.version>32.0.0-jre</guava.version>
-    <guice.version>5.1.0</guice.version>
+    <guice.version>7.0.0</guice.version>
     <hamcrest.version>2.2</hamcrest.version>
     <jackson.version>2.15.1</jackson.version>
     <javassist.version>3.29.2-GA</javassist.version>
