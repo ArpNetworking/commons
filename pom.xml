@@ -29,7 +29,7 @@
   <name>Common Library</name>
   <description>Common utilities.</description>
   <url>https://github.com/ArpNetworking/commons</url>
-  <version>2.0.7-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
 
   <licenses>
     <license>
@@ -73,12 +73,12 @@
     <akka.version>2.6.19</akka.version>
     <bytebuddy.version>1.14.4</bytebuddy.version>
     <guava.version>32.0.0-jre</guava.version>
-    <guice.version>5.1.0</guice.version>
+    <guice.version>7.0.0</guice.version>
     <hamcrest.version>2.2</hamcrest.version>
     <jackson.version>2.15.1</jackson.version>
     <javassist.version>3.29.2-GA</javassist.version>
     <javassist.maven.core.version>0.2.6</javassist.maven.core.version>
-    <javax.inject.version>1</javax.inject.version>
+    <jakarta.inject.version>2.0.1</jakarta.inject.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.13.2</junit.version>
     <junit.benchmarks.version>0.7.2</junit.benchmarks.version>
@@ -247,9 +247,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-      <version>${javax.inject.version}</version>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
+      <version>${jakarta.inject.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
