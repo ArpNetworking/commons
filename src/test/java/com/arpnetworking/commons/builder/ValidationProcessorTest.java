@@ -164,7 +164,7 @@ public final class ValidationProcessorTest {
 
         // Assert that validation happens after processing
         @SuppressWarnings("unchecked")
-        final OvalBuilder<ExamplePojo> processedBuilder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass()
+        final OvalBuilder<ExamplePojo> processedBuilder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass(ComparisonBuilder.class)
                 .getDeclaredConstructor()
                 .newInstance();
         try {
@@ -208,7 +208,7 @@ public final class ValidationProcessorTest {
 
         // Assert that validation _still_ happens after processing
         @SuppressWarnings("unchecked")
-        final OvalBuilder<ExamplePojo> processedBuilder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass()
+        final OvalBuilder<ExamplePojo> processedBuilder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass(NoChangeBuilder.class)
                 .getDeclaredConstructor()
                 .newInstance();
         try {
@@ -247,7 +247,7 @@ public final class ValidationProcessorTest {
 
         // Assert that no validation happens after processing
         @SuppressWarnings("unchecked")
-        final OvalBuilder<ExamplePojo> builder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass()
+        final OvalBuilder<ExamplePojo> builder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass(NoConstraintsBuilder.class)
                 .getDeclaredConstructor()
                 .newInstance();
         final ExamplePojo postProcessedPojo = builder.build();
@@ -292,7 +292,9 @@ public final class ValidationProcessorTest {
 
         // Assert that validation happens after processing
         @SuppressWarnings("unchecked")
-        final OvalBuilder<ExamplePojo> builder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass().getDeclaredConstructor().newInstance();
+        final OvalBuilder<ExamplePojo> builder = (OvalBuilder<ExamplePojo>) exampleCtClass.toClass(UnprocessedParentBuilder.class)
+                .getDeclaredConstructor()
+                .newInstance();
         try {
             builder.build();
         } catch (final ConstraintsViolatedException e) {
