@@ -19,9 +19,8 @@ import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorRefFactory;
 import com.google.inject.Injector;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 /**
  * A dependency injection {@link Provider} to assist in the creation of Akka actors.
