@@ -17,6 +17,7 @@ package com.arpnetworking.commons.jackson.databind;
 
 import com.arpnetworking.commons.jackson.databind.module.BuilderModule;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,7 +55,7 @@ public final class ObjectMapperFactory {
      * @return New mutable {@link ObjectMapper} instance.
      */
     public static ObjectMapper createInstance() {
-        return createModifiableObjectMapper();
+        return createInstance(createJsonFactory());
     }
 
     /**
@@ -79,8 +80,14 @@ public final class ObjectMapperFactory {
         return UNMODIFIABLE_OBJECT_MAPPER;
     }
 
+    private static JsonFactory createJsonFactory() {
+        return JsonFactory.builder()
+                .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION)
+                .build();
+    }
+
     private static ObjectMapper createModifiableObjectMapper() {
-        return createModifiableObjectMapper(new ObjectMapper());
+        return createModifiableObjectMapper(new ObjectMapper(createJsonFactory()));
     }
 
     /* package private */ static ObjectMapper createModifiableObjectMapper(final ObjectMapper objectMapper) {
