@@ -17,6 +17,7 @@ package com.arpnetworking.commons.jackson.databind;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -74,6 +75,7 @@ public class ImmutableObjectMapperTest {
 
     @Test(expected = RuntimeException.class)
     public void testBadEnhanceClass() {
+        @SuppressFBWarnings("SIC_INNER_SHOULD_BE_STATIC_ANON")
        class BadEnhanceClass {
               BadEnhanceClass(final String someArg) {
               }

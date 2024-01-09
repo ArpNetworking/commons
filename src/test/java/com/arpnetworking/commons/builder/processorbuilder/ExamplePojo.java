@@ -36,7 +36,7 @@ import com.arpnetworking.commons.builder.Builder;
  *
  * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
  */
-public class ExamplePojo {
+public final class ExamplePojo {
 
     /**
      * Consructor.
