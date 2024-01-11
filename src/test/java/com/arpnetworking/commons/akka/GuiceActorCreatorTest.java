@@ -96,7 +96,7 @@ public class GuiceActorCreatorTest {
     @Mock
     private Injector _injector;
 
-    private static class TestActor extends AbstractActor {
+    private static final class TestActor extends AbstractActor {
 
         @Override
         public Receive createReceive() {

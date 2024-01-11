@@ -229,7 +229,7 @@ public class ObjectMapperFactoryTest {
     /**
      * Jackson Module which fails under construction.
      */
-    public static class BadModule extends Module {
+    public static final class BadModule extends Module {
 
         public BadModule() {
             throw new IllegalStateException("Bad module constructor always throws");
