@@ -70,7 +70,7 @@
 
   <properties>
     <!--Dependency versions-->
-    <akka.version>2.6.19</akka.version>
+    <pekko.version>1.0.2</pekko.version>
     <bytebuddy.version>1.14.11</bytebuddy.version>
     <guava.version>33.0.0-jre</guava.version>
     <guice.version>7.0.0</guice.version>
@@ -199,9 +199,9 @@
     </dependency>
     <!-- Provided -->
     <dependency>
-      <groupId>com.typesafe.akka</groupId>
-      <artifactId>akka-actor_${scala.version}</artifactId>
-      <version>${akka.version}</version>
+      <groupId>org.apache.pekko</groupId>
+      <artifactId>pekko-actor_${scala.version}</artifactId>
+      <version>${pekko.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -310,9 +310,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.typesafe.akka</groupId>
-      <artifactId>akka-testkit_${scala.version}</artifactId>
-      <version>${akka.version}</version>
+      <groupId>org.apache.pekko</groupId>
+      <artifactId>pekko-testkit_${scala.version}</artifactId>
+      <version>${pekko.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

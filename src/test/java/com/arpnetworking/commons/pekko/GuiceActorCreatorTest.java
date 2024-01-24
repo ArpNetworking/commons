@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.arpnetworking.commons.akka;
+package com.arpnetworking.commons.pekko;
 
-import akka.actor.AbstractActor;
-import akka.actor.Actor;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import akka.testkit.TestActorRef;
 import com.google.inject.Injector;
+import org.apache.pekko.actor.AbstractActor;
+import org.apache.pekko.actor.Actor;
+import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.actor.Props;
+import org.apache.pekko.testkit.TestActorRef;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

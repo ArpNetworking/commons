@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.arpnetworking.commons.akka;
+package com.arpnetworking.commons.pekko;
 
-import akka.actor.Actor;
-import akka.actor.ActorRef;
-import akka.actor.ActorRefFactory;
 import com.google.inject.Injector;
 import jakarta.inject.Inject;
 import jakarta.inject.Provider;
+import org.apache.pekko.actor.Actor;
+import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.actor.ActorRefFactory;
 
 /**
  * A dependency injection {@link Provider} to assist in the creation of Akka actors.

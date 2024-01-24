@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.arpnetworking.commons.akka;
+package com.arpnetworking.commons.pekko;
 
-import akka.actor.Actor;
-import akka.actor.IndirectActorProducer;
-import akka.actor.Props;
 import com.google.inject.Injector;
+import org.apache.pekko.actor.Actor;
+import org.apache.pekko.actor.IndirectActorProducer;
+import org.apache.pekko.actor.Props;
 
 /**
  * A Guice-based factory for Akka actors.
