@@ -23,7 +23,7 @@ import org.apache.pekko.actor.ActorRef;
 import org.apache.pekko.actor.ActorRefFactory;
 
 /**
- * A dependency injection {@link Provider} to assist in the creation of Akka actors.
+ * A dependency injection {@link Provider} to assist in the creation of Pekko actors.
  *
  * @author Brandon Arp (brandon dot arp at inscopemetrics dot io)
  */

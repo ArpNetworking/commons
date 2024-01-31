@@ -21,12 +21,12 @@ import org.apache.pekko.actor.IndirectActorProducer;
 import org.apache.pekko.actor.Props;
 
 /**
- * A Guice-based factory for Akka actors.
+ * A Guice-based factory for Pekko actors.
  *
  * Dependencies:
  * <ul>
  *     <li>com.google.inject:guice</li>
- *     <li>com.typesafe.akka.core:akka-actor_2.11</li>
+ *     <li>org.apache.pekko.core:pekko-actor_2.13</li>
  *     <li>org.scala-lang:scala-library</li>
  * </ul>
  *
