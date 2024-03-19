@@ -112,7 +112,7 @@ public class ThreadLocalBuilderBasedDeserializer extends BuilderBasedDeserialize
                         Object bean = b;
                         try {
                             while (p.getCurrentToken() != JsonToken.END_OBJECT) {
-                                final String propName = p.getCurrentName();
+                                final String propName = p.currentName();
                                 // Skip field name:
                                 p.nextToken();
                                 final SettableBeanProperty prop = _beanProperties.find(propName);
