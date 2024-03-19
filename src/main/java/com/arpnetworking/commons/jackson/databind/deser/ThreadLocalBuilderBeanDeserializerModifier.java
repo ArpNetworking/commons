@@ -43,4 +43,5 @@ public final class ThreadLocalBuilderBeanDeserializerModifier extends BeanDeseri
         }
         return super.updateBuilder(config, beanDesc, builder);
     }
+    private static final long serialVersionUID = 1L;
 }

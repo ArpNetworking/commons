@@ -60,11 +60,11 @@ public final class EnumerationDeserializer<T extends Enum<T>> extends JsonDeseri
         // NOTE: By contract with JsonDeserializer the stringValue cannot be null
         final String stringValue = jp.getValueAsString();
         final Optional<T> value = _strategy.toEnum(_enumClass, stringValue);
-        if (!value.isPresent()) {
+        if (value.isEmpty()) {
             throw new EnumerationNotFoundException(
                     stringValue,
                     _enumClass,
-                    jp.getCurrentLocation());
+                    jp.currentLocation());
         }
         return value.get();
     }
