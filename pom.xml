@@ -70,7 +70,7 @@
 
   <properties>
     <!--Dependency versions-->
-    <pekko.version>1.0.2</pekko.version>
+    <pekko.version>1.0.3</pekko.version>
     <bytebuddy.version>1.14.17</bytebuddy.version>
     <guava.version>33.2.1-jre</guava.version>
     <guice.version>7.0.0</guice.version>
