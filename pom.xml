@@ -71,7 +71,7 @@
   <properties>
     <!--Dependency versions-->
     <pekko.version>1.0.3</pekko.version>
-    <bytebuddy.version>1.14.18</bytebuddy.version>
+    <bytebuddy.version>1.14.19</bytebuddy.version>
     <guava.version>33.2.1-jre</guava.version>
     <guice.version>7.0.0</guice.version>
     <hamcrest.version>3.0</hamcrest.version>
