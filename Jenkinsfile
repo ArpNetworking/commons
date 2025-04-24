@@ -57,7 +57,6 @@ pipeline {
       recordIssues(
           enabledForFailure: true, aggregatingResults: true,
           tools: [java(), checkStyle(reportEncoding: 'UTF-8'), spotBugs()])
-      jacoco()
     }
   }
 }
