@@ -19,7 +19,6 @@ import com.arpnetworking.commons.math.BigDecimalAccumulator;
 import com.arpnetworking.test.junitbenchmarks.JsonBenchmarkConsumer;
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +38,6 @@ public final class BigDecimalAccumulatorTestPerf extends BaseAccumulatorTestPerf
     private static final JsonBenchmarkConsumer JSON_BENCHMARK_CONSUMER = new JsonBenchmarkConsumer(
             Paths.get("target/perf/bigdecimal-accumulator-performance-test.json"));
     @Rule
-    @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
     public final TestRule _benchMarkRule = new BenchmarkRule(JSON_BENCHMARK_CONSUMER);
 
     @BeforeClass

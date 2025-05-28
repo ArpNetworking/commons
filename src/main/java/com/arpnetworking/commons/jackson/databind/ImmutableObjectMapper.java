@@ -16,7 +16,6 @@
 package com.arpnetworking.commons.jackson.databind;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
@@ -165,7 +164,6 @@ public final class ImmutableObjectMapper {
         }
 
         // CHECKSTYLE.OFF: IllegalThrows - Required by external interface
-        @SuppressFBWarnings("DP_DO_INSIDE_DO_PRIVILEGED")
         @Override
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             // CHECKSTYLE.ON: IllegalThrows

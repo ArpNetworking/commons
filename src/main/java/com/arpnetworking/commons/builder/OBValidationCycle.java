@@ -16,7 +16,6 @@
 package com.arpnetworking.commons.builder;
 
 import com.google.common.collect.Lists;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.sf.oval.Check;
 import net.sf.oval.ConstraintViolation;
 import net.sf.oval.Validator;
@@ -68,7 +67,6 @@ public final class OBValidationCycle implements net.sf.oval.ValidationCycle {
         _violations.add(violation);
     }
 
-    @SuppressFBWarnings("EI_EXPOSE_REP")
     @Override
     public List<OValContext> getContextPath() {
         return _contextPathImmutable;

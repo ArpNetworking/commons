@@ -17,7 +17,6 @@ package com.arpnetworking.commons.builder.processorbuilder;
 
 import com.arpnetworking.commons.builder.OvalBuilder;
 import com.arpnetworking.commons.builder.annotations.SkipValidationProcessor;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.sf.oval.constraint.NotNull;
 
 import javax.annotation.Nullable;
@@ -35,7 +34,6 @@ public abstract class ParentBuilder<B> extends OvalBuilder<ExamplePojo> {
     /**
      * Constructor.
      */
-    @SuppressFBWarnings("NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR")
     ParentBuilder() {
         super(ExamplePojo::new);
     }
