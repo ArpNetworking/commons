@@ -223,7 +223,6 @@ public final class ValidationProcessorTest {
     }
 
     @Test
-    @SuppressFBWarnings("NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS")
     public void testProcessNoConstraintsPojo() throws Exception {
         // Assert that no validation happens before processing
         @SuppressFBWarnings("NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR")
@@ -255,7 +254,6 @@ public final class ValidationProcessorTest {
     }
 
     @Test
-    @SuppressFBWarnings("NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS")
     public void testUnprocessedParentPojo() throws Exception {
         // Assert that validation fails reflectively before processing
         try {
