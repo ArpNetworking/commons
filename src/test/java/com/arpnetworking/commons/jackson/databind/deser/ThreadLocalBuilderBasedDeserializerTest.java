@@ -117,7 +117,7 @@ public final class ThreadLocalBuilderBasedDeserializerTest {
             Assert.assertEquals(
                     "Unrecognized field \"j\" (class com.arpnetworking.commons.jackson.databind.deser."
                     + "ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder), not marked as ignorable (one known "
-                    + "property: \"i\"])\n at [Source: (String)\"{\"i\":3,\"j\":\"foo\"}\"; line: 1, column: 13] "
+                    + "property: \"i\")\n at [Source: (String)\"{\"i\":3,\"j\":\"foo\"}\"; line: 1, column: 13] "
                     + "(through reference chain: com.arpnetworking.commons.jackson.databind.deser."
                     + "ThreadLocalBuilderBasedDeserializerTest$TestBean$Builder[\"j\"])",
                     e.getMessage());
